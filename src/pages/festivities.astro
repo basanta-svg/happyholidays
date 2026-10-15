@@ -1,0 +1,73 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import hero from '../assets/images/bumthang-festival.jpg';
+import cranes from '../assets/images/blacknecked-crane-fest.jpg';
+import cultural from '../assets/images/cultural.jpg';
+
+const festivals = [
+  { name: 'Punakha Drubchen & Tshechu', when: 'February – March', where: 'Punakha Dzong', text: 'The Drubchen re-enacts a 17th-century battle with a procession of costumed “pazaps”, followed by the Tshechu’s masked dances in one of Bhutan’s most beautiful dzongs.' },
+  { name: 'Paro Tshechu', when: 'March – April', where: 'Rinpung Dzong, Paro', text: 'One of the country’s most celebrated festivals. Days of masked dances end before dawn with the unfurling of a giant sacred thongdrel.' },
+  { name: 'Haa Summer Festival', when: 'July', where: 'Haa Valley', text: 'A lighter, more local celebration of nomadic life, with traditional food, drink, music, sports and a taste of Bhutan’s highland culture.' },
+  { name: 'Thimphu Tshechu', when: 'September – October', where: 'Tashichho Dzong, Thimphu', text: 'The capital’s great autumn festival: three days of sacred cham dances, bright brocade costumes and crowds in their finest dress.' },
+  { name: 'Jambay Lhakhang Drup', when: 'October – November', where: 'Bumthang', text: 'A night-time festival at one of Bhutan’s oldest temples, famous for its fire blessing and sacred dances performed in the heart of the spiritual valleys.' },
+  { name: 'Black-necked Crane Festival', when: '11 November', where: 'Gangtey, Phobjikha Valley', text: 'Held each year to welcome the endangered black-necked cranes that arrive from the Tibetan plateau, with school dances and songs in the courtyard of Gangtey Monastery.' },
+];
+---
+<PageLayout title="Festivities" description="Experience Bhutan’s tshechus and seasonal festivals: Paro, Thimphu, Punakha, Bumthang and the Black-necked Crane Festival in Gangtey.">
+  <PageHero eyebrow="Festivities" title="Come for the dances. Stay for the people." intro="Bhutan’s festivals are living worship and community celebration. Time your journey to one and see the country at its most colourful." image={hero} alt="Masked dancers at a festival in Bumthang" />
+
+  <PageSection tone="ink" labelledby="fest-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">The festival calendar</p>
+      <h2 id="fest-title" class="h3 reveal">Six festivals worth planning a trip around.</h2>
+      <p class="pg-text reveal">Most Bhutanese festivals are tshechus, held on a set day of the lunar month in honour of Guru Rinpoche. Dates therefore move every year, so tell us the season you have in mind and we’ll match your trip to the right celebration.</p>
+    </div>
+    <div class="pg-rows">
+      {festivals.map((f, i) => (
+        <article class="pg-row reveal" style={`--d:${(i % 3) * 80}ms`}>
+          <div>
+            <p class="pg-tag">{f.when}</p>
+          </div>
+          <h3>{f.name}<br /><span class="label" style="opacity:.65;display:inline-block;margin-top:.6rem">{f.where}</span></h3>
+          <p>{f.text}</p>
+        </article>
+      ))}
+    </div>
+    <p class="pg-note">Dates follow the Bhutanese lunar calendar and are announced by the Royal Government each year. Festival seasons are popular: book flights and hotels early.</p>
+  </PageSection>
+
+  <PageSection tone="plum" labelledby="cranes-title">
+    <div class="pg-split">
+      <Picture src={cranes} alt="Black-necked cranes in Phobjikha valley" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.75">Gangtey · Phobjikha Valley</p>
+        <h2 id="cranes-title" class="h3 reveal">The hidden valley and its winter visitors.</h2>
+        <p class="pg-text reveal">Every November the endangered black-necked cranes glide into the Phobjikha Valley, a wide glacial bowl in Wangdue district. Visitors come to watch the cranes circle the Gangtey Monastery before settling into the wetlands for winter.</p>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" labelledby="tips-title">
+    <div class="pg-split rev">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">Festival etiquette</p>
+          <h2 id="tips-title" class="h3 reveal">Dress well, arrive early, be respectful.</h2>
+        </div>
+        <ul class="pg-list reveal">
+          <li>Dress modestly and neatly. Shoulders and knees covered; no hats inside temple grounds.</li>
+          <li>Arrive early for a good view. Dances begin in the morning and the best seats fill quickly.</li>
+          <li>Ask before photographing monks and dancers, and never step into the dance ground.</li>
+          <li>Festival-day crowds mean hotels and flights book out. We recommend booking several months ahead.</li>
+        </ul>
+      </div>
+      <Picture src={cultural} alt="Bhutanese culture on festival day" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+  </PageSection>
+
+  <CtaBand title="Tell us your dates. We’ll find your festival." cta="Plan a festival trip" href="/contact" />
+</PageLayout>

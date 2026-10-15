@@ -1,0 +1,42 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Item { name: string; role?: string; dzongkhag?: string; stars?: number; photo: ImageMetadata }
+interface Props { items: Item[]; label?: string }
+const { items, label = "Destinations" } = Astro.props;
+---
+<div class="marquee" data-marquee tabindex="0" role="region" aria-label={label}>
+  <div class="track" data-track>
+    {[0, 1].map((copy) => (
+      <ul class="set" aria-hidden={copy === 1 ? 'true' : undefined}>
+        {items.map((s) => (
+          <li class="card">
+            <Picture src={s.photo} alt={copy === 0 ? s.name : ''} widths={[260, 520]} sizes="260px" formats={['avif', 'webp']} loading="lazy" draggable="false" class="img" />
+            <div class="cap">
+              <p class="nm">{s.name}</p>
+              {s.role && <p class="label rl">{s.role}</p>}
+              {s.dzongkhag && <p class="label rl loc"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>{s.dzongkhag}</p>}
+              {s.stars && <p class="stars" role="img" aria-label={`${s.stars} star hotel`}>{"★".repeat(s.stars)}<span>{"★".repeat(5 - s.stars)}</span></p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+<style>
+  .marquee { overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .marquee:active { cursor: grabbing; }
+  .track { display: flex; width: max-content; will-change: transform; }
+  .set { display: flex; gap: 1.25rem; padding-right: 1.25rem; }
+  .card { position: relative; flex: none; width: 260px; height: 330px; border-radius: var(--radius-card); overflow: hidden; }
+  .card :global(.img), .card :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+  .card::after { content: ''; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, rgb(10 9 6 / .85)); }
+  .cap { position: absolute; z-index: 1; left: 1.1rem; right: 1.1rem; bottom: 1.1rem; color: #fff; }
+  .nm { font-size: 1.25rem; font-weight: 600; line-height: 1.15; }
+  .stars { margin-top: .4rem; color: #fff; letter-spacing: .12em; font-size: 1rem; }
+  .stars span { opacity: .3; }
+  .loc { display: flex; align-items: center; gap: .35rem; }
+  .rl { margin-top: .4rem; opacity: .85; }
+  @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } }
+</style>

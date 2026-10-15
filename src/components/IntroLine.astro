@@ -1,0 +1,10 @@
+---
+import { site } from '../site.config';
+---
+<section class="il" aria-label="Introduction statement">
+  <p class="h2 reveal">{site.introLine}</p>
+</section>
+<style>
+  .il { min-height: 100svh; display: grid; place-items: center; text-align: center; padding: var(--section-pad) var(--gutter); background: var(--color-ink-deep); }
+  .il p { max-width: 18ch; }
+</style>

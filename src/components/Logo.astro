@@ -1,0 +1,12 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/images/logo.png';
+import { site } from '../site.config';
+interface Props { stacked?: boolean; class?: string }
+const { stacked = false, class: cls = '' } = Astro.props;
+const w = stacked ? 120 : 52;
+---
+<Image src={logo} alt={`${site.name} logo`} width={w} height={w} widths={[w, w * 2]} sizes={`${w}px`} loading="eager" class:list={['logo', cls]} />
+<style>
+  .logo { display: block; height: auto; object-fit: contain; filter: drop-shadow(0 2px 6px rgb(0 0 0 / .25)); }
+</style>

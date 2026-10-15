@@ -1,0 +1,36 @@
+---
+import { site } from '../site.config';
+import RotatingHeadline from './RotatingHeadline.astro';
+import WeatherChip from './WeatherChip.astro';
+import PillButton from './PillButton.astro';
+---
+<section id="top" class="hero" aria-label="Introduction">
+  <div class="wrap content">
+    <div class="copy">
+      <RotatingHeadline items={site.heroQuestions} />
+      <p class="intro reveal">{site.heroIntro}</p>
+    </div>
+    <div class="bottom">
+      <hr class="rule" />
+      <div class="bar">
+        <div>
+          <p class="label date">Based in</p>
+          <p class="city">{site.city}, {site.country}</p>
+        </div>
+        <WeatherChip />
+        <PillButton href={site.bookUrl} variant="light">Book a trip</PillButton>
+      </div>
+    </div>
+  </div>
+</section>
+<div id="hero-sentinel" aria-hidden="true"></div>
+<style>
+  .hero { position: relative; z-index: 1; min-height: 100svh; display: flex; color: var(--color-paper); }
+  .content { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 3.5rem; min-height: 100svh; padding-top: 9rem; padding-bottom: 5.5rem; }
+  .intro { margin-top: 1.25rem; max-width: 40ch; font-size: 15px; line-height: 1.55; opacity: .9; }
+  .rule { border: 0; border-top: 1px solid rgb(244 239 230 / .35); margin-bottom: 1.5rem; }
+  .bar { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; justify-content: space-between; }
+  .city { font-size: clamp(1.15rem, 2vw, 1.5rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
+  .date { opacity: .8; margin-bottom: .3rem; }
+  #hero-sentinel { position: absolute; top: 90svh; height: 1px; width: 1px; }
+</style>

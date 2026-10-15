@@ -1,0 +1,18 @@
+---
+// One shared background (photo + looping video) that stays pinned behind the hero and the statement section.
+import { Picture } from 'astro:assets';
+import hero from '../assets/images/dochula-4.jpg';
+import { site } from '../site.config';
+---
+<div class="backdrop" aria-hidden="true">
+  <Picture src={hero} alt="" widths={[800, 1400, 2000]} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" class="bg" />
+  <video class="vid" src={site.heroVideo} muted loop autoplay playsinline preload="auto" tabindex="-1" disablepictureinpicture disableremoteplayback></video>
+  <div class="shade"></div>
+</div>
+<style>
+  .backdrop { position: sticky; top: 0; height: 100svh; margin-bottom: -100svh; overflow: hidden; z-index: 0; pointer-events: none; }
+  .backdrop :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
+  .vid:global(.on) { opacity: 1; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 9 6 / .55) 0%, rgb(10 9 6 / .35) 45%, rgb(10 9 6 / .7) 100%); }
+</style>

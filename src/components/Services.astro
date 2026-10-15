@@ -1,0 +1,31 @@
+---
+import { Picture } from 'astro:assets';
+import bg from '../assets/images/dochula-2.jpg';
+import illo from '../assets/images/bumthang-jakardzong.jpg';
+import { site } from '../site.config';
+import PillButton from './PillButton.astro';
+---
+<section id="services" class="vn" aria-labelledby="vn-title">
+  <Picture src={bg} alt="" widths={[800, 1400, 2000]} sizes="100vw" formats={['avif', 'webp']} loading="lazy" class="bg" />
+  <div class="shade" aria-hidden="true"></div>
+  <div class="wrap in">
+    <p class="intro reveal">{site.servicesText}</p>
+    <Picture src={illo} alt="Jakar Dzong in Bumthang" widths={[480, 900]} sizes="(min-width:900px) 420px, 80vw" formats={['avif', 'webp']} loading="lazy" class="illo reveal" />
+    <h2 id="vn-title" class="h2 reveal">{site.servicesTitle}</h2>
+    <ul class="chips reveal">
+      {site.services.map((s) => <li class="label">{s}</li>)}
+    </ul>
+    <PillButton href={site.bookUrl} variant="light">Book a trip</PillButton>
+  </div>
+</section>
+<style>
+  .vn { position: relative; color: #fff; text-align: center; padding-block: var(--section-pad); }
+  .vn :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(rgb(10 9 6 / .6), rgb(10 9 6 / .7)); }
+  .in { position: relative; display: grid; gap: 3rem; justify-items: center; }
+  .intro { max-width: 44ch; font-size: clamp(1.1rem, 1.6vw, 1.4rem); }
+  .vn :global(.illo) { width: min(80vw, 420px); aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-card); }
+  .in :global(.h2) { max-width: 14ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; max-width: 52rem; }
+  .chips li { padding: .7rem 1.1rem; border-radius: 9999px; border: 1px solid rgb(255 255 255 / .4); background: rgb(255 255 255 / .1); backdrop-filter: blur(8px); }
+</style>

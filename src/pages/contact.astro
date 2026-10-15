@@ -1,0 +1,106 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import { site } from '../site.config';
+import hero from '../assets/images/dochula-3.jpg';
+const tel = (p: string) => `tel:${p.replace(/ /g, '')}`;
+const interests = ['Cultural tour', 'Festival tour', 'Trekking & hiking', 'Cycling', 'Bird watching', 'Pilgrimage', 'Golf', 'Spa & wellness', 'Thangka workshop', 'Homestay / farm stay', 'Film crew support', 'Visa only', 'Other'];
+---
+<PageLayout title="Contact" description="Contact Happy Holidays in Thimphu, Bhutan to plan your trip: tours, festivals, visas, hotels and flights.">
+  <PageHero eyebrow="Contact" title="Let’s make your best trip with us." intro="Tell us when you’d like to travel and what you’d like to see. We’ll reply with ideas and a first itinerary." image={hero} alt="Prayer flags at Dochula Pass" />
+
+  <PageSection tone="ink" labelledby="ct-title">
+    <div class="grid">
+      <div class="info">
+        <p class="label" style="opacity:.7">Get in touch</p>
+        <h2 id="ct-title" class="h3 reveal">Write to us, call us or send a message.</h2>
+        <dl class="reveal">
+          <div><dt class="label">Phone</dt><dd><a href={tel(site.phone)}>{site.phone}</a><br /><a href={tel(site.phone2)}>{site.phone2}</a></dd></div>
+          <div><dt class="label">Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={`mailto:${site.emailOps}`}>{site.emailOps}</a></dd></div>
+          <div><dt class="label">Websites</dt><dd>{site.websites.map((w) => <><a href={`https://${w}`} target="_blank" rel="noopener">{w}</a><br /></>)}</dd></div>
+          <div><dt class="label">Office</dt><dd>{site.address}</dd></div>
+        </dl>
+        <a class="wa reveal" href="https://wa.me/97517129889" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 4z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+
+      <form class="form reveal" id="enquiry" novalidate>
+        <h3 class="h3" style="margin-bottom:.5rem">Plan your trip</h3>
+        <div class="row">
+          <label>Full name<input name="name" type="text" autocomplete="name" required /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+        </div>
+        <div class="row">
+          <label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" /></label>
+          <label>Country<input name="country" type="text" autocomplete="country-name" /></label>
+        </div>
+        <div class="row">
+          <label>Travel dates<input name="dates" type="text" placeholder="e.g. late October 2026" /></label>
+          <label>Number of travellers<input name="pax" type="number" min="1" inputmode="numeric" /></label>
+        </div>
+        <label>I’m interested in
+          <select name="interest">
+            <option value="">Choose one</option>
+            {interests.map((i) => <option value={i}>{i}</option>)}
+          </select>
+        </label>
+        <label>Message<textarea name="message" rows="5" placeholder="Tell us about your plans"></textarea></label>
+        <button type="submit" class="submit label">Send enquiry <span aria-hidden="true">→</span></button>
+        <p class="status" id="enquiry-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </PageSection>
+</PageLayout>
+<style>
+  .grid { display: grid; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+  @media (min-width: 960px) { .grid { grid-template-columns: 1fr 1.15fr; } }
+  .info { display: grid; gap: 1.5rem; align-content: start; }
+  .info :global(.h3) { max-width: 20ch; }
+  dl { display: grid; gap: 1.5rem; margin-top: .5rem; }
+  dt { opacity: .6; margin-bottom: .35rem; }
+  dd { line-height: 1.6; }
+  dd a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .wa { display: inline-flex; gap: .6rem; align-items: center; width: fit-content; padding: .85rem 1.4rem; border-radius: 9999px; background: #fff; color: var(--color-ink); font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; transition: transform .35s var(--ease); }
+  .wa:hover { transform: translateY(-2px); }
+  .form { display: grid; gap: 1.1rem; background: var(--color-paper); color: var(--color-ink); border-radius: 18px; padding: clamp(1.5rem, 3.5vw, 2.75rem); }
+  .row { display: grid; gap: 1.1rem; }
+  @media (min-width: 560px) { .row { grid-template-columns: 1fr 1fr; } }
+  label { display: grid; gap: .45rem; font-family: var(--font-label); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgb(26 24 19 / .7); }
+  input, select, textarea { font-family: var(--font-sans); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--color-ink); background: #fff; border: 1px solid rgb(26 24 19 / .25); border-radius: 10px; padding: .8rem .9rem; width: 100%; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--color-brand); outline-offset: 1px; border-color: transparent; }
+  input[aria-invalid='true'] { border-color: var(--color-brand); }
+  textarea { resize: vertical; }
+  .submit { justify-self: start; display: inline-flex; gap: .6rem; padding: 1rem 1.7rem; border-radius: 9999px; background: var(--color-brand); color: #fff; cursor: pointer; transition: transform .35s var(--ease); }
+  .submit:hover { transform: translateY(-2px); }
+  .status { min-height: 1.4em; font-size: 14px; color: var(--color-ink); }
+</style>
+<script>
+  // Static site: the enquiry opens the visitor's email app with the details filled in.
+  const form = document.querySelector<HTMLFormElement>('#enquiry');
+  const status = document.querySelector<HTMLElement>('#enquiry-status');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(form);
+    const v = (k: string) => String(f.get(k) ?? '').trim();
+    const name = form.elements.namedItem('name') as HTMLInputElement;
+    const email = form.elements.namedItem('email') as HTMLInputElement;
+    let ok = true;
+    [name, email].forEach((el) => {
+      const bad = !el.value.trim() || (el.type === 'email' && !el.validity.valid && !/^\S+@\S+\.\S+$/.test(el.value));
+      el.setAttribute('aria-invalid', String(bad));
+      if (bad) ok = false;
+    });
+    if (!ok) { if (status) status.textContent = 'Please add your name and a valid email.'; return; }
+    const lines = [
+      `Name: ${v('name')}`, `Email: ${v('email')}`, `Phone: ${v('phone')}`, `Country: ${v('country')}`,
+      `Travel dates: ${v('dates')}`, `Travellers: ${v('pax')}`, `Interested in: ${v('interest')}`, '', v('message'),
+    ];
+    const to = 'happyholidaysed@gmail.com';
+    const subject = `Trip enquiry from ${v('name')}`;
+    location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+    if (status) status.textContent = 'Opening your email app with your enquiry. If nothing opens, write to ' + to + '.';
+  });
+</script>

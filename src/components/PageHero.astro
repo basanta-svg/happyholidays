@@ -1,0 +1,26 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { eyebrow: string; title: string; intro?: string; image: ImageMetadata; alt?: string }
+const { eyebrow, title, intro, image, alt = '' } = Astro.props;
+---
+<section class="ph" aria-labelledby="page-title">
+  <Picture src={image} alt={alt} widths={[800, 1400, 2000]} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" class="bg" />
+  <div class="shade" aria-hidden="true"></div>
+  <div class="wrap copy">
+    <p class="label eyebrow reveal">{eyebrow}</p>
+    <h1 id="page-title" class="h2 reveal" style="--d:100ms">{title}</h1>
+    {intro && <p class="intro reveal" style="--d:200ms">{intro}</p>}
+  </div>
+</section>
+<div id="hero-sentinel" aria-hidden="true"></div>
+<style>
+  .ph { position: relative; z-index: 1; min-height: 78svh; display: flex; align-items: flex-end; color: var(--color-paper); overflow: hidden; }
+  .ph :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 9 6 / .6) 0%, rgb(10 9 6 / .3) 45%, rgb(10 9 6 / .78) 100%); }
+  .copy { position: relative; padding-top: 9rem; padding-bottom: clamp(3rem, 6vw, 5.5rem); }
+  .eyebrow { opacity: .85; margin-bottom: 1.25rem; }
+  .copy :global(.h2) { max-width: 16ch; }
+  .intro { margin-top: 1.5rem; max-width: 52ch; font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.55; opacity: .92; }
+  #hero-sentinel { position: absolute; top: 60svh; height: 1px; width: 1px; }
+</style>

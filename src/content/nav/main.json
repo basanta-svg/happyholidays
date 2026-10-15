@@ -1,0 +1,46 @@
+{
+  "items": [
+    {
+      "label": "About",
+      "href": "/about",
+      "children": [
+        {
+          "label": "About us",
+          "href": "/about"
+        },
+        {
+          "label": "About Bhutan",
+          "href": "/bhutan"
+        },
+        {
+          "label": "Transportation",
+          "href": "/transportation"
+        }
+      ]
+    },
+    {
+      "label": "Festivities",
+      "href": "/festivities"
+    },
+    {
+      "label": "Activities",
+      "href": "/activities"
+    },
+    {
+      "label": "Flights",
+      "href": "/flights"
+    },
+    {
+      "label": "Hotels",
+      "href": "/hotels"
+    },
+    {
+      "label": "Information",
+      "href": "/information"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ]
+}

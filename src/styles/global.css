@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #1a1813;
+  --color-ink-deep: #16150f;
+  --color-paper: #f4efe6;
+  --color-paper-2: #f7f4ec;
+  --color-muted: #8a8473;
+  --color-coral: #f4937a;
+  --color-sage: #e3b200;
+  --color-plum: #0810a0;
+  --color-dusty: #a0b1bf;
+  --color-brand: #bb3308;
+  --font-sans: 'Archivo', system-ui, sans-serif;
+  --font-label: 'Space Grotesk', system-ui, sans-serif;
+  --font-script: 'Instrument Serif', Georgia, serif;
+  --radius-card: 12px;
+  --container-page: 1360px;
+}
+
+:root {
+  --gutter: 1.5rem;
+  --section-pad: clamp(6rem, 10vw, 10rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 3rem; }
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-ink-deep);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-x: clip;
+}
+::selection { background: var(--color-coral); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-coral); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { width: 100%; max-width: calc(var(--container-page) + var(--gutter) * 2); margin-inline: auto; padding-inline: var(--gutter); }
+.section { min-height: 100svh; padding-block: var(--section-pad); position: relative; display: flex; flex-direction: column; justify-content: center; }
+
+.label {
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.h1 { font-size: clamp(2.25rem, 5.2vw, 4rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
+.h2 { font-size: clamp(3.25rem, 8vw, 6rem); font-weight: 500; line-height: 1.05; letter-spacing: -0.03em; }
+.h3 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; }
+.script { font-family: var(--font-script); font-style: italic; font-weight: 400; line-height: 0.85; letter-spacing: -0.02em; }
+
+/* Reveal on scroll */
+.reveal { opacity: 0; transform: translateY(28px); filter: blur(6px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease); transition-delay: var(--d, 0ms); }
+.reveal.is-in { opacity: 1; transform: none; filter: none; }
+.no-js .reveal { opacity: 1; transform: none; filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
+.sr-only-2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

@@ -1,0 +1,23 @@
+---
+import { site } from '../site.config';
+import ArrowLink from './ArrowLink.astro';
+const { left, right } = site.twoUp;
+---
+<section id="contact" class="tu" aria-label="Visit and contact">
+  {[left, right].map((c) => (
+    <div class="cell">
+      <h2 class="h2 reveal">{c.title}</h2>
+      <div class="reveal" style="--d:120ms"><ArrowLink href={c.href}>{c.cta}</ArrowLink></div>
+    </div>
+  ))}
+</section>
+<style>
+  .tu { background: var(--color-dusty); color: var(--color-ink); min-height: 100svh; display: grid; }
+  .cell { display: grid; place-content: center; justify-items: start; gap: 2.5rem; padding: var(--section-pad) var(--gutter); }
+  .cell + .cell { border-top: 1px solid rgb(26 24 19 / .35); }
+  @media (min-width: 900px) {
+    .tu { grid-template-columns: 1fr 1fr; }
+    .cell { justify-items: center; text-align: center; }
+    .cell + .cell { border-top: 0; border-left: 1px solid rgb(26 24 19 / .35); }
+  }
+</style>

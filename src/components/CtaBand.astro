@@ -1,0 +1,13 @@
+---
+import ArrowLink from './ArrowLink.astro';
+interface Props { title: string; cta: string; href: string }
+const { title, cta, href } = Astro.props;
+---
+<section class="cta" aria-label="Plan your trip">
+  <h2 class="h2 reveal">{title}</h2>
+  <div class="reveal" style="--d:120ms"><ArrowLink href={href}>{cta}</ArrowLink></div>
+</section>
+<style>
+  .cta { background: var(--color-brand); color: #fff; min-height: 60svh; display: grid; place-content: center; justify-items: center; gap: 2.5rem; text-align: center; padding: var(--section-pad) var(--gutter); position: relative; z-index: 1; }
+  .cta :global(.h2) { max-width: 16ch; }
+</style>

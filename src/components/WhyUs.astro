@@ -1,0 +1,28 @@
+---
+import { site } from '../site.config';
+---
+<section id="why-bhutan" class="www" aria-labelledby="why-title">
+  <div class="wrap">
+    <h2 id="why-title" class="label reveal ttl">{site.whyTitle}</h2>
+    <div class="cols">
+      {site.why.map((c, i) => (
+        <div class="col reveal" style={`--d:${i * 120}ms`}>
+          <h3 class="h3">{c.title}</h3>
+          <p>{c.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .www { background: var(--color-plum); color: var(--color-paper); min-height: 100svh; display: flex; align-items: center; padding-block: var(--section-pad); }
+  .ttl { margin-bottom: 3rem; opacity: .8; }
+  .cols { display: grid; gap: 3rem; }
+  .col p { margin-top: 1.5rem; max-width: 34ch; }
+  @media (min-width: 900px) {
+    .cols { grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .col { padding-inline: 2.5rem; border-left: 1px solid rgb(244 239 230 / .3); }
+    .col:first-child { padding-left: 0; border-left: 0; }
+    .col:last-child { padding-right: 0; }
+  }
+</style>

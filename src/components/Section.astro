@@ -1,0 +1,7 @@
+---
+interface Props { id?: string; class?: string; bg?: string; fullHeight?: boolean; labelledby?: string; [k: string]: unknown }
+const { id, class: cls = '', bg, fullHeight = true, labelledby, ...rest } = Astro.props;
+---
+<section id={id} aria-labelledby={labelledby} class:list={[fullHeight ? 'section' : 'py-[var(--section-pad)]', cls]} style={bg ? `background:${bg}` : undefined} {...rest}>
+  <slot />
+</section>

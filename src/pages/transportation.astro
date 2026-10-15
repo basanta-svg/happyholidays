@@ -1,0 +1,103 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import hero from '../assets/images/dochula-6.jpg';
+import coasterSide from '../assets/images/transport/coaster-side.jpeg';
+import coasterFront from '../assets/images/transport/coaster-front.jpeg';
+import coasterSide2 from '../assets/images/transport/coaster-side2.jpeg';
+import coasterIn from '../assets/images/transport/coaster-interior.jpeg';
+import coasterIn2 from '../assets/images/transport/coaster-interior2.jpeg';
+import coasterIn3 from '../assets/images/transport/coaster-interior3.jpeg';
+import h1Side from '../assets/images/transport/h1-side.jpeg';
+import h1Front from '../assets/images/transport/h1-front.jpeg';
+import h1Rear from '../assets/images/transport/h1-rear.jpeg';
+import h1In from '../assets/images/transport/h1-interior.jpeg';
+import h1In2 from '../assets/images/transport/h1-interior2.jpeg';
+import suv from '../assets/images/deck/image40.jpeg';
+
+const vehicles = [
+  { name: 'Coaster bus', who: 'Groups of 15–20+ guests', img: coasterSide, text: 'Our largest vehicle: comfortable seating, curtained windows and room for luggage, well suited to group tours and festival trips.' },
+  { name: 'H1', who: 'Small groups and families', img: h1Front, text: 'A roomy van with leather seats, ideal for families and small groups who want comfort on long mountain drives.' },
+  { name: 'SUV', who: 'Luxury travellers and remote destinations', img: suv, text: 'Recommended for luxury travellers and for reaching remote destinations where roads are narrower and rougher.' },
+];
+const gallery = [
+  { img: coasterFront, alt: 'Coaster bus, front' },
+  { img: coasterIn, alt: 'Coaster bus interior seating' },
+  { img: h1Side, alt: 'H1 van, side' },
+  { img: h1In, alt: 'H1 van interior' },
+  { img: coasterSide2, alt: 'Coaster bus, side' },
+  { img: coasterIn2, alt: 'Coaster bus interior, rear seats' },
+  { img: h1Rear, alt: 'H1 van, rear' },
+  { img: h1In2, alt: 'H1 van, second-row seats' },
+  { img: coasterIn3, alt: 'Coaster bus interior, aisle' },
+];
+const drives = [
+  { route: 'Paro → Thimphu', time: '1 hr' },
+  { route: 'Thimphu → Punakha', time: '2.5 hrs' },
+  { route: 'Punakha → Gangtey', time: '2.5 hrs' },
+  { route: 'Gangtey → Bumthang', time: '5–7 hrs' },
+];
+---
+<PageLayout title="Transportation" description="Travel across Bhutan in comfort: Coaster buses for groups, H1 vans for families and SUVs for remote destinations, plus major route drive times.">
+  <PageHero eyebrow="Transportation" title="Travel Bhutan in comfort and safety." intro="Bhutan’s roads wind through mountain passes and river valleys. Our vehicles and drivers are chosen to make every kilometre part of the journey." image={hero} alt="A mountain road in Bhutan" />
+
+  <PageSection tone="ink" labelledby="veh-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Available vehicles</p>
+      <h2 id="veh-title" class="h3 reveal">The right vehicle for your group.</h2>
+      <p class="pg-text reveal">We match the vehicle to your group size, itinerary and comfort preferences, and every transfer and sightseeing drive is included in your programme.</p>
+    </div>
+    <div class="pg-cards">
+      {vehicles.map((v, i) => (
+        <article class="pg-card reveal" style={`--d:${i * 90}ms`}>
+          <Picture src={v.img} alt={v.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="body">
+            <p class="pg-tag">{v.who}</p>
+            <h3>{v.name}</h3>
+            <p>{v.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" labelledby="routes-title">
+    <div class="pg-split" style="align-items:start">
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.7">Major travel routes</p>
+        <h2 id="routes-title" class="h3 reveal">Plan on short days and long views.</h2>
+        <p class="pg-text reveal">Distances in Bhutan are short, but the roads are winding, so drive times are longer than you may expect. These are the main legs of most itineraries.</p>
+        <p class="pg-note">Drive times are approximate and vary with weather, road works and stops along the way.</p>
+      </div>
+      <div class="pg-scroll reveal">
+        <table class="pg-table">
+          <thead><tr><th>Route</th><th>Drive time</th></tr></thead>
+          <tbody>{drives.map((d) => <tr><td><strong>{d.route}</strong></td><td>{d.time}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="plum" labelledby="fleet-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.8">Our fleet</p>
+      <h2 id="fleet-title" class="h3 reveal">Take a look inside.</h2>
+    </div>
+    <ul class="gal">
+      {gallery.map((g, i) => (
+        <li class="reveal" style={`--d:${(i % 3) * 80}ms`}>
+          <Picture src={g.img} alt={g.alt} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+        </li>
+      ))}
+    </ul>
+  </PageSection>
+
+  <CtaBand title="Tell us your group size. We’ll arrange the ride." cta="Plan your trip" href="/contact" />
+</PageLayout>
+<style>
+  .gal { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+  .gal :global(img) { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-card); display: block; }
+</style>

@@ -1,0 +1,15 @@
+---
+import PillButton from './PillButton.astro';
+---
+<section id="welcome" class="wl" aria-labelledby="wl-title">
+  <div class="in">
+    <h2 id="wl-title" class="h2 reveal"><span>Welcome to</span><span>Happy</span><span>Holidays</span></h2>
+    <PillButton href="#statement" variant="glass" class="reveal" style="--d:150ms">About us</PillButton>
+  </div>
+</section>
+<style>
+  .wl { position: relative; z-index: 1; min-height: 100svh; display: grid; place-items: center; text-align: center; color: #fff; padding: var(--section-pad) var(--gutter); }
+  .in { position: relative; display: grid; gap: 2rem; justify-items: center; max-width: none; width: 100%; }
+  .in :global(.h2) { max-width: none; text-align: center; }
+  .in :global(.h2) span { display: block; }
+</style>

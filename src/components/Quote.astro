@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '../site.config';
+import ArrowLink from './ArrowLink.astro';
+const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
+const c = pillars[pillars.length - 1].data;
+---
+<section id="quote" class="qt" style={`background:${c.color};color:${c.textColor}`} aria-label="Book your trip">
+  <p class="h2 reveal">{site.quote}</p>
+  <div class="reveal" style="--d:150ms"><ArrowLink href={site.bookUrl}>Book your trip</ArrowLink></div>
+</section>
+<style>
+  .qt { min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 3rem; text-align: center; padding: var(--section-pad) var(--gutter); }
+  .qt p { max-width: 20ch; }
+</style>

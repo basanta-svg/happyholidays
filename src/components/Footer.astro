@@ -1,0 +1,59 @@
+---
+import { site } from '../site.config';
+import Logo from './Logo.astro';
+const icons: Record<string, string> = {
+  facebook: 'M14 8V6.5c0-.7.3-1 1-1h2V2h-3a4 4 0 0 0-4 4v2H7v3.5h3V22h4v-10.5h2.7L17 8z',
+  youtube: 'M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3z',
+  instagram: 'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM17.5 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z',
+  linkedin: 'M4.5 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM3 9h3v12H3zm6 0h2.9v1.7c.5-.9 1.7-2 3.6-2 3.4 0 4 2.2 4 5.1V21h-3v-6.2c0-1.5 0-3.3-2-3.3s-2.4 1.6-2.4 3.2V21H9z',
+  x: 'M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.2-8.3L1.8 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.2 4.7H5.4z',
+  tiktok: 'M16.5 3c.3 2.4 1.7 3.9 4 4.1v3.2c-1.5 0-2.9-.5-4-1.3v6.2a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.3a2.8 2.8 0 1 0 1.9 2.6V3z',
+  whatsapp: 'M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 4zm-3 3.5c-.3 0-.7.2-.9.5-.4.5-.8 1.2-.2 2.4.8 1.700 2.200 3.100 3.900 3.900 1.200.5 1.900.3 2.400-.2.300-.3.500-.8.400-1.100l-1.600-.8c-.3-.1-.5 0-.7.200l-.5.600c-1-.4-1.900-1.300-2.300-2.300l.6-.5c.2-.2.300-.4.200-.7l-.8-1.600c-.1-.3-.3-.4-.5-.4z',
+};
+const year = new Date().getFullYear();
+---
+<footer class="ft">
+  <div class="big" aria-hidden="true"><span class="script">{site.name}</span></div>
+  <div class="wrap grid">
+    <div>
+      <Logo stacked />
+      <address class="label meta">{site.address}<br /><a href={`tel:${site.phone.replace(/ /g, "")}`}>{site.phone}</a><br /><a href={`mailto:${site.email}`}>{site.email}</a></address>
+    </div>
+    {site.footerGroups.map((g) => (
+      <nav aria-label={g.title}>
+        <h2 class="gt">{g.title}</h2>
+        <ul>{g.links.map((l) => <li><a class="label lk" href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+    ))}
+    <div>
+      <h2 class="gt">Follow us</h2>
+      <ul class="soc">
+        {site.socials.map((s) => (
+          <li><a href={s.href} aria-label={s.label}><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d={icons[s.icon]} /></svg></a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap bottom label">
+    <span>© {year} {site.name}. All rights reserved.</span>
+    <span class="legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
+  </div>
+</footer>
+<style>
+  .ft { background: #000; color: #fff; padding-top: clamp(3rem, 6vw, 6rem); overflow: hidden; }
+  .big { text-align: center; color: #c9d6de; white-space: nowrap; line-height: .8; padding-bottom: 1.5rem; }
+  .big .script { font-size: clamp(3.5rem, 13.2vw, 15rem); display: inline-block; }
+  .grid { display: grid; gap: 2.5rem; padding-block: 3rem; border-top: 1px solid rgb(255 255 255 / .3); }
+  @media (min-width: 900px) { .grid { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; } }
+  .meta { font-style: normal; margin-top: 1.25rem; text-transform: none; letter-spacing: .02em; font-size: 14px; opacity: .85; line-height: 1.7; }
+  .gt { font-size: 1.25rem; font-weight: 500; margin-bottom: 1rem; }
+  .ft ul { display: grid; gap: .6rem; }
+  .lk { opacity: .85; transition: opacity .2s; }
+  .lk:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+  .soc { display: flex !important; flex-wrap: wrap; gap: .75rem !important; }
+  .soc a { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgb(255 255 255 / .45); border-radius: 50%; transition: background .25s, color .25s; }
+  .soc a:hover { background: #fff; color: #000; }
+  .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding-block: 1.5rem; border-top: 1px solid rgb(255 255 255 / .3); opacity: .9; }
+  .legal { display: flex; gap: 1.5rem; }
+  .legal a:hover { text-decoration: underline; }
+</style>

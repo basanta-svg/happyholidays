@@ -1,0 +1,105 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import hero from '../assets/images/airport.jpg';
+import plane from '../assets/images/deck/image12.jpeg';
+import routeMap from '../assets/images/deck/image14.jpeg';
+import bkk from '../assets/images/deck/image8.jpeg';
+import ktm from '../assets/images/deck/image9.jpeg';
+import dac from '../assets/images/deck/image10.jpeg';
+import del from '../assets/images/deck/image11.jpeg';
+
+const routes = [
+  { city: 'Bangkok', code: 'BKK', img: bkk, text: 'Both airlines offer regular connections to Paro. Drukair operates daily flights, while Bhutan Airlines flies several times a week. Flights typically take about 3 hours 15 minutes.' },
+  { city: 'Kathmandu', code: 'KTM', img: ktm, text: 'One of the most popular and scenic routes. Drukair and Bhutan Airlines operate multiple flights per week, taking approximately 1 hour 15 minutes.' },
+  { city: 'Dhaka', code: 'DAC', img: dac, text: 'Drukair connects Dhaka to Paro, with flights generally operating a few times a week.' },
+  { city: 'Delhi', code: 'DEL', img: del, text: 'Both Drukair and Bhutan Airlines offer scheduled flights. Drukair runs multiple flights weekly, while Bhutan Airlines operates on select days. Travel time is about 2 hours 20 minutes.' },
+];
+const schedule = [
+  { route: 'Bangkok ⇄ Paro', code: 'BKK–PBH · PBH–BKK', day: 'Mon / Thu / Fri / Sat', flights: 'B3703', time: '04:10 – 06:10' },
+  { route: 'Delhi ⇄ Paro', code: 'DEL–PBH · PBH–DEL', day: 'Daily', flights: 'B3774', time: '13:00 – 15:50' },
+  { route: 'Kathmandu ⇄ Paro', code: 'KTM–PBH · PBH–KTM', day: 'Daily', flights: 'B3771 · B3772', time: '06:50 – 07:45 · 08:25 – 09:40' },
+];
+---
+<PageLayout title="Flights" description="Fly to Paro with Drukair or Bhutan Airlines from Bangkok, Kathmandu, Dhaka and Delhi. Routes, schedules and baggage guidance.">
+  <PageHero eyebrow="Flights" title="Your Himalayan descent into Paro." intro="Bhutan’s only international airport sits in a deep valley, and the approach is one of the world’s most memorable. Here is how to get there." image={hero} alt="Aircraft at Paro International Airport" />
+
+  <PageSection tone="ink" labelledby="routes-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Connectivity</p>
+      <h2 id="routes-title" class="h3 reveal">Four gateways, two airlines.</h2>
+      <p class="pg-text reveal">Drukair and Bhutan Airlines connect Paro with Bangkok, Kathmandu, Dhaka and Delhi. Schedules change by season, so we confirm flights when we plan your trip.</p>
+    </div>
+    <div class="pg-cards">
+      {routes.map((r, i) => (
+        <article class="pg-card reveal" style={`--d:${i * 90}ms`}>
+          <Picture src={r.img} alt={r.city} widths={[400, 800]} sizes="(min-width:900px) 24vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="body">
+            <p class="pg-tag">{r.code} → PBH</p>
+            <h3>{r.city}</h3>
+            <p>{r.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" labelledby="ba-title">
+    <div class="pg-split">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">Our partnered aviation</p>
+          <h2 id="ba-title" class="h3 reveal">Bhutan Airlines</h2>
+          <p class="pg-text reveal">Bhutan Airlines is one of the most reliable carriers into Bhutan and the country’s only private airline. It is our partner in giving guests warm hospitality and a smooth journey.</p>
+        </div>
+      </div>
+      <Picture src={plane} alt="Crew in front of a Bhutan Airlines aircraft at Paro" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+
+    <h3 class="h3 reveal" style="margin: clamp(3rem, 6vw, 5rem) 0 1.5rem">Bhutan Airlines schedule</h3>
+    <div class="pg-scroll reveal">
+      <table class="pg-table">
+        <thead><tr><th>Route</th><th>Day</th><th>Flight</th><th>Time</th></tr></thead>
+        <tbody>
+          {schedule.map((s) => (
+            <tr>
+              <td><strong>{s.route}</strong><br /><span class="label" style="opacity:.6">{s.code}</span></td>
+              <td>{s.day}</td>
+              <td>{s.flights}</td>
+              <td>{s.time}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="pg-note">Times are local departure and arrival as published for 2026. Please confirm with us before booking, as schedules can change.</p>
+  </PageSection>
+
+  <PageSection tone="plum" labelledby="bag-title">
+    <div class="pg-split rev">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.75">Baggage assistance</p>
+          <h2 id="bag-title" class="h3 reveal">Safe, efficient and passenger-friendly.</h2>
+        </div>
+        <div class="pg-stats reveal" style="margin-bottom:2rem">
+          <div class="pg-stat"><b>7 kg</b><span>Cabin baggage</span></div>
+          <div class="pg-stat"><b>30 / 40 kg</b><span>Checked allowance</span></div>
+          <div class="pg-stat"><b>15%</b><span>Off prepaid baggage</span></div>
+        </div>
+        <ul class="pg-list reveal">
+          <li>Assistance for passengers who need extra support.</li>
+          <li>Report lost, delayed or damaged baggage right away on arrival.</li>
+          <li>Delayed baggage is delivered to your given address, with transport costs reimbursed.</li>
+          <li>For lost baggage, the airline’s policy is a reclaim of USD 20 per kg.</li>
+        </ul>
+      </div>
+      <Picture src={routeMap} alt="Map of flight routes to Paro" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" style="background:#fff;object-fit:contain" />
+    </div>
+  </PageSection>
+
+  <CtaBand title="Need help with flights and visas?" cta="Talk to our team" href="/contact" />
+</PageLayout>

@@ -1,0 +1,19 @@
+---
+import { site } from '../site.config';
+import ArrowLink from './ArrowLink.astro';
+const s = site.statement;
+---
+<section id="statement" class="st" aria-labelledby="st-title">
+  <div class="wrap inner">
+    <h2 id="st-title" class="script word reveal"><span>{s.line1}</span><span>{s.line2}</span></h2>
+    <p class="txt reveal" style="--d:120ms">{s.text}</p>
+    <div class="reveal" style="--d:200ms"><ArrowLink href={site.bhutanUrl}>Discover Bhutan</ArrowLink></div>
+  </div>
+</section>
+<style>
+  .st { position: relative; min-height: 100svh; display: grid; place-items: center; z-index: 1; text-align: center; color: #fff; padding-block: var(--section-pad); }
+  .inner { position: relative; display: grid; gap: 2rem; justify-items: center; }
+  .word { display: grid; font-size: clamp(3.5rem, 12vw, 9rem); }
+  .word span:nth-child(2) { margin-top: -0.05em; }
+  .txt { max-width: 44ch; font-size: clamp(1.1rem, 1.6vw, 1.4rem); }
+</style>

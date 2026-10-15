@@ -1,0 +1,155 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import hero from '../assets/images/bumthang-view2.jpg';
+import culture from '../assets/images/cultural.jpg';
+import food from '../assets/images/bumtap-cuisine.jpg';
+import buddha from '../assets/images/buddha-point.jpg';
+import thimphu from '../assets/images/deck/image42.jpeg';
+import paro from '../assets/images/deck/image44.jpeg';
+import punakha from '../assets/images/deck/image45.jpeg';
+import gangtey from '../assets/images/deck/image46.jpeg';
+import bumthang from '../assets/images/deck/image43.jpeg';
+
+const facts = [
+  { b: 'Druk Yul', s: 'Land of the Thunder Dragon' },
+  { b: 'Thimphu', s: 'Capital city' },
+  { b: '20', s: 'Dzongkhags (districts)' },
+  { b: 'Dzongkha', s: 'National language' },
+];
+const gnh = [
+  ['Sustainable development', 'Growth that is shared fairly and does not cost the country its people or its land.'],
+  ['Environmental conservation', 'Bhutan’s constitution commits the country to keeping forest cover at no less than 60 percent.'],
+  ['Culture', 'Preserving and promoting traditions, language, dress and architecture.'],
+  ['Good governance', 'Open, accountable government that serves its people.'],
+];
+const culturePoints = [
+  ['Buddhism', 'Vajrayana Buddhism shapes daily life, from prayer flags and mani walls to the monasteries that crown the hills.'],
+  ['Dress', 'Men wear the gho and women the kira, worn in everyday life and required in dzongs and on formal occasions.'],
+  ['Food', 'Chillies are a vegetable here. Ema datshi, chillies in cheese, is the national dish, served with red rice.'],
+  ['Archery', 'The national sport. Matches are social events, with singing, dancing and friendly teasing of the other side.'],
+];
+const regions = [
+  { name: 'Paro', img: paro, text: 'The gateway to Bhutan and home to Paro Taktsang, the Tiger’s Nest.' },
+  { name: 'Thimphu', img: thimphu, text: 'A small, lively capital where tradition meets modern life.' },
+  { name: 'Punakha', img: punakha, text: 'The old capital, with a dzong at the meeting of two rivers.' },
+  { name: 'Gangtey', img: gangtey, text: 'A wide, quiet valley that welcomes black-necked cranes each winter.' },
+  { name: 'Bumthang', img: bumthang, text: 'The spiritual heartland, with ancient temples and gentle valleys.' },
+];
+const seasons = [
+  { s: 'Spring', m: 'March – May', t: 'Rhododendrons in bloom, clear skies and major festivals such as Paro Tshechu.' },
+  { s: 'Summer', m: 'June – August', t: 'Green, lush and quieter, with monsoon showers. Good for culture and low-altitude walks.' },
+  { s: 'Autumn', m: 'September – November', t: 'Crisp, clear mountain views and the biggest festivals. The busiest and most popular season.' },
+  { s: 'Winter', m: 'December – February', t: 'Cold, bright days, fewer visitors and wide views of the Himalayan peaks.' },
+];
+---
+<PageLayout title="About Bhutan" description="Discover Bhutan, the Land of the Thunder Dragon: Gross National Happiness, Buddhist culture, dzongs, festivals, food, nature and the best time to visit.">
+  <PageHero eyebrow="About Bhutan" title="The Land of the Thunder Dragon." intro="A small Himalayan kingdom where happiness is measured, forests are protected by law, and monasteries still shape daily life." image={hero} alt="Layered Himalayan ridges in Bumthang" />
+
+  <PageSection tone="ink" labelledby="intro-title">
+    <div class="pg-split" style="align-items:start">
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.7">Welcome to Bhutan</p>
+        <h2 id="intro-title" class="h3 reveal">A kingdom between India and Tibet, tucked high in the eastern Himalaya.</h2>
+      </div>
+      <div>
+        <p class="pg-text reveal">Bhutan is known to its people as Druk Yul, the Land of the Thunder Dragon. Its valleys run from subtropical lowlands to snow peaks above 7,000 metres, and almost every ridge carries a dzong, temple or line of prayer flags.</p>
+        <p class="pg-text reveal">The country has chosen to grow slowly and carefully. Tourism follows the same idea: a “High Value, Low Volume” approach that protects the culture and environment visitors come to enjoy.</p>
+      </div>
+    </div>
+    <div class="pg-stats reveal" style="margin-top:3.5rem">
+      {facts.map((f) => <div class="pg-stat"><b>{f.b}</b><span>{f.s}</span></div>)}
+    </div>
+  </PageSection>
+
+  <PageSection tone="plum" labelledby="gnh-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.8">Gross National Happiness</p>
+      <h2 id="gnh-title" class="h3 reveal">A country that measures happiness.</h2>
+      <p class="pg-text reveal">Bhutan is famous for putting Gross National Happiness (GNH) alongside, and often ahead of, economic growth. GNH guides policy through four pillars.</p>
+    </div>
+    <div class="pg-cols c2">
+      {gnh.map(([t, d], i) => (
+        <div class="reveal" style={`--d:${(i % 2) * 100}ms`}>
+          <h3 class="label" style="opacity:.85">{t}</h3>
+          <p class="pg-text" style="margin-top:.6rem">{d}</p>
+        </div>
+      ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" labelledby="culture-title">
+    <div class="pg-split">
+      <Picture src={culture} alt="Traditional Bhutanese cultural dance" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">Culture & traditions</p>
+          <h2 id="culture-title" class="h3 reveal">A living culture, worn, eaten and celebrated every day.</h2>
+        </div>
+        <div class="pg-rows" style="border-top:0">
+          {culturePoints.map(([t, d]) => (
+            <div class="reveal" style="padding-block:1rem;border-bottom:1px solid rgb(26 24 19 / .15)">
+              <h3 class="label" style="opacity:.8">{t}</h3>
+              <p class="pg-text" style="margin-top:.4rem">{d}</p>
+            </div>
+          ))}
+        </div>
+        <div class="reveal" style="margin-top:2rem"><ArrowLink href="/festivities">Explore festivities</ArrowLink></div>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="ink" labelledby="places-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Where to go</p>
+      <h2 id="places-title" class="h3 reveal">Five valleys, five different worlds.</h2>
+    </div>
+    <div class="pg-cards">
+      {regions.map((r, i) => (
+        <article class="pg-card reveal" style={`--d:${(i % 3) * 90}ms`}>
+          <Picture src={r.img} alt={r.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="body"><h3>{r.name}</h3><p>{r.text}</p></div>
+        </article>
+      ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="dusty" labelledby="nature-title">
+    <div class="pg-split rev">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.75">Nature</p>
+          <h2 id="nature-title" class="h3 reveal">One of the greenest countries on Earth.</h2>
+          <p class="pg-text reveal">Bhutan is carbon negative: its forests absorb more carbon than the country produces. Protected areas cover a large share of the land, and the forests shelter red pandas, Bengal tigers, takin and hundreds of bird species.</p>
+          <p class="pg-text reveal">Many Himalayan peaks are considered sacred, and mountaineering above 6,000 metres is not permitted. Gangkhar Puensum, among the world’s highest unclimbed mountains, lies within Bhutan.</p>
+        </div>
+      </div>
+      <Picture src={buddha} alt="Buddha Dordenma overlooking Thimphu" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+  </PageSection>
+
+  <PageSection tone="sand" labelledby="when-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">When to visit</p>
+      <h2 id="when-title" class="h3 reveal">Spring and autumn are best, but every season has its charm.</h2>
+    </div>
+    <div class="pg-cards">
+      {seasons.map((s, i) => (
+        <article class="pg-card reveal" style={`--d:${i * 80}ms`}>
+          <div class="body">
+            <p class="pg-tag">{s.m}</p>
+            <h3>{s.s}</h3>
+            <p>{s.t}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="reveal" style="margin-top:2.5rem"><ArrowLink href="/information">Visa, fees and practical information</ArrowLink></div>
+  </PageSection>
+
+  <CtaBand title="Ready to see Bhutan for yourself?" cta="Plan your trip" href="/contact" />
+</PageLayout>

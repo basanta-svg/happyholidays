@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import CloudMask from './CloudMask.astro';
+import ArrowLink from './ArrowLink.astro';
+const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
+const last = pillars[pillars.length - 1].data;
+---
+<div id="pillars" class="pillars" data-pillars style={`background:${pillars[0].data.color}`}>
+  <CloudMask id="cloud-mask" />
+  {pillars.map((p, i) => (
+    <section class="panel" data-color={p.data.color} data-text={p.data.textColor} aria-labelledby={`pillar-${i}`} style={`color:${p.data.textColor}`}>
+      <div class:list={['wrap grid', i % 2 === 1 && 'flip']}>
+        <div class="copy">
+          <h2 id={`pillar-${i}`} class="h2 reveal"><span>{p.data.line1}</span><br /><span>{p.data.line2}</span></h2>
+          <p class="q label reveal" style="--d:100ms">{p.data.question}</p>
+          <p class="desc reveal" style="--d:180ms">{p.data.description}</p>
+          <div class="cta reveal" style="--d:240ms"><ArrowLink href={p.data.href}>{p.data.cta}</ArrowLink></div>
+        </div>
+        <div class="pic">
+          <div class="mask" data-cloud>
+            <Picture src={p.data.photo} alt={p.data.photoAlt} widths={[500, 900, 1200]} sizes="(min-width:1024px) 45vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+</div>
+<style>
+  .pillars { transition: background-color .9s var(--ease); }
+  .pillars :global(.panel) { transition: color .9s var(--ease); }
+  .panel { min-height: 100svh; display: flex; align-items: center; padding-block: var(--section-pad); }
+  .grid { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr; gap: 5rem; } .flip .copy { order: 2; } }
+  .q { margin-block: 2rem 1.25rem; opacity: .7; font-size: 13px; }
+  .desc { max-width: 38ch; }
+  .cta { margin-top: 2rem; }
+  .pic { display: grid; place-items: center; }
+  .mask { width: min(100%, 640px); aspect-ratio: 1; clip-path: url(#cloud-mask); transform: scale(var(--s, .92)) rotate(var(--r, 0deg)); will-change: transform; }
+  .mask :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+</style>

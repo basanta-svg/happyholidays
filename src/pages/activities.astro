@@ -1,0 +1,108 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import hero from '../assets/images/bumthang-trek.jpg';
+import cultural from '../assets/images/cultural.jpg';
+import biking from '../assets/images/bikeing1.jpg';
+import birds from '../assets/images/birdwatching2.jpg';
+import food from '../assets/images/bumtap-cuisine.jpg';
+import thangka from '../assets/images/deck/thangka-wall.jpg';
+import homestay from '../assets/images/deck/image48.jpeg';
+import buddha from '../assets/images/buddha-point.jpg';
+
+const activities = [
+  { title: 'Culture & heritage', tag: 'Dzongs · temples · museums', img: cultural, text: 'Walk the great dzongs, visit the National Museum and Rinpung Dzong, stroll local markets and meet the craftspeople who keep Bhutan’s traditions alive.' },
+  { title: 'Hiking & trekking', tag: 'Tiger’s Nest · Bumthang trails', img: hero, text: 'From the day hike to Paro Taktsang to quieter trails in the central valleys. Finish with a traditional hot stone bath to ease tired legs.' },
+  { title: 'Cycling', tag: 'Mountain & valley rides', img: biking, text: 'Ride quiet roads and village paths with a support vehicle and a local guide. Routes are matched to your fitness and the season.' },
+  { title: 'Bird watching', tag: 'Phobjikha · Bumthang', img: birds, text: 'Bhutan’s forests and wetlands are among the richest birding regions in the Himalaya, including the black-necked cranes of Phobjikha each winter.' },
+  { title: 'Culinary experiences', tag: 'Farm-to-table', img: food, text: 'Taste ema datshi and local specialties, learn to cook with a host family and share meals made with ingredients from the village.' },
+  { title: 'Pilgrimage', tag: 'Sacred sites', img: buddha, text: 'Journeys for Buddhist pilgrims to monasteries, stupas and holy sites, with guides who understand both the ritual and the history.' },
+];
+const more = ['Golf', 'Spa & wellness', 'Hot stone bath', 'Photography', 'Documentary film crews', 'Farm stays'];
+---
+<PageLayout title="Activities" description="Hiking, cycling, bird watching, culture, thangka painting workshops, homestays and more. Tailor-made activities across Bhutan.">
+  <PageHero eyebrow="Activities" title="Walk it. Ride it. Taste it." intro="Beyond the classic tour, Bhutan rewards the curious. Choose the experiences that fit you and we’ll build the journey around them." image={hero} alt="Trekking in Bumthang" />
+
+  <PageSection tone="ink" labelledby="act-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Things to do</p>
+      <h2 id="act-title" class="h3 reveal">Special-interest journeys, planned end to end by our team in Thimphu.</h2>
+    </div>
+    <div class="pg-cards">
+      {activities.map((a, i) => (
+        <article class="pg-card reveal" style={`--d:${(i % 3) * 100}ms`}>
+          <Picture src={a.img} alt={a.title} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="body">
+            <p class="pg-tag">{a.tag}</p>
+            <h3>{a.title}</h3>
+            <p>{a.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" id="thangka" labelledby="thangka-title">
+    <div class="pg-split">
+      <Picture src={thangka} alt="Thangka paintings on display" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">Traditional arts & crafts · Paro</p>
+          <h2 id="thangka-title" class="h3 reveal">Thangka painting workshop</h2>
+          <p class="pg-text reveal">Learn about Bhutanese sacred art from a Paro-based artist who runs a thangka painting studio and teaches visitors who want to know more about Bhutan’s arts. Sessions take limited seats so every participant gets proper attention, and they can be fitted around your day.</p>
+        </div>
+        <table class="pg-table reveal">
+          <thead><tr><th>Programme</th><th>One day</th></tr></thead>
+          <tbody>
+            <tr><td>Duration</td><td>2 hours</td></tr>
+            <tr><td>Private, per person</td><td>USD 100</td></tr>
+            <tr><td>Group of 10</td><td>USD 20</td></tr>
+          </tbody>
+        </table>
+        <p class="pg-note">Programmes can be taken intensively or spread over several days, for individuals, couples, small groups or larger groups.</p>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="plum" id="stays" labelledby="stay-title">
+    <div class="pg-split rev">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.75">Homestays, heritage houses & farm stays</p>
+          <h2 id="stay-title" class="h3 reveal">Experience the warmth of Bhutanese hospitality.</h2>
+          <p class="pg-text reveal">Stay in traditional homes, interact with local families, and discover the authentic culture and lifestyle of Bhutan.</p>
+        </div>
+        <div class="pg-cols c2 reveal">
+          <div>
+            <h3 class="label">Homestay</h3>
+            <p class="pg-text">Traditional Bhutanese homes where guests stay with local families: Bhutanese lifestyle, local food, customs and gardening.</p>
+          </div>
+          <div>
+            <h3 class="label">Heritage house</h3>
+            <p class="pg-text">Old traditional buildings preserved for cultural experiences, showcasing architecture, interiors and history.</p>
+          </div>
+          <div>
+            <h3 class="label">Farm stay</h3>
+            <p class="pg-text">Rural homes in villages and farming areas: farm-to-table meals, nature walks and the village experience.</p>
+          </div>
+        </div>
+      </div>
+      <Picture src={homestay} alt="A traditional Bhutanese homestay room" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+  </PageSection>
+
+  <PageSection tone="dusty" labelledby="more-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.75">And more</p>
+      <h2 id="more-title" class="h3 reveal">Something specific in mind? We’ll make it happen.</h2>
+    </div>
+    <ul class="pg-chips reveal">
+      {more.map((m) => <li>{m}</li>)}
+    </ul>
+  </PageSection>
+
+  <CtaBand title="Pick your experiences. We’ll plan the rest." cta="Start planning" href="/contact" />
+</PageLayout>

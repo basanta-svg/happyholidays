@@ -1,0 +1,15 @@
+---
+interface Props { href: string; class?: string }
+const { href, class: cls = '' } = Astro.props;
+---
+<a href={href} class:list={['arrow-link label', cls]}>
+  <span class="txt"><slot /></span>
+  <span aria-hidden="true">→</span>
+</a>
+<style>
+  .arrow-link { display: inline-flex; gap: 0.6rem; align-items: center; padding-block: 0.4rem; position: relative; font-weight: 500; }
+  .txt { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 4px; transition: background-size .45s var(--ease); }
+  .arrow-link:hover .txt { background-size: 0 1px; background-position: 100% 100%; }
+  .arrow-link span[aria-hidden] { transition: transform .3s var(--ease); }
+  .arrow-link:hover span[aria-hidden] { transform: translateX(5px); }
+</style>

@@ -1,0 +1,102 @@
+---
+// Compact language dropdown driving a hidden Google Translate widget.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const langs = [
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'th', label: 'ไทย · Thai', short: 'TH' },
+  { code: 'zh-CN', label: '中文 · Chinese', short: '中文' },
+];
+---
+<div class:list={['lang', 'notranslate', cls]} translate="no" data-lang>
+  <button type="button" class="lang-btn label" aria-haspopup="listbox" aria-expanded="false" aria-label="Translate this website">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>
+    <span data-lang-current>EN</span>
+    <svg class="chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <ul class="lang-list" role="listbox" hidden>
+    {langs.map((l) => (
+      <li role="option" aria-selected="false" data-code={l.code} data-short={l.short} tabindex="-1">{l.label}</li>
+    ))}
+  </ul>
+</div>
+<style>
+  .lang { position: relative; display: inline-block; }
+  .lang-btn { display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .8rem; font-size: 11px; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; line-height: 1; transition: background .25s, color .25s; }
+  .lang-btn:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+  .chev { transition: transform .25s; }
+  .lang-btn[aria-expanded='true'] .chev { transform: rotate(180deg); }
+  .lang-list { position: absolute; right: 0; top: calc(100% + .5rem); min-width: 10.5rem; margin: 0; padding: .35rem; list-style: none; background: #fff; color: #1a1813; border-radius: 14px; box-shadow: 0 14px 40px rgb(0 0 0 / .22); z-index: 60; text-transform: none; letter-spacing: 0; font-size: 14px; }
+  .lang-list[hidden] { display: none; }
+  .lang-list li { padding: .6rem .8rem; border-radius: 9px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .lang-list li:hover, .lang-list li:focus-visible { background: #f1ece2; outline: none; }
+  .lang-list li[aria-selected='true'] { font-weight: 600; }
+  .lang-list li[aria-selected='true']::after { content: '✓'; font-size: 12px; }
+</style>
+<script is:inline>
+  (function () {
+    if (window.__langInit) return;
+    window.__langInit = true;
+    var m = document.cookie.match(/(?:^|; )googtrans=\/en\/([^;]+)/);
+    var cur = m ? decodeURIComponent(m[1]) : 'en';
+
+    // hidden Google widget
+    var holder = document.createElement('div');
+    holder.id = 'google_translate_element';
+    holder.style.cssText = 'position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden';
+    document.body.appendChild(holder);
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,th,zh-CN', autoDisplay: false }, 'google_translate_element');
+    };
+
+    function setCookie(v) {
+      var host = location.hostname, past = 'expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'googtrans=; path=/; ' + past;
+      document.cookie = 'googtrans=; path=/; domain=' + host + '; ' + past;
+      if (v !== 'en') {
+        document.cookie = 'googtrans=/en/' + v + '; path=/';
+        if (host.indexOf('.') > -1) document.cookie = 'googtrans=/en/' + v + '; path=/; domain=' + host;
+      }
+    }
+    function apply(v) {
+      cur = v;
+      setCookie(v);
+      var combo = document.querySelector('select.goog-te-combo');
+      if (combo) { combo.value = v; combo.dispatchEvent(new Event('change')); }
+      else location.reload(); // widget not ready: cookie + reload still translates
+      if (v === 'en' && combo) location.reload(); // restoring original text is most reliable via reload
+    }
+
+    if (cur !== 'en') {
+      var sc = document.createElement('script');
+      sc.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      document.head.appendChild(sc);
+    }
+
+    document.querySelectorAll('[data-lang]').forEach(function (root) {
+      var btn = root.querySelector('.lang-btn'), list = root.querySelector('.lang-list'), label = root.querySelector('[data-lang-current]');
+      var items = [].slice.call(list.querySelectorAll('li'));
+      function mark() {
+        items.forEach(function (li) {
+          var on = li.dataset.code === cur;
+          li.setAttribute('aria-selected', on);
+          if (on) label.textContent = li.dataset.short;
+        });
+      }
+      function toggle(open) { list.hidden = !open; btn.setAttribute('aria-expanded', open); }
+      mark();
+      btn.addEventListener('click', function (e) { e.stopPropagation(); toggle(list.hidden); });
+      items.forEach(function (li) {
+        li.addEventListener('click', function () { toggle(false); if (li.dataset.code !== cur) { apply(li.dataset.code); mark(); } });
+        li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } });
+      });
+      document.addEventListener('click', function (e) { if (!root.contains(e.target)) toggle(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggle(false); });
+    });
+  })();
+</script>
+<style is:global>
+  .skiptranslate iframe, iframe.skiptranslate, #goog-gt-tt, .goog-te-balloon-frame, .goog-te-banner-frame { display: none !important; }
+  body { top: 0 !important; }
+  .goog-text-highlight { background: none !important; box-shadow: none !important; }
+</style>

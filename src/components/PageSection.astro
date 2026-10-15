@@ -1,0 +1,15 @@
+---
+interface Props { tone?: 'ink' | 'plum' | 'dusty' | 'paper' | 'sand'; id?: string; class?: string; labelledby?: string }
+const { tone = 'ink', id, class: cls = '', labelledby } = Astro.props;
+---
+<section id={id} aria-labelledby={labelledby} class:list={['ps', tone, cls]}>
+  <div class="wrap"><slot /></div>
+</section>
+<style>
+  .ps { padding-block: var(--section-pad); scroll-margin-top: 4.5rem; position: relative; z-index: 1; }
+  .ink { background: var(--color-ink-deep); color: var(--color-paper); }
+  .plum { background: var(--color-plum); color: var(--color-paper); }
+  .dusty { background: var(--color-dusty); color: var(--color-ink); }
+  .paper { background: var(--color-paper); color: var(--color-ink); }
+  .sand { background: var(--color-paper-2); color: var(--color-ink); }
+</style>

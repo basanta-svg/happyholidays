@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import HeroBackdrop from '../components/HeroBackdrop.astro';
+import Hero from '../components/Hero.astro';
+import Statement from '../components/Statement.astro';
+import Welcome from '../components/Welcome.astro';
+import IntroLine from '../components/IntroLine.astro';
+import Pillars from '../components/Pillars.astro';
+import Quote from '../components/Quote.astro';
+import Destinations from '../components/Destinations.astro';
+import WhyUs from '../components/WhyUs.astro';
+import Services from '../components/Services.astro';
+import TwoUp from '../components/TwoUp.astro';
+import Footer from '../components/Footer.astro';
+import AskPill from '../components/AskPill.astro';
+import VideoModal from '../components/VideoModal.astro';
+---
+<BaseLayout>
+  <Header />
+  <main id="main">
+    <div class="relative">
+      <HeroBackdrop />
+      <Hero />
+      <Statement />
+      <Welcome />
+    </div>
+    <IntroLine />
+    <Pillars />
+    <Quote />
+    <Destinations />
+    <WhyUs />
+    <Services />
+    <TwoUp />
+  </main>
+  <Footer />
+  <AskPill />
+  <VideoModal />
+</BaseLayout>

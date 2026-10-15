@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import hero from '../assets/images/bumthang-view.jpg';
+
+const hotels = (await getCollection('hotels')).sort((a, b) => a.data.order - b.data.order).map((h) => h.data);
+const places = ['Thimphu', 'Paro', 'Punakha', 'Gangtey', 'Bumthang'];
+const groups = [
+  { id: 'high-end', title: 'High-end', blurb: 'Bhutan’s signature luxury lodges and resorts.' },
+  { id: 'five-four', title: '5 & 4 star', blurb: 'Comfortable, well-located hotels and boutique resorts.' },
+];
+const byGroup = (g: string) => hotels.filter((h) => (g === 'high-end' ? h.category === 'High-end' : h.category !== 'High-end'));
+---
+<PageLayout title="Hotels" description="Our hotel partners across Bhutan: Aman, COMO Uma, Six Senses, Le Méridien, Pemako and boutique stays in Thimphu, Paro, Punakha, Gangtey and Bumthang.">
+  <PageHero eyebrow="Hotel partners" title="Handpicked stays across Bhutan." intro="From boutique lodges to five-star resorts, every hotel we work with is chosen for its setting, service and sense of place." image={hero} alt="A valley view in Bumthang" />
+
+  <PageSection tone="ink" labelledby="ht-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Where would you like to stay?</p>
+      <h2 id="ht-title" class="h3 reveal">Twenty hotels in five valleys.</h2>
+    </div>
+    <div class="pg-chips" role="group" aria-label="Filter hotels by location" data-filter style="margin-bottom:3rem">
+      <button type="button" aria-pressed="true" data-place="all">All</button>
+      {places.map((p) => <button type="button" aria-pressed="false" data-place={p}>{p}</button>)}
+    </div>
+
+    {groups.map((g) => (
+      <div class="grp" data-group>
+        <div class="gh">
+          <h3 class="h3">{g.title}</h3>
+          <p class="label" style="opacity:.7">{g.blurb}</p>
+        </div>
+        <div class="pg-cards">
+          {byGroup(g.id).map((h) => (
+            <article class="pg-card" data-place={h.dzongkhag}>
+              <Picture src={h.photo} alt={h.name} widths={[400, 800]} sizes="(min-width:900px) 24vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+              <div class="body">
+                <p class="pg-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>{h.dzongkhag}</p>
+                <h3>{h.name}</h3>
+                <p>{h.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
+    <p class="pg-note">Availability and rates vary by season. We confirm your hotels as part of your itinerary.</p>
+  </PageSection>
+
+  <CtaBand title="Tell us where you’d like to wake up." cta="Plan your stay" href="/contact" />
+</PageLayout>
+<style>
+  .grp + .grp { margin-top: clamp(3rem, 6vw, 5rem); }
+  .gh { display: grid; gap: .6rem; margin-bottom: 1.75rem; }
+  .grp[hidden] { display: none; }
+  :global(.pg-card[hidden]) { display: none; }
+</style>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-filter]');
+  if (root) {
+    const btns = [...root.querySelectorAll<HTMLButtonElement>('button')];
+    const cards = [...document.querySelectorAll<HTMLElement>('.pg-card[data-place]')];
+    const groups = [...document.querySelectorAll<HTMLElement>('[data-group]')];
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const p = b.dataset.place!;
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      cards.forEach((c) => (c.hidden = p !== 'all' && c.dataset.place !== p));
+      groups.forEach((g) => (g.hidden = !g.querySelector('.pg-card:not([hidden])')));
+    }));
+  }
+</script>

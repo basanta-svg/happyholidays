@@ -1,0 +1,185 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import transportImg from '../assets/images/transport/coaster-side.jpeg';
+import hero from '../assets/images/dochula-2.jpg';
+import passportBad from '../assets/images/deck/image6.png';
+import photoBad from '../assets/images/deck/image7.png';
+import thimphu from '../assets/images/deck/image42.jpeg';
+import paro from '../assets/images/deck/image44.jpeg';
+import punakha from '../assets/images/deck/image45.jpeg';
+import gangtey from '../assets/images/deck/image46.jpeg';
+import bumthang from '../assets/images/deck/image43.jpeg';
+
+const visaDocs = [
+  'A recent digital copy of your passport, in JPEG or PNG format.',
+  'The passport must be valid for six months from your intended date of departure from Bhutan.',
+  'A recent digital passport-size photograph, not older than six months.',
+  'The photograph must have a white background and no border.',
+];
+const sdf = [
+  ['International visitors (except Indian nationals)', 'USD 100 per person per night'],
+  ['Children aged 6–11 years', 'USD 50 per night'],
+  ['Children under 6 years', 'No SDF'],
+  ['Indian nationals', 'Nu. 1,200 (or equivalent in INR) per person per night, with reduced rates for eligible children'],
+];
+const sdfUse = ['Free healthcare, education and skills training', 'Environmental conservation and forest protection', 'Preservation of Bhutan’s culture and heritage', 'Tourism infrastructure and services', 'Community and rural development projects'];
+const sdfWhy = ['Avoid mass tourism', 'Protect its pristine environment and cultural heritage', 'Maintain its carbon-negative status', 'Ensure tourism benefits local communities and future generations'];
+const places = [
+  { name: 'Paro', img: paro, text: 'The gateway to Bhutan and home to its most iconic landmark, Paro Taktsang.' },
+  { name: 'Punakha', img: punakha, text: 'The ancient capital, known for Punakha Dzong at the meeting point of the Pho Chhu and Mo Chhu rivers.' },
+  { name: 'Gangtey', img: gangtey, text: 'The hidden valley of Phobjikha, where endangered black-necked cranes arrive each winter.' },
+  { name: 'Bumthang', img: bumthang, text: 'The spiritual heartland of central Bhutan, often called the country’s “mini Switzerland”.' },
+  { name: 'Thimphu', img: thimphu, text: 'The capital, a lively mix of tradition and modernisation in western Bhutan.' },
+];
+const days = [
+  { day: 'Day 1', title: 'Arrival in Paro, drive to Thimphu', items: ['Warm welcome at Paro International Airport', 'Scenic drive to Thimphu', 'Visit Simply Bhutan and Buddha Dordenma', 'Lunch and visit to the Royal Takin Reserve', 'Tashichho Dzong (evening) and a handicraft shop', 'Dinner and overnight in Thimphu'] },
+  { day: 'Day 2', title: 'Thimphu to Punakha', items: ['Drive via Dochula Pass (3,100 m)', 'Tea break and 108 stupas', 'Punakha Dzong', 'Suspension bridge', 'Dinner and overnight in Punakha'] },
+  { day: 'Day 3', title: 'Punakha to Paro', items: ['Return to Paro district', 'National Museum', 'Rinpung Dzong', 'Local market stroll', 'Dinner and overnight in Paro'] },
+  { day: 'Day 4', title: 'Tiger’s Nest hike', items: ['Hike to Paro Taktsang Goemba', 'Lunch at Taktsang Cafeteria', 'Hot stone bath after the hike', 'Dinner and overnight in Paro'] },
+  { day: 'Day 5', title: 'Departure from Paro', items: ['Transfer to Paro International Airport', 'Farewell and departure'] },
+];
+const stays = [['Thimphu', '1 night', 'Le Méridien'], ['Punakha', '1 night', 'Pemako'], ['Paro', '2 nights', 'COMO Uma']];
+const included = ['Daily Sustainable Development Fee: USD 100 per person per night', 'Bhutan visa fee: USD 40 per person', 'Entrance and monument fees', 'All transfers and sightseeing as per the itinerary', 'English-speaking accompanying guide', 'Accommodation in the 5-star hotels listed', 'Breakfast, lunch and dinner at the hotel', 'Mineral water in the vehicle'];
+const excluded = ['Fast-track visa: USD 50 per person', 'Personal expenses (tipping, laundry, phone calls, camera or video fees)', 'Insurance of any kind and medical expenses', 'Air tickets and taxes', 'Horse riding fee for the Tiger’s Nest hike', 'Traditional hot stone bath'];
+const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], ['places', 'Key places'], ['itinerary', 'Sample itinerary']];
+---
+<PageLayout title="Information" description="Everything you need to plan a Bhutan trip: how to apply for your visa, the Sustainable Development Fee, transport, key destinations and a sample 5-day itinerary.">
+  <PageHero eyebrow="Information" title="Everything you need to know before you go." intro="Visas, fees, transport and a sample route: the practical details for visiting the last Himalayan kingdom." image={hero} alt="Dochula Pass" />
+
+  <PageSection tone="ink" id="visa" labelledby="visa-title">
+    <ul class="pg-chips pg-subnav" aria-label="On this page">
+      {nav.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}
+    </ul>
+    <div class="pg-split" style="align-items:start">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">01 · Visa</p>
+          <h2 id="visa-title" class="h3 reveal">How to apply for your Bhutan visa.</h2>
+          <p class="pg-text reveal">Tourists can apply for a visa on the Bhutan immigration portal, <a href="https://www.immi.gov.bt" rel="noopener" target="_blank" style="text-decoration:underline;text-underline-offset:4px">www.immi.gov.bt</a>, or they can ask Happy Holidays to process it for them.</p>
+        </div>
+        <h3 class="label reveal" style="opacity:.7;margin-bottom:1rem">Application documents</h3>
+        <ul class="pg-list reveal">{visaDocs.map((d) => <li>{d}</li>)}</ul>
+      </div>
+      <div>
+        <div class="pg-stats reveal" style="margin-bottom:2rem">
+          <div class="pg-stat"><b>USD 40</b><span>Visa fee, one time</span></div>
+          <div class="pg-stat"><b>5 days</b><span>Working days after submission</span></div>
+          <div class="pg-stat"><b>USD 50</b><span>Fast-track option</span></div>
+        </div>
+        <div class="ex reveal">
+          <figure><Picture src={passportBad} alt="Passport scan examples: cropped is rejected, full page accepted" widths={[360, 720]} sizes="(min-width:900px) 24vw, 45vw" formats={['webp']} loading="lazy" /><figcaption class="label">Passport scan</figcaption></figure>
+          <figure><Picture src={photoBad} alt="Photo examples: shadows are rejected, plain face-on accepted" widths={[360, 720]} sizes="(min-width:900px) 24vw, 45vw" formats={['webp']} loading="lazy" /><figcaption class="label">Photograph</figcaption></figure>
+        </div>
+        <p class="pg-note">Left is rejected, right is accepted. Happy Holidays can check your documents before submission.</p>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="plum" id="sdf" labelledby="sdf-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.8">02 · Sustainable Development Fee</p>
+      <h2 id="sdf-title" class="h3 reveal">Tourism that gives back.</h2>
+      <p class="pg-text reveal">The SDF is a daily levy charged by the Royal Government of Bhutan to international visitors. It is a key part of Bhutan’s “High Value, Low Volume” tourism policy, ensuring tourism contributes to the country’s long-term environmental, cultural and socio-economic development.</p>
+    </div>
+    <div class="pg-scroll reveal">
+      <table class="pg-table">
+        <thead><tr><th>Who</th><th>Rate</th></tr></thead>
+        <tbody>{sdf.map(([w, r]) => <tr><td>{w}</td><td>{r}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div class="pg-cols c2" style="margin-top:3.5rem">
+      <div class="reveal">
+        <h3 class="label" style="opacity:.8">What is the SDF used for?</h3>
+        <ul class="pg-list" style="margin-top:1rem">{sdfUse.map((s) => <li>{s}</li>)}</ul>
+      </div>
+      <div class="reveal" style="--d:120ms">
+        <h3 class="label" style="opacity:.8">Why does Bhutan charge it?</h3>
+        <ul class="pg-list" style="margin-top:1rem">{sdfWhy.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" id="transport" labelledby="tr-title">
+    <div class="pg-split">
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.7">03 · Transportation</p>
+        <h2 id="tr-title" class="h3 reveal">Comfortable and safe travel across the Himalayan kingdom.</h2>
+        <p class="pg-text reveal">Coaster buses for groups, H1 vans for families and SUVs for remote destinations, with drive times for the main routes.</p>
+        <div class="reveal"><ArrowLink href="/transportation">Transportation details</ArrowLink></div>
+      </div>
+      <Picture src={transportImg} alt="Our Coaster bus" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+  </PageSection>
+
+  <PageSection tone="dusty" id="places" labelledby="pl-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.75">04 · The most visited places</p>
+      <h2 id="pl-title" class="h3 reveal">Five places most travellers see.</h2>
+    </div>
+    <div class="pg-cards">
+      {places.map((p, i) => (
+        <article class="pg-card reveal" style={`--d:${(i % 3) * 90}ms`}>
+          <Picture src={p.img} alt={p.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="body"><h3>{p.name}</h3><p>{p.text}</p></div>
+        </article>
+      ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="ink" id="itinerary" labelledby="it-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">05 · Sample itinerary · 4 nights & 5 days</p>
+      <h2 id="it-title" class="h3 reveal">Explore the beauty of Bhutanese culture.</h2>
+      <p class="pg-text reveal">A classic first journey through Thimphu, Punakha and Paro, with the Tiger’s Nest hike as its highlight. Every itinerary can be reshaped to suit you.</p>
+    </div>
+    <ol class="days">
+      {days.map((d, i) => (
+        <li class="day reveal" style={`--d:${(i % 2) * 90}ms`}>
+          <p class="label dn">{d.day}</p>
+          <div>
+            <h3>{d.title}</h3>
+            <ul class="pg-list">{d.items.map((x) => <li>{x}</li>)}</ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="price reveal">
+      <p class="label" style="opacity:.75">Bhutan tour package 2026 · 5-star hotels</p>
+      <p class="amt">USD 2,810 <span>per person for four nights (full package)</span></p>
+      <p class="pg-note" style="margin-top:.5rem">For 1–10 guests travelling together on a double or twin-sharing basis. A single-room supplement applies. Ask us for the amount.</p>
+      <ul class="pg-chips" style="margin-top:1.5rem">{stays.map(([p, n, h]) => <li>{p} · {n} · {h}</li>)}</ul>
+    </div>
+
+    <div class="pg-cols c2" style="margin-top:3.5rem">
+      <div class="reveal">
+        <h3 class="label" style="opacity:.8">Included</h3>
+        <ul class="pg-list" style="margin-top:1rem">{included.map((s) => <li>{s}</li>)}</ul>
+      </div>
+      <div class="reveal" style="--d:120ms">
+        <h3 class="label" style="opacity:.8">Not included</h3>
+        <ul class="pg-list" style="margin-top:1rem">{excluded.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    </div>
+  </PageSection>
+
+  <CtaBand title="Questions? We’re a message away." cta="Contact us" href="/contact" />
+</PageLayout>
+<style>
+  .ex { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .ex figure { background: #fff; color: var(--color-ink); border-radius: var(--radius-card); padding: .75rem .75rem 1rem; display: grid; gap: .5rem; text-align: center; }
+  .ex :global(img) { width: 100%; height: auto; display: block; }
+  .days { display: grid; border-top: 1px solid rgb(244 239 230 / .3); }
+  .day { display: grid; gap: 1rem 3rem; padding-block: 2rem; border-bottom: 1px solid rgb(244 239 230 / .3); }
+  @media (min-width: 900px) { .day { grid-template-columns: 10rem 1fr; } }
+  .dn { opacity: .7; padding-top: .5rem; }
+  .day h3 { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 500; letter-spacing: -.02em; margin-bottom: 1rem; line-height: 1.1; }
+  .price { margin-top: 3.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: var(--radius-card); background: var(--color-brand); color: #fff; }
+  .amt { font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 500; letter-spacing: -.03em; line-height: 1.05; margin-top: .75rem; }
+  .amt span { display: block; font-size: 1rem; font-weight: 400; letter-spacing: 0; opacity: .85; margin-top: .5rem; }
+</style>

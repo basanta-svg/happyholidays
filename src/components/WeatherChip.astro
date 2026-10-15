@@ -1,0 +1,26 @@
+---
+import { site } from '../site.config';
+---
+<div class="chip label" data-weather data-icon="sun" data-lat={site.geo.lat} data-lon={site.geo.lon} data-city={site.city.toUpperCase()} role="status" aria-live="polite">
+  <span class="ico" aria-hidden="true">
+    <svg data-i="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="currentColor" /><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" /></svg>
+    <svg data-i="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
+    <svg data-i="partly" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="3" fill="currentColor" /><path d="M8.5 2.5v1.2M2.5 8.5h1.2M4.3 4.3l.9.9M12.7 4.3l-.9.9" /><path d="M8 20h9.5a3.5 3.5 0 0 0 .4-7 5 5 0 0 0-9.4 1A3 3 0 0 0 8 20z" fill="currentColor" fill-opacity=".25" /></svg>
+    <svg data-i="cloud" viewBox="0 0 24 24" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M7 19h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.4 3.4 0 0 0 7 19z" /></svg>
+    <svg data-i="rain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15h10.5a3.6 3.6 0 0 0 .4-7.200 5.500 5.500 0 0 0-10.500 1.200A3.100 3.100 0 0 0 7 15z" /><path d="M8 18.5l-1 2.500M12 18.5l-1 2.500M16 18.5l-1 2.500" /></svg>
+    <svg data-i="snow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15h10.5a3.6 3.6 0 0 0 .4-7.200 5.500 5.500 0 0 0-10.500 1.200A3.100 3.100 0 0 0 7 15z" /><path d="M8 19h.01M12 20.500h.01M16 19h.01" stroke-width="2.600" /></svg>
+    <svg data-i="fog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9h16M3 13h18M6 17h12" /></svg>
+    <svg data-i="storm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14h10.500a3.600 3.600 0 0 0 .4-7.200 5.500 5.500 0 0 0-10.500 1.200A3.100 3.100 0 0 0 7 14z" /><path d="M12.500 14l-2 3.500h3l-2 3.500" fill="currentColor" /></svg>
+  </span>
+  <span data-weather-text>{site.city.toUpperCase()} NOW</span>
+</div>
+<style>
+  .chip { display: inline-flex; align-items: center; gap: .6rem; padding: .6rem 1.1rem .6rem .8rem; border-radius: 9999px; background: rgb(255 255 255 / .12); backdrop-filter: blur(12px); border: 1px solid rgb(255 255 255 / .22); white-space: nowrap; font-size: 11px; }
+  .ico { position: relative; display: grid; place-items: center; width: 24px; height: 24px; color: #fff; filter: drop-shadow(0 0 6px rgb(255 255 255 / .7)); animation: glow 2.6s ease-in-out infinite; }
+  .ico svg { grid-area: 1 / 1; width: 100%; height: 100%; display: none; }
+  .chip[data-icon='sun'] [data-i='sun'], .chip[data-icon='moon'] [data-i='moon'], .chip[data-icon='partly'] [data-i='partly'],
+  .chip[data-icon='cloud'] [data-i='cloud'], .chip[data-icon='rain'] [data-i='rain'], .chip[data-icon='snow'] [data-i='snow'],
+  .chip[data-icon='fog'] [data-i='fog'], .chip[data-icon='storm'] [data-i='storm'] { display: block; }
+  @keyframes glow { 50% { filter: drop-shadow(0 0 10px rgb(255 255 255 / .95)); transform: scale(1.06); } }
+  @media (prefers-reduced-motion: reduce) { .ico { animation: none; } }
+</style>

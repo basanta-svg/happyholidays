@@ -1,0 +1,13 @@
+{
+  "order": 1,
+  "line1": "Festive",
+  "line2": "Journeys",
+  "question": "Ever seen a mask dance up close?",
+  "description": "Tshechu festivals are religious events and community gatherings in one. Join locals in colourful robes for a day of dance, blessings and celebration.",
+  "color": "#F4937A",
+  "textColor": "#1A1813",
+  "photo": "../../assets/images/bumthang-festival.jpg",
+  "photoAlt": "Festival in Bumthang",
+  "href": "/festivities",
+  "cta": "Explore festivities"
+}

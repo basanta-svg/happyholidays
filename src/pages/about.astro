@@ -1,0 +1,70 @@
+---
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../site.config';
+import hero from '../assets/images/dochula-4.jpg';
+import culture from '../assets/images/cultural.jpg';
+import welcome from '../assets/images/deck/image4.jpeg';
+---
+<PageLayout title="About us" description="Happy Holidays is a dynamic niche PR and travel agency focused on Bhutan, helping luxury travel and hotel brands convey their true essence since 2010.">
+  <PageHero eyebrow="About us" title="Happiness is a way of life here." intro="Happy Holidays is a dynamic niche PR agency focused on travel and tourism in Bhutan, helping visionary luxury travel and hotel brands convey their true essence since 2010." image={hero} alt="Dochula Pass above Thimphu" />
+
+  <PageSection tone="ink" labelledby="who-title">
+    <div class="pg-split">
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.7">Who we are</p>
+        <h2 id="who-title" class="h3 reveal">A Bhutanese team telling Bhutan’s story, and looking after the people who come to see it.</h2>
+        <p class="pg-text reveal">We work with travel and hotel brands to convey what makes the Land of the Thunder Dragon special, and we plan the journeys that bring guests there: cultural, adventure, pilgrimage and festival trips, built around lesser-known routes.</p>
+        <p class="pg-text reveal">Our guests are welcomed by local people who know the stories behind every temple, trail and village, from the first greeting at Paro airport to the farewell at departure.</p>
+      </div>
+      <Picture src={welcome} alt="A warm Bhutanese welcome" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+  </PageSection>
+
+  <PageSection tone="plum" labelledby="vm-title">
+    <h2 id="vm-title" class="label reveal" style="opacity:.8;margin-bottom:3rem">Our compass</h2>
+    <div class="pg-cols c2">
+      <div class="reveal">
+        <h3 class="h3">Vision</h3>
+        <p class="pg-text">To provide quality services that exceed the expectations of our esteemed customers.</p>
+      </div>
+      <div class="reveal" style="--d:120ms">
+        <h3 class="h3">Mission</h3>
+        <p class="pg-text">To build long-term relationships with our customers and clients and provide exceptional customer service by pursuing business through innovation and advanced technology.</p>
+      </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" labelledby="do-title">
+    <div class="pg-split rev">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">What we do</p>
+          <h2 id="do-title" class="h3 reveal">{site.servicesTitle}</h2>
+          <p class="pg-text reveal">{site.servicesText}</p>
+        </div>
+        <ul class="pg-chips reveal">
+          {site.services.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+      <Picture src={culture} alt="Bhutanese culture" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    </div>
+  </PageSection>
+
+  <PageSection tone="dusty" labelledby="why-title">
+    <h2 id="why-title" class="label reveal" style="opacity:.75;margin-bottom:3rem">{site.whyTitle}</h2>
+    <div class="pg-cols c3">
+      {site.why.map((c, i) => (
+        <div class="reveal" style={`--d:${i * 120}ms`}>
+          <h3 class="h3">{c.title}</h3>
+          <p class="pg-text">{c.text}</p>
+        </div>
+      ))}
+    </div>
+  </PageSection>
+
+  <CtaBand title="Let’s make your best trip with us." cta="Plan your trip" href="/contact" />
+</PageLayout>
