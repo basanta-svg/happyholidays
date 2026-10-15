@@ -28,12 +28,13 @@ export const site = {
   videoProvider: 'youtube' as 'youtube' | 'vimeo',
   heroQuestions: [
     'Ready to discover the land where happiness is a way of life?',
-    'What if your next journey changed how you see the world?',
-    'Temples, peaks or festivals: which Bhutan will you find?',
-    'Why follow the crowd when the lesser-known routes are calling?',
+    'Ever seen a mask dance up close at a Bhutanese festival?',
+    'Where will your next trail in the Himalayas lead?',
+    'Which hotel will you wake up in: Paro, Punakha or Bumthang?',
+    'Need help with your visa, flights and journey across Bhutan?',
   ],
   heroIntro:
-    'Adventure tours, treks, cultural and pilgrimage journeys, planned by local experts with almost two decades of experience.',
+    'Festival, cultural and adventure journeys, handpicked hotels, flights and visas, all planned end to end by our local team in Thimphu.',
   statement: {
     line1: 'Thunder',
     line2: 'Dragon',
