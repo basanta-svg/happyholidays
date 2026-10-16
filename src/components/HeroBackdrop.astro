@@ -1,12 +1,13 @@
 ---
 // One shared background (photo + looping video) that stays pinned behind the hero and the statement section.
+import { withBase } from '../lib/url';
 import { Picture } from 'astro:assets';
 import hero from '../assets/images/dochula-4.jpg';
 import { site } from '../site.config';
 ---
 <div class="backdrop" aria-hidden="true">
   <Picture src={hero} alt="" widths={[800, 1400, 2000]} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" class="bg" />
-  <video class="vid" src={site.heroVideo} muted loop autoplay playsinline preload="auto" tabindex="-1" disablepictureinpicture disableremoteplayback></video>
+  <video class="vid" src={withBase(site.heroVideo)} muted loop autoplay playsinline preload="auto" tabindex="-1" disablepictureinpicture disableremoteplayback></video>
   <div class="shade"></div>
 </div>
 <style>

@@ -1,6 +1,6 @@
 // Single place to edit copy and links.
 export const site = {
-  url: 'https://example.com',
+  url: 'https://basanta-svg.github.io/happyholidays',
   name: 'Happy Holidays',
   short: 'Happy Holidays',
   title: 'Happy Holidays | Bhutan Travel Agency',

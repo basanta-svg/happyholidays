@@ -1,6 +1,8 @@
 ---
 interface Props { href?: string; variant?: 'light' | 'dark' | 'glass'; class?: string; type?: 'button' | 'submit'; [k: string]: unknown }
-const { href, variant = 'light', class: cls = '', type = 'button', ...rest } = Astro.props;
+import { withBase } from '../lib/url';
+const { href: rawHref, variant = 'light', class: cls = '', type = 'button', ...rest } = Astro.props;
+const href = rawHref ? withBase(rawHref) : undefined;
 const Tag = href ? 'a' : 'button';
 ---
 <Tag

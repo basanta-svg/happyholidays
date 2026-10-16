@@ -1,10 +1,11 @@
 ---
+import { withBase } from '../lib/url';
 import '../styles/global.css';
 import { site } from '../site.config';
 interface Props { title?: string; description?: string }
 const { title = site.title, description = site.description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const og = new URL('/images/og.jpg', Astro.site);
+const og = new URL(withBase('/images/og.jpg'), Astro.site);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'TravelAgency',
@@ -26,7 +27,7 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
     <meta name="theme-color" content="#16150F" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import { site } from '../site.config';
 import Logo from './Logo.astro';
 const icons: Record<string, string> = {
@@ -22,7 +23,7 @@ const year = new Date().getFullYear();
     {site.footerGroups.map((g) => (
       <nav aria-label={g.title}>
         <h2 class="gt">{g.title}</h2>
-        <ul>{g.links.map((l) => <li><a class="label lk" href={l.href}>{l.label}</a></li>)}</ul>
+        <ul>{g.links.map((l) => <li><a class="label lk" href={withBase(l.href)}>{l.label}</a></li>)}</ul>
       </nav>
     ))}
     <div>

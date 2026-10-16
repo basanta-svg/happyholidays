@@ -1,23 +1,24 @@
 ---
 import { getEntry } from 'astro:content';
 import { site } from '../site.config';
+import { withBase } from '../lib/url';
 import Logo from './Logo.astro';
 import LangSwitch from './LangSwitch.astro';
 const nav = (await getEntry('nav', 'main'))!.data.items;
 ---
 <header id="site-header" class="hdr" data-solid="false">
   <div class="wrap bar">
-    <a href="/" class="brand" aria-label={`${site.name} home`}>
+    <a href={withBase('/')} class="brand" aria-label={`${site.name} home`}>
       <Logo stacked class="logo-hero" />
       <Logo class="logo-solid" />
     </a>
     <nav aria-label="Primary" class="desk">
       {nav.map((n) => n.children ? (
         <div class="dd">
-          <a href={n.href} class="label nl" aria-haspopup="true">{n.label} <svg class="dd-chev" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
-          <ul class="dd-list">{n.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
+          <a href={withBase(n.href)} class="label nl" aria-haspopup="true">{n.label} <svg class="dd-chev" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+          <ul class="dd-list">{n.children.map((c) => <li><a href={withBase(c.href)}>{c.label}</a></li>)}</ul>
         </div>
-      ) : <a href={n.href} class="label nl">{n.label}</a>)}
+      ) : <a href={withBase(n.href)} class="label nl">{n.label}</a>)}
       <LangSwitch />
     </nav>
     <button class="burger" id="menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
@@ -29,8 +30,8 @@ const nav = (await getEntry('nav', 'main'))!.data.items;
   <nav aria-label="Mobile">
     {nav.map((n) => (
       <>
-        <a href={n.href} class="mm-link">{n.label}</a>
-        {n.children?.map((c) => <a href={c.href} class="mm-sub">{c.label}</a>)}
+        <a href={withBase(n.href)} class="mm-link">{n.label}</a>
+        {n.children?.map((c) => <a href={withBase(c.href)} class="mm-sub">{c.label}</a>)}
       </>
     ))}
     <LangSwitch class="mm-cta" />

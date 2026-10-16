@@ -1,6 +1,8 @@
 ---
 interface Props { href: string; class?: string }
-const { href, class: cls = '' } = Astro.props;
+import { withBase } from '../lib/url';
+const { href: rawHref, class: cls = '' } = Astro.props;
+const href = withBase(rawHref);
 ---
 <a href={href} class:list={['arrow-link label', cls]}>
   <span class="txt"><slot /></span>
