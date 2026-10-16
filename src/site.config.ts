@@ -6,7 +6,7 @@ export const site = {
   title: 'Happy Holidays | Bhutan Travel Agency',
   tagline: "Let's make your best trip with us.",
   description:
-    'Happy Holidays is a Bhutan travel agency crafting cultural, festival and adventure journeys through the Land of the Thunder Dragon for almost two decades.',
+    'Happy Holidays is a Bhutan travel agency crafting cultural, festival and adventure journeys through the Land of the Thunder Dragon since 2010.',
   city: 'Thimphu',
   country: 'Bhutan',
   address: 'Norzin Lam, P.O. Box 552, Thimphu, Bhutan',
@@ -42,7 +42,7 @@ export const site = {
   },
   welcomeTitle: 'Welcome to Happy Holidays',
   introLine: "Let's make your best trip with us.",
-  quote: 'Almost two decades of turning visitors into friends of Bhutan.',
+  quote: 'Since 2010, turning visitors into friends of Bhutan.',
   hotelsIntro: 'Our hotel partners: handpicked stays across Bhutan, from boutique lodges to five-star resorts.',
   whyTitle: 'Why choose us',
   why: [
