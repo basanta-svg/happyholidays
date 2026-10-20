@@ -17,7 +17,7 @@ Repo: https://github.com/basanta-svg/happyholidays.git (branch `main`). The firs
 - Hero background: YouTube iframe replaced by a local `<video>` (no play icon / logo). Fades in on the `playing` event.
 - Footer background is black. "Book a trip" in the header replaced by a language dropdown (EN / Thai / Chinese) driving a hidden Google Translate widget via the `googtrans` cookie.
 - Welcome section: title on three rows ("Welcome to" / "Happy" / "Holidays"), "About us" button instead of Play film (VideoModal is now unused but kept).
-- Brand colours taken from the logo: `--color-plum` is `#0810A0` (logo blue, darkened) and `--color-sage` is `#E3B200` (logo yellow, toned down). Used by the homepage pillar panels (`content/pillars/2.json`, `3.json`) and the `plum` PageSection tone. `#280C07` is not used anywhere. Logo red is about `#CB0005`; `--color-brand` is still `#bb3308`.
+- Brand colours taken from the logo: `--color-plum` is `#186093` (main brand blue; also the background of all sections, header glass, footer, panels) and `--color-sage` is `#E3B200` (logo yellow, toned down). Used by the homepage pillar panels (`content/pillars/2.json`, `3.json`) and the `plum` PageSection tone. `#280C07` is not used anywhere. Logo red is about `#CB0005`; `--color-brand` is still `#bb3308`.
 - Homepage pillar panels now link to site pages: Festive Journeys → `/festivities`, Outdoor Activities → `/activities`, Handpicked Stays → `/hotels`. Each has `href` and `cta` fields in its JSON.
 - Thunder Dragon statement links to `/bhutan` ("Discover Bhutan"). About dropdown: About us, About Bhutan, Transportation.
 - Hero rotating questions and intro rewritten to match the site's pages (festivals, trails, hotels, visa/flights).

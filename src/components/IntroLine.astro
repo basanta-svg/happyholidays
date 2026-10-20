@@ -5,6 +5,6 @@ import { site } from '../site.config';
   <p class="h2 reveal">{site.introLine}</p>
 </section>
 <style>
-  .il { min-height: 100svh; display: grid; place-items: center; text-align: center; padding: var(--section-pad) var(--gutter); background: var(--color-ink-deep); }
+  .il { position: relative; z-index: 2; min-height: 100svh; display: grid; place-items: center; text-align: center; padding: var(--section-pad) var(--gutter); background: #186093; }
   .il p { max-width: 18ch; }
 </style>

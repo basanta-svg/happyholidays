@@ -5,9 +5,15 @@ const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document
 /* Reveal on scroll */
 const io = new IntersectionObserver(
   (es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
-  { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+  { threshold: 0, rootMargin: '0px 0px -5% 0px' },
 );
 $$('.reveal').forEach((el) => io.observe(el));
+// Fallback: anything at or above the viewport bottom (fast scroll, anchor jumps, reload mid-page) must never stay hidden
+const revealPassed = () => $$('.reveal:not(.is-in)').forEach((el) => {
+  if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-in'); io.unobserve(el); }
+});
+addEventListener('scroll', revealPassed, { passive: true });
+revealPassed();
 
 /* Header: transparent over hero, solid after */
 const header = $('#site-header');

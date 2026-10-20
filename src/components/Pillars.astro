@@ -27,7 +27,7 @@ const last = pillars[pillars.length - 1].data;
   ))}
 </div>
 <style>
-  .pillars { transition: background-color .9s var(--ease); }
+  .pillars { position: relative; z-index: 2; transition: background-color .9s var(--ease); }
   .pillars :global(.panel) { transition: color .9s var(--ease); }
   .panel { min-height: 100svh; display: flex; align-items: center; padding-block: var(--section-pad); }
   .grid { display: grid; gap: 3rem; align-items: center; }

@@ -8,7 +8,7 @@
   --color-muted: #8a8473;
   --color-coral: #f4937a;
   --color-sage: #e3b200;
-  --color-plum: #0810a0;
+  --color-plum: #186093;
   --color-dusty: #a0b1bf;
   --color-brand: #bb3308;
   --font-sans: 'Archivo', system-ui, sans-serif;
@@ -29,7 +29,7 @@
 
 html { scroll-behavior: smooth; }
 body {
-  background: var(--color-ink-deep);
+  background: #186093;
   color: var(--color-paper);
   font-family: var(--font-sans);
   font-size: 18px;

@@ -13,7 +13,7 @@ const items = (await getCollection('hotels')).sort((a, b) => a.data.order - b.da
   <Marquee items={items} label="Hotel partners" />
 </section>
 <style>
-  .sp { background: var(--color-ink-deep); padding-block: var(--section-pad); min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 4rem; }
+  .sp { background: #186093; padding-block: var(--section-pad); min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 4rem; }
   .head { display: grid; gap: 1.5rem; justify-items: start; }
   .head :global(.h3) { max-width: 28ch; }
 </style>
