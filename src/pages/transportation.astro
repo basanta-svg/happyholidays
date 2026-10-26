@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
@@ -7,6 +7,7 @@ import CtaBand from '../components/CtaBand.astro';
 import hero from '../assets/images/dochula-6.jpg';
 import coasterSide from '../assets/images/transport/coaster-side.jpeg';
 import coasterFront from '../assets/images/transport/coaster-front.jpeg';
+import coasterFront2 from '../assets/images/transport/coaster-front2.jpeg';
 import coasterSide2 from '../assets/images/transport/coaster-side2.jpeg';
 import coasterIn from '../assets/images/transport/coaster-interior.jpeg';
 import coasterIn2 from '../assets/images/transport/coaster-interior2.jpeg';
@@ -19,9 +20,9 @@ import h1In2 from '../assets/images/transport/h1-interior2.jpeg';
 import suv from '../assets/images/deck/image40.jpeg';
 
 const vehicles = [
-  { name: 'Coaster bus', who: 'Groups of 15–20+ guests', img: coasterSide, text: 'Our largest vehicle: comfortable seating, curtained windows and room for luggage, well suited to group tours and festival trips.' },
-  { name: 'H1', who: 'Small groups and families', img: h1Front, text: 'A roomy van with leather seats, ideal for families and small groups who want comfort on long mountain drives.' },
-  { name: 'SUV', who: 'Luxury travellers and remote destinations', img: suv, text: 'Recommended for luxury travellers and for reaching remote destinations where roads are narrower and rougher.' },
+  { name: 'Coaster bus', who: 'Groups of 15–20+ guests', imgs: [coasterSide, coasterFront, coasterFront2, coasterSide2, coasterIn, coasterIn2, coasterIn3], text: 'Our largest vehicle: comfortable seating, curtained windows and room for luggage, well suited to group tours and festival trips.' },
+  { name: 'H1', who: 'Small groups and families', imgs: [h1Front, h1Side, h1Rear, h1In, h1In2], text: 'A roomy van with leather seats, ideal for families and small groups who want comfort on long mountain drives.' },
+  { name: 'SUV', who: 'Luxury travellers and remote destinations', imgs: [suv], text: 'Recommended for luxury travellers and for reaching remote destinations where roads are narrower and rougher.' },
 ];
 const gallery = [
   { img: coasterFront, alt: 'Coaster bus, front' },
@@ -34,6 +35,13 @@ const gallery = [
   { img: h1In2, alt: 'H1 van, second-row seats' },
   { img: coasterIn3, alt: 'Coaster bus interior, aisle' },
 ];
+// Large version shown in the lightbox when a photo is clicked.
+const full = async (src: ImageMetadata) => (await getImage({ src, width: 1800, format: 'webp' })).src;
+const cards = await Promise.all(vehicles.map(async (v) => ({
+  ...v,
+  slides: await Promise.all(v.imgs.map(async (img, i) => ({ img, alt: `${v.name}, photo ${i + 1} of ${v.imgs.length}`, full: await full(img) }))),
+})));
+const galleryFull = await Promise.all(gallery.map(async (g) => ({ ...g, full: await full(g.img) })));
 const drives = [
   { route: 'Paro → Thimphu', time: '1 hr' },
   { route: 'Thimphu → Punakha', time: '2.5 hrs' },
@@ -51,9 +59,26 @@ const drives = [
       <p class="pg-text reveal">We match the vehicle to your group size, itinerary and comfort preferences, and every transfer and sightseeing drive is included in your programme.</p>
     </div>
     <div class="pg-cards">
-      {vehicles.map((v, i) => (
+      {cards.map((v, i) => (
         <article class="pg-card reveal" style={`--d:${i * 90}ms`}>
-          <Picture src={v.img} alt={v.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="slider" data-slider aria-roledescription="carousel" aria-label={`${v.name} photos`}>
+            <ul class="track" tabindex="0">
+              {v.slides.map((sl) => (
+                <li>
+                  <button type="button" class="zoom" data-full={sl.full} data-alt={sl.alt} aria-label={`View larger: ${sl.alt}`}>
+                    <Picture src={sl.img} alt={sl.alt} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {v.slides.length > 1 && (
+              <>
+                <button type="button" class="nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+                <button type="button" class="nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+                <span class="count label" aria-live="polite"><span data-cur>1</span> / {v.slides.length}</span>
+              </>
+            )}
+          </div>
           <div class="body">
             <p class="pg-tag">{v.who}</p>
             <h3>{v.name}</h3>
@@ -87,17 +112,103 @@ const drives = [
       <h2 id="fleet-title" class="h3 reveal">Take a look inside.</h2>
     </div>
     <ul class="gal">
-      {gallery.map((g, i) => (
+      {galleryFull.map((g, i) => (
         <li class="reveal" style={`--d:${(i % 3) * 80}ms`}>
-          <Picture src={g.img} alt={g.alt} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <button type="button" class="zoom" data-full={g.full} data-alt={g.alt} aria-label={`View larger: ${g.alt}`}>
+            <Picture src={g.img} alt={g.alt} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          </button>
         </li>
       ))}
     </ul>
   </PageSection>
 
+  <dialog id="lightbox" class="lb" aria-label="Photo viewer">
+    <button type="button" class="lb-close" data-close aria-label="Close">×</button>
+    <button type="button" class="lb-nav lb-prev" data-lb="-1" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+    <img alt="" />
+    <button type="button" class="lb-nav lb-next" data-lb="1" aria-label="Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+  </dialog>
+
   <CtaBand title="Tell us your group size. We’ll arrange the ride." cta="Plan your trip" href="/contact" />
 </PageLayout>
 <style>
   .gal { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+  .gal { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
   .gal :global(img) { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-card); display: block; }
+  .zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; color: inherit; }
+  .slider { position: relative; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+  .slider :global(img) { -webkit-user-drag: none; }
+  .slider .zoom:focus-visible, .slider .track:focus-visible { outline: none; }
+  .track { display: flex; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
+  .track::-webkit-scrollbar { display: none; }
+  .track li { flex: 0 0 100%; scroll-snap-align: start; }
+  .track :global(img) { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgb(255 255 255 / .35); background: rgb(0 0 0 / .45); color: #fff; backdrop-filter: blur(6px); cursor: pointer; transition: background .25s; }
+  .prev { left: .6rem; }
+  .next { right: .6rem; }
+  .nav:hover { background: rgb(0 0 0 / .7); }
+  .count { position: absolute; right: .6rem; bottom: .6rem; padding: .3rem .6rem; border-radius: 9999px; background: rgb(0 0 0 / .55); color: #fff; font-size: 11px; pointer-events: none; }
+  .lb { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; border: 0; padding: 1.5rem; background: rgb(0 0 0 / .92); display: none; place-items: center; }
+  .lb[open] { display: grid; }
+  .lb, .lb * { user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+  .lb img { -webkit-user-drag: none; }
+  .lb :focus, .lb :focus-visible { outline: none; }
+  .lb ::selection, .lb::selection { background: transparent; }
+  .lb-nav:focus-visible, .lb-close:focus-visible { outline: 2px solid rgb(255 255 255 / .8); outline-offset: 2px; }
+  .lb::backdrop { background: rgb(0 0 0 / .92); }
+  .lb img { max-width: min(100%, 1400px); max-height: 100%; object-fit: contain; border-radius: 8px; }
+  .lb-close { position: absolute; top: 1rem; right: 1.25rem; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgb(255 255 255 / .4); background: transparent; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgb(255 255 255 / .4); background: rgb(0 0 0 / .5); color: #fff; cursor: pointer; }
+  .lb-nav:hover { background: rgb(255 255 255 / .2); }
+  .lb-prev { left: 1.25rem; }
+  .lb-next { right: 1.25rem; }
+  .lb[data-single] .lb-nav { display: none; }
+  .lb-close:hover { background: rgb(255 255 255 / .15); }
 </style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-slider]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.track')!;
+    const cur = root.querySelector<HTMLElement>('[data-cur]');
+    const slides = track.children.length;
+    const go = (d: number) => {
+      const i = Math.round(track.scrollLeft / track.clientWidth) + d;
+      track.scrollTo({ left: ((i + slides) % slides) * track.clientWidth });
+    };
+    root.querySelector('.prev')?.addEventListener('click', () => go(-1));
+    root.querySelector('.next')?.addEventListener('click', () => go(1));
+    track.addEventListener('scroll', () => { if (cur) cur.textContent = String(Math.round(track.scrollLeft / track.clientWidth) + 1); }, { passive: true });
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    });
+  });
+
+  const lb = document.querySelector<HTMLDialogElement>('#lightbox')!;
+  const lbImg = lb.querySelector('img')!;
+  let group: HTMLElement[] = [];
+  let idx = 0;
+  const show = (i: number) => {
+    idx = (i + group.length) % group.length;
+    lbImg.src = group[idx].dataset.full!;
+    lbImg.alt = group[idx].dataset.alt ?? '';
+  };
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const z = t.closest<HTMLElement>('.zoom');
+    if (z) {
+      group = [...(z.closest('.track, .gal') ?? z.parentElement!).querySelectorAll<HTMLElement>('.zoom')];
+      lb.toggleAttribute('data-single', group.length < 2);
+      show(group.indexOf(z));
+      lb.showModal(); document.body.style.overflow = 'hidden'; return;
+    }
+    const n = t.closest<HTMLElement>('[data-lb]');
+    if (n) { show(idx + Number(n.dataset.lb)); return; }
+    if (t === lb || t === lbImg || t.closest('[data-close]')) lb.close();
+  });
+  lb.addEventListener('keydown', (e) => {
+    if (group.length < 2) return;
+    if (e.key === 'ArrowLeft') show(idx - 1);
+    if (e.key === 'ArrowRight') show(idx + 1);
+  });
+  lb.addEventListener('close', () => { document.body.style.overflow = ''; lbImg.removeAttribute('src'); });
+</script>
