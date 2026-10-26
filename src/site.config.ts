@@ -14,6 +14,7 @@ export const site = {
   email: 'happyholidaysed@gmail.com',
   emailOps: 'happyholidaysops@gmail.com',
   phone2: '+975 17421447',
+  lineUrl: 'https://line.me/ti/p/I-wrdfuOBN',
   websites: ['www.bhutanhappy.com', 'www.zenbhutan.com'],
   geo: { lat: 27.4728, lon: 89.639 },
   bookUrl: '/contact',
@@ -63,10 +64,8 @@ export const site = {
     { title: 'Plan your trip', links: [{ label: 'Hotels', href: '/hotels' }, { label: 'Visa & information', href: '/information' }, { label: 'Contact us', href: '/contact' }, { label: 'Tour packages', href: '/#pillars' }] },
   ],
   socials: [
-    { label: 'Facebook', href: '#', icon: 'facebook' },
-    { label: 'Instagram', href: '#', icon: 'instagram' },
-    { label: 'YouTube', href: '#', icon: 'youtube' },
-    { label: 'WhatsApp', href: 'https://wa.me/97517129889', icon: 'whatsapp' },
+    { label: 'WhatsApp', href: 'https://api.whatsapp.com/send/?phone=97517129889&text&type=phone_number&app_absent=0', icon: 'whatsapp' },
+    { label: 'LINE', href: 'https://line.me/ti/p/I-wrdfuOBN', icon: 'line' },
   ],
   askFaq: [
     { q: 'When is the best time to visit?', a: 'Spring (March–May) and autumn (September–November) offer the clearest skies and the best festivals.' },

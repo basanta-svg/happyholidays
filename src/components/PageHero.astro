@@ -20,7 +20,8 @@ const { eyebrow, title, intro, image, alt = '' } = Astro.props;
   .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 9 6 / .6) 0%, rgb(10 9 6 / .3) 45%, rgb(10 9 6 / .78) 100%); }
   .copy { position: relative; padding-top: 9rem; padding-bottom: clamp(3rem, 6vw, 5.5rem); }
   .eyebrow { opacity: .85; margin-bottom: 1.25rem; }
-  .copy :global(.h2) { max-width: 16ch; }
+  .copy :global(.h2) { max-width: 20ch; }
+  h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
   .intro { margin-top: 1.5rem; max-width: 52ch; font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.55; opacity: .92; }
   #hero-sentinel { position: absolute; top: 60svh; height: 1px; width: 1px; }
 </style>

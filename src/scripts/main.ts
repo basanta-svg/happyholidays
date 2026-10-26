@@ -31,7 +31,7 @@ const setMenu = (open: boolean) => {
   mbtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   menu.hidden = !open;
   document.body.style.overflow = open ? 'hidden' : '';
-  if (open) $<HTMLElement>('a', menu)?.focus();
+  if (open) $<HTMLElement>('summary, a', menu)?.focus();
 };
 mbtn?.addEventListener('click', () => setMenu(mbtn.getAttribute('aria-expanded') !== 'true'));
 menu?.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) setMenu(false); });

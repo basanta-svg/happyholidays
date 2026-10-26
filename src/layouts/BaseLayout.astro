@@ -35,7 +35,11 @@ const jsonLd = {
     <meta property="og:image" content={og} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M3 33 15 14l7 11 4-5 11 13z' fill='%23BB3308'/></svg>" />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
+    <link rel="icon" type="image/png" sizes="16x16" href={withBase('/favicon-16.png')} />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="manifest" href={withBase('/site.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.open-meteo.com" />

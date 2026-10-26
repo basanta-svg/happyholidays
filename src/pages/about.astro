@@ -7,6 +7,7 @@ import CtaBand from '../components/CtaBand.astro';
 import { site } from '../site.config';
 import hero from '../assets/images/dochula-4.jpg';
 import culture from '../assets/images/cultural.jpg';
+import guide from '../assets/images/team/chinese guide.jpeg';
 import welcome from '../assets/images/deck/image4.jpeg';
 ---
 <PageLayout title="About us" description="Happy Holidays is a dynamic niche PR and travel agency focused on Bhutan, helping luxury travel and hotel brands convey their true essence since 2010.">
@@ -63,6 +64,23 @@ import welcome from '../assets/images/deck/image4.jpeg';
           <p class="pg-text">{c.text}</p>
         </div>
       ))}
+    </div>
+  </PageSection>
+
+  <PageSection tone="sand" labelledby="team-title">
+    <div class="pg-split">
+      <Picture src={guide} alt="Mr. Sonam Tobgay, Chinese tour guide, in a traditional gho" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" style="aspect-ratio:4/5;object-position:50% 30%;max-width:30rem" />
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.7">Our team</p>
+        <h2 id="team-title" class="h3 reveal">Mr. Sonam Tobgay</h2>
+        <p class="label reveal" style="opacity:.7;margin-top:.5rem">Chinese tour guide</p>
+        <p class="pg-text reveal" style="margin-top:1.5rem">Guiding visitors across Bhutan since 2013, Sonam brings 13 years of experience to every journey. He has handled large groups of Chinese guests, keeping each trip relaxed, well organised and full of the stories behind the places you visit.</p>
+        <ul class="pg-chips reveal" style="margin-top:1.5rem">
+          <li>Since 2013</li>
+          <li>13 years’ experience</li>
+          <li>Large Chinese groups</li>
+        </ul>
+      </div>
     </div>
   </PageSection>
 

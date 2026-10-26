@@ -5,6 +5,9 @@ import { withBase } from '../lib/url';
 import Logo from './Logo.astro';
 import LangSwitch from './LangSwitch.astro';
 const nav = (await getEntry('nav', 'main'))!.data.items;
+const clean = (p: string) => p.replace(/\/+$/, '') || '/';
+const here = clean(Astro.url.pathname);
+const isActive = (href: string) => here === clean(withBase(href));
 ---
 <header id="site-header" class="hdr" data-solid="false">
   <div class="wrap bar">
@@ -21,10 +24,19 @@ const nav = (await getEntry('nav', 'main'))!.data.items;
 <div id="mobile-menu" class="mm" hidden role="dialog" aria-modal="true" aria-label="Menu">
   <nav aria-label="Mobile">
     {nav.map((n) => (
-      <>
-        <a href={withBase(n.href)} class="mm-link">{n.label}</a>
-        {n.children?.map((c) => <a href={withBase(c.href)} class="mm-sub">{c.label}</a>)}
-      </>
+      n.children?.length ? (
+        <details class="mm-group" open={n.children.some((c) => isActive(c.href))}>
+          <summary class="mm-link mm-sum">
+            <span>{n.label}</span>
+            <svg class="mm-chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="mm-subs">
+            {n.children.map((c) => <a href={withBase(c.href)} class="mm-sub" aria-current={isActive(c.href) ? 'page' : undefined}>{c.label}</a>)}
+          </div>
+        </details>
+      ) : (
+        <a href={withBase(n.href)} class="mm-link" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>
+      )
     ))}
   </nav>
 </div>
@@ -52,9 +64,20 @@ const nav = (await getEntry('nav', 'main'))!.data.items;
   .hdr:has(.burger[aria-expanded='true']) { background: transparent !important; backdrop-filter: none; color: var(--color-paper) !important; box-shadow: none; border-color: transparent; }
   .mm { position: fixed; inset: 0; overflow-y: auto; z-index: 40; background: #186093; display: flex; align-items: center; padding: 6rem var(--gutter) 3rem; }
   .mm[hidden] { display: none; }
-  .mm nav { display: flex; flex-direction: column; gap: .6rem; align-items: flex-start; }
-  .mm-link { font-size: clamp(2rem, 9vw, 3.25rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
-  .mm-sub { font-size: clamp(1.25rem, 5vw, 1.6rem); opacity: .7; padding-left: 1.25rem; margin-top: -.2rem; }
+  .mm nav { display: flex; flex-direction: column; gap: .25rem; align-items: stretch; width: min(100%, 28rem); }
+  .mm-link { position: relative; display: block; width: 100%; font-family: var(--font-sans); font-size: clamp(1.75rem, 7vw, 2.5rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; padding: .55rem 0 .55rem 1rem; opacity: .8; border-left: 3px solid transparent; transition: opacity .25s, border-color .25s, color .25s; }
+  .mm-group { width: 100%; }
+  .mm-sum { display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; list-style: none; padding-right: .25rem; }
+  .mm-sum::-webkit-details-marker { display: none; }
+  .mm-chev { flex: none; transition: transform .3s var(--ease); }
+  .mm-group[open] > .mm-sum .mm-chev { transform: rotate(180deg); }
+  .mm-group[open] > .mm-sum { opacity: 1; }
+  .mm-subs { display: flex; flex-direction: column; margin: .1rem 0 .5rem 1.5px; padding-left: 1.5rem; border-left: 1px solid rgb(255 255 255 / .3); }
+  .mm-sub { display: block; font-family: var(--font-label); font-size: 13px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; line-height: 1.2; opacity: .7; padding: .8rem 0; border-left: 0; transition: opacity .25s, color .25s, transform .25s; }
+  .mm-link:hover, .mm-link:focus-visible, .mm-sub:hover, .mm-sub:focus-visible { opacity: 1; }
+  .mm-sub:hover { transform: translateX(4px); }
+  .mm-link[aria-current='page'], .mm-sub[aria-current='page'] { opacity: 1; color: var(--color-sage, #E3B200); }
+  .mm-link[aria-current='page'] { border-left-color: var(--color-sage, #E3B200); }
   .dd { position: relative; }
   .dd-chev { display: inline-block; margin-left: .25rem; transition: transform .25s; }
   .dd:hover .dd-chev, .dd:focus-within .dd-chev { transform: rotate(180deg); }
