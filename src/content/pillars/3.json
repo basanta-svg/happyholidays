@@ -4,10 +4,10 @@
   "line2": "Stays",
   "question": "Where will you wake up?",
   "description": "From Aman and Six Senses to boutique lodges, our partner hotels are chosen for their setting, service and sense of place.",
-  "color": "#186093",
-  "textColor": "#F4EFE6",
-  "photo": "../../assets/images/deck/image24.jpeg",
+  "color": "#132155",
+  "textColor": "#FFFFFF",
+  "photo": "../../assets/images/deck/image24.webp",
   "photoAlt": "A Bhutan hotel overlooking terraced valleys",
-  "href": "/hotels",
+  "href": "/stay",
   "cta": "View hotels"
 }

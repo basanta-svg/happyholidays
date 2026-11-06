@@ -6,6 +6,7 @@ export default defineConfig({
   site: 'https://basanta-svg.github.io',
   base: '/happyholidays',
   output: 'static',
+  redirects: { '/hotels': '/stay' },
   integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] },
 });

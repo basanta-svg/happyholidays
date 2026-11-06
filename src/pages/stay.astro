@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageSection from '../components/PageSection.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { accent } from '../lib/accent';
+import hero from '../assets/images/hotels/aman-gangtey.webp';
+import hsStay from '../assets/images/deck/image52.webp';
+import hsHeritage from '../assets/images/deck/image50.webp';
+import hsFarm from '../assets/images/deck/image51.webp';
+import hsInterior from '../assets/images/deck/image47.webp';
+import hsRoom from '../assets/images/deck/image48.webp';
+import hsFood from '../assets/images/deck/image49.webp';
+import hsVillage from '../assets/images/deck/image53.webp';
+const houses = [
+  { tag: 'Homestay', img: hsStay, alt: 'A guest and her host family sharing a moment in a Bhutanese home', text: 'Traditional Bhutanese homes where guests stay with local families.', lead: 'Visitors experience', points: ['Bhutanese lifestyle', 'Local food', 'Traditional customs', 'Gardening activities'] },
+  { tag: 'Heritage', img: hsHeritage, alt: 'An old traditional Bhutanese house among trees', text: 'Old traditional Bhutanese buildings preserved for cultural experiences.', lead: 'They showcase', points: ['Bhutanese architecture', 'Traditional interiors', 'History and heritage'] },
+  { tag: 'Farm', img: hsFarm, alt: 'A farmhouse above terraced fields in a Bhutanese valley', text: 'Rural homes located in villages or farming areas.', lead: 'Guests can enjoy', points: ['Farm-to-table meals', 'Nature walks', 'Village experience'] },
+];
+const glimpses = [
+  { img: hsInterior, alt: 'A traditional living room with carpets and carved woodwork' },
+  { img: hsRoom, alt: 'A simple guest room with wooden floors and painted windows' },
+  { img: hsFood, alt: 'A farmhouse meal of local dishes laid out on a table' },
+  { img: hsVillage, alt: 'A village courtyard gathering outside a traditional house' },
+];
+
+const hotels = (await getCollection('hotels')).sort((a, b) => a.data.order - b.data.order).map((h) => h.data);
+const places = ['Thimphu', 'Paro', 'Punakha', 'Gangtey', 'Bumthang'];
+const groups = [
+  { id: 'high-end', title: '*High*-end', blurb: 'Bhutan’s signature luxury lodges and resorts.' },
+  { id: 'five-four', title: '~5 & 4~ star', blurb: 'Comfortable, well-located hotels and boutique resorts.' },
+];
+const byGroup = (g: string) => hotels.filter((h) => (g === 'high-end' ? h.category === 'High-end' : h.category !== 'High-end'));
+---
+<PageLayout bodyClass="ap" title="Stay" description="Our hotel partners across Bhutan: Aman, COMO Uma, Six Senses, Le Méridien, Pemako and boutique stays in Thimphu, Paro, Punakha, Gangtey and Bumthang.">
+  <PageHero eyebrow="Hotel partners" title="Handpicked stays across Bhutan." intro="From boutique lodges to five-star resorts, every hotel we work with is chosen for its setting, service and sense of place." image={hero} alt="Aman Gangtey overlooking the Phobjikha Valley" />
+
+  <PageSection tone="ink" labelledby="ht-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Where would you like to stay?</p>
+      <h2 id="ht-title" class="h3 reveal" set:html={accent('Twenty ~hotels~ in five *valleys*.')}></h2>
+    </div>
+    <div class="pg-chips" role="group" aria-label="Filter hotels by location" data-filter style="margin-bottom:3rem">
+      <button type="button" aria-pressed="true" data-place="all">All</button>
+      {places.map((p) => <button type="button" aria-pressed="false" data-place={p}>{p}</button>)}
+    </div>
+
+    {groups.map((g) => (
+      <div class="grp" data-group>
+        <div class="gh">
+          <h3 class="h3" set:html={accent(g.title)}></h3>
+          <p class="label" style="opacity:.7">{g.blurb}</p>
+        </div>
+        <div class="pg-cards">
+          {byGroup(g.id).map((h) => (
+            <article class="pg-card" data-place={h.dzongkhag}>
+              <Picture fallbackFormat="webp" src={h.photo} alt={h.name} widths={[400, 800]} sizes="(min-width:900px) 24vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+              <div class="body">
+                <p class="pg-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>{h.dzongkhag}</p>
+                <h3>{h.name}</h3>
+                <p>{h.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
+    <p class="pg-note">Availability and rates vary by season. We confirm your hotels as part of your itinerary.</p>
+  </PageSection>
+
+  <PageSection tone="plum" id="houses" labelledby="houses-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.75">Houses</p>
+      <h2 id="houses-title" class="h3 reveal" set:html={accent('Homestay, *Heritage* & ~Farm~ houses.')}></h2>
+      <p class="pg-text reveal">Beyond the hotels, you can stay in a traditional home, share meals with a local family and see Bhutan the way people live it every day.</p>
+    </div>
+    <div class="pg-cards">
+      {houses.map((h, i) => (
+        <article class="pg-card reveal" style={`--d:${i * 90}ms`}>
+          <Picture fallbackFormat="webp" src={h.img} alt={h.alt} widths={[400, 700]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <div class="body">
+            <p class="pg-tag">{h.tag}</p>
+            <h3>{h.tag}</h3>
+            <p>{h.text}</p>
+            <p class="label hs-lead">{h.lead}</p>
+            <ul class="pg-list">{h.points.map((pt) => <li>{pt}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="hs-strip">
+      {glimpses.map((g, i) => (
+        <figure class="reveal" style={`--d:${i * 80}ms`}>
+          <Picture fallbackFormat="webp" src={g.img} alt={g.alt} widths={[300, 600]} sizes="(min-width:900px) 24vw, 46vw" formats={['avif', 'webp']} loading="lazy" />
+        </figure>
+      ))}
+    </div>
+    <blockquote class="hs-quote reveal">Experience the warmth of Bhutanese hospitality by staying in traditional homes, interacting with local families, and discovering the authentic culture and lifestyle of Bhutan.</blockquote>
+  </PageSection>
+
+  <CtaBanner title="Tell us where you’d like to *wake up*. We’ll find the ~perfect stay~." cta="Plan your stay" href="/contact" />
+</PageLayout>
+<style>
+  .grp + .grp { margin-top: clamp(3rem, 6vw, 5rem); }
+  .gh { display: grid; gap: .6rem; margin-bottom: 1.75rem; }
+  .grp[hidden] { display: none; }
+  :global(.pg-card[hidden]) { display: none; }
+  .hs-lead { margin-top: .5rem; opacity: .75; }
+  .hs-strip { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
+  .hs-strip figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; }
+  .hs-strip :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+  .hs-quote { margin: 2.5rem 0 0; max-width: 56rem; padding-left: 1.25rem; border-left: 4px solid #E01B24; font-size: clamp(1.15rem, 2vw, 1.6rem); line-height: 1.5; color: #fff; }
+  @media (max-width: 640px) { .hs-quote { font-size: 1.05rem; } }
+  @media (min-width: 800px) { .hs-strip { grid-template-columns: repeat(4, 1fr); } }
+</style>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-filter]');
+  if (root) {
+    const btns = [...root.querySelectorAll<HTMLButtonElement>('button')];
+    const cards = [...document.querySelectorAll<HTMLElement>('.pg-card[data-place]')];
+    const groups = [...document.querySelectorAll<HTMLElement>('[data-group]')];
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const p = b.dataset.place!;
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      cards.forEach((c) => (c.hidden = p !== 'all' && c.dataset.place !== p));
+      groups.forEach((g) => (g.hidden = !g.querySelector('.pg-card:not([hidden])')));
+    }));
+  }
+</script>

@@ -21,7 +21,7 @@ export const site = {
   toursUrl: '#pillars',
   aboutUrl: '/about',
   bhutanUrl: '/bhutan',
-  hotelsUrl: '/hotels',
+  hotelsUrl: '/stay',
   whyBhutanUrl: '#why-bhutan',
   contactUrl: '/contact',
   heroVideo: '/video/hero.mp4', // looping mp4 playing behind the hero (public/video/hero.mp4)
@@ -61,7 +61,7 @@ export const site = {
   },
   footerGroups: [
     { title: 'Explore', links: [{ label: 'About us', href: '/about' }, { label: 'About Bhutan', href: '/bhutan' }, { label: 'Festivities', href: '/festivities' }, { label: 'Activities', href: '/activities' }, { label: 'Flights', href: '/flights' }] },
-    { title: 'Plan your trip', links: [{ label: 'Hotels', href: '/hotels' }, { label: 'Visa & information', href: '/information' }, { label: 'Contact us', href: '/contact' }, { label: 'Tour packages', href: '/#pillars' }] },
+    { title: 'Plan your trip', links: [{ label: 'Hotels', href: '/stay' }, { label: 'Visa & information', href: '/information' }, { label: 'Contact us', href: '/contact' }, { label: 'Tour packages', href: '/#pillars' }] },
   ],
   socials: [
     { label: 'WhatsApp', href: 'https://api.whatsapp.com/send/?phone=97517129889&text&type=phone_number&app_absent=0', icon: 'whatsapp' },

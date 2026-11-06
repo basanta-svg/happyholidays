@@ -1,6 +1,10 @@
 {
   "items": [
     {
+      "label": "Home",
+      "href": "/"
+    },
+    {
       "label": "About",
       "href": "/about",
       "children": [
@@ -28,15 +32,32 @@
     },
     {
       "label": "Flights",
-      "href": "/flights"
+      "href": "/flights",
+      "children": [
+        {
+          "label": "International",
+          "href": "/flights#international"
+        },
+        {
+          "label": "Domestic",
+          "href": "/flights#domestic"
+        }
+      ]
     },
     {
-      "label": "Hotels",
-      "href": "/hotels"
+      "label": "Stay",
+      "href": "/stay"
     },
     {
       "label": "Information",
-      "href": "/information"
+      "href": "/information",
+      "children": [
+        { "label": "Visa", "href": "/information#visa" },
+        { "label": "Sustainable Development Fee", "href": "/information#sdf" },
+        { "label": "Transportation", "href": "/information#transport" },
+        { "label": "Key places", "href": "/information#places" },
+        { "label": "Sample itinerary", "href": "/information#itinerary" }
+      ]
     },
     {
       "label": "Contact",

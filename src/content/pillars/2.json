@@ -4,9 +4,9 @@
   "line2": "Activities",
   "question": "Where will your next trail lead?",
   "description": "Hike, cycle, bird watch and paint your way through forests, mountains and villages with guides who know every path.",
-  "color": "#186093",
-  "textColor": "#F4EFE6",
-  "photo": "../../assets/images/bumthang-trek.jpg",
+  "color": "#132155",
+  "textColor": "#FFFFFF",
+  "photo": "../../assets/images/bumthang-trek.webp",
   "photoAlt": "Trekkers on a mountain path",
   "href": "/activities",
   "cta": "See activities"

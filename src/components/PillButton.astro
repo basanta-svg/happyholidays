@@ -15,11 +15,12 @@ const Tag = href ? 'a' : 'button';
   <span aria-hidden="true" class="pill-arrow">→</span>
 </Tag>
 <style>
-  .pill { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.95rem 1.6rem; border-radius: 9999px; font-weight: 500; transition: transform .35s var(--ease), background .3s, color .3s; cursor: pointer; white-space: nowrap; }
+  .pill { display: inline-flex; align-items: center; gap: 0.6rem; padding: .45rem .85rem; border-radius: 0; font-size: .72rem; line-height: 24px; letter-spacing: .12em; transition: transform .35s var(--ease), background .3s, color .3s; cursor: pointer; white-space: nowrap; }
   .pill:hover { transform: translateY(-2px); }
   .pill:hover .pill-arrow { transform: translateX(4px); }
   .pill-arrow { transition: transform .3s var(--ease); }
-  .light { background: #fff; color: var(--color-ink); }
-  .dark { background: #000; color: #fff; }
+  .light { background: var(--color-sage); color: var(--color-ink); }
+  .light:hover { background: #ffd92e; }
+  .dark { background: var(--color-ink-deep); color: #fff; }
   .glass { background: rgb(255 255 255 / .14); color: #fff; backdrop-filter: blur(14px); border: 1px solid rgb(255 255 255 / .25); }
 </style>

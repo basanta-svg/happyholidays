@@ -1,31 +1,35 @@
 ---
 import { Picture } from 'astro:assets';
-import bg from '../assets/images/dochula-2.jpg';
-import illo from '../assets/images/bumthang-jakardzong.jpg';
+import illo from '../assets/images/bumthang-jakardzong.webp';
 import { site } from '../site.config';
 import PillButton from './PillButton.astro';
 ---
 <section id="services" class="vn" aria-labelledby="vn-title">
-  <Picture src={bg} alt="" widths={[800, 1400, 2000]} sizes="100vw" formats={['avif', 'webp']} loading="lazy" class="bg" />
-  <div class="shade" aria-hidden="true"></div>
   <div class="wrap in">
-    <p class="intro reveal">{site.servicesText}</p>
-    <Picture src={illo} alt="Jakar Dzong in Bumthang" widths={[480, 900]} sizes="(min-width:900px) 420px, 80vw" formats={['avif', 'webp']} loading="lazy" class="illo reveal" />
-    <h2 id="vn-title" class="h2 reveal">{site.servicesTitle}</h2>
-    <ul class="chips reveal">
-      {site.services.map((s) => <li class="label">{s}</li>)}
-    </ul>
-    <PillButton href={site.bookUrl} variant="light">Book a trip</PillButton>
+    <div class="pic reveal">
+      <Picture fallbackFormat="webp" src={illo} alt="Jakar Dzong in Bumthang" widths={[600, 1000, 1400]} sizes="(min-width:900px) 45vw, 92vw" formats={['avif', 'webp']} loading="lazy" class="img" />
+    </div>
+    <div class="copy">
+      <p class="label eyebrow reveal">Tailor-made</p>
+      <h2 id="vn-title" class="h3 reveal" style="--d:80ms">{site.servicesTitle}</h2>
+      <p class="intro reveal" style="--d:140ms">{site.servicesText}</p>
+      <ul class="list reveal" style="--d:200ms">
+        {site.services.map((s) => <li><span aria-hidden="true">✦</span>{s}</li>)}
+      </ul>
+      <div class="reveal" style="--d:260ms"><PillButton href={site.bookUrl} variant="light">Book a trip</PillButton></div>
+    </div>
   </div>
 </section>
 <style>
-  .vn { position: relative; color: #fff; text-align: center; padding-block: var(--section-pad); }
-  .vn :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .shade { position: absolute; inset: 0; background: linear-gradient(rgb(10 9 6 / .6), rgb(10 9 6 / .7)); }
-  .in { position: relative; display: grid; gap: 3rem; justify-items: center; }
-  .intro { max-width: 44ch; font-size: clamp(1.1rem, 1.6vw, 1.4rem); }
-  .vn :global(.illo) { width: min(80vw, 420px); aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-card); }
-  .in :global(.h2) { max-width: 14ch; }
-  .chips { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; max-width: 52rem; }
-  .chips li { padding: .7rem 1.1rem; border-radius: 9999px; border: 1px solid rgb(255 255 255 / .4); background: rgb(255 255 255 / .1); backdrop-filter: blur(8px); }
+  .vn { position: relative; z-index: 2; background: var(--color-dusk); color: #fff; padding-block: var(--section-pad); }
+  .in { display: grid; gap: 3rem; align-items: center; }
+  .pic { border-radius: 0; overflow: hidden; aspect-ratio: 4/5; }
+  .pic :global(.img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .copy { display: grid; gap: 1.5rem; justify-items: start; }
+  .eyebrow { color: var(--color-sage); }
+  .intro { max-width: 46ch; opacity: .9; }
+  .list { display: grid; grid-template-columns: repeat(2, 1fr); gap: .25rem 1.5rem; width: 100%; max-width: 30rem; }
+  .list li { padding-block: .7rem; border-bottom: 1px solid rgb(255 255 255 / .2); font-size: 15px; }
+  .list span { color: var(--color-sage); margin-right: .6rem; font-size: 12px; }
+  @media (min-width: 900px) { .in { grid-template-columns: .9fr 1.1fr; gap: 6rem; } }
 </style>

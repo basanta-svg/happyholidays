@@ -3,37 +3,55 @@ import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
 import { site } from '../site.config';
-import hero from '../assets/images/dochula-3.jpg';
+import { accent } from '../lib/accent';
+import { withBase } from '../lib/url';
+import hero from '../assets/images/dochula-3.webp';
 const lineHref = site.lineUrl;
 const tel = (p: string) => `tel:${p.replace(/ /g, '')}`;
 const interests = ['Cultural tour', 'Festival tour', 'Trekking & hiking', 'Cycling', 'Bird watching', 'Pilgrimage', 'Golf', 'Spa & wellness', 'Thangka workshop', 'Homestay / farm stay', 'Film crew support', 'Visa only', 'Other'];
+const tradeInterests = ['Partnership as an agent or tour operator', 'Ground arrangements in Bhutan', 'PR and promotion for a hotel or travel brand', 'Group bookings', 'Film or media production', 'Other'];
 ---
-<PageLayout title="Contact" description="Contact Happy Holidays in Thimphu, Bhutan to plan your trip: tours, festivals, visas, hotels and flights.">
+<PageLayout bodyClass="ap" title="Contact" description="Contact Happy Holidays in Thimphu, Bhutan to plan your trip, or get in touch as a travel agent, tour operator or travel brand (B2B).">
   <PageHero eyebrow="Contact" title="Let’s make your best trip with us." intro="Tell us when you’d like to travel and what you’d like to see. We’ll reply with ideas and a first itinerary." image={hero} alt="Prayer flags at Dochula Pass" />
 
   <PageSection tone="ink" labelledby="ct-title">
     <div class="grid">
       <div class="info">
         <p class="label" style="opacity:.7">Get in touch</p>
-        <h2 id="ct-title" class="h3 reveal">Write to us, call us or send a message.</h2>
-        <dl class="reveal">
-          <div><dt class="label">Phone</dt><dd><a href={tel(site.phone)}>{site.phone}</a><br /><a href={tel(site.phone2)}>{site.phone2}</a></dd></div>
-          <div><dt class="label">Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={`mailto:${site.emailOps}`}>{site.emailOps}</a></dd></div>
-          <div><dt class="label">Websites</dt><dd>{site.websites.map((w) => <><a href={`https://${w}`} target="_blank" rel="noopener">{w}</a><br /></>)}</dd></div>
-          <div><dt class="label">Office</dt><dd>{site.address}</dd></div>
+        <h2 id="ct-title" class="h3 reveal" set:html={accent('Write to us, *call* us or send a ~message~.')}></h2>
+
+        <dl class="tiles reveal">
+          <div class="tile"><dt class="label">Phone</dt><dd><a href={tel(site.phone)}>{site.phone}</a><br /><a href={tel(site.phone2)}>{site.phone2}</a></dd></div>
+          <div class="tile"><dt class="label">Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={`mailto:${site.emailOps}`}>{site.emailOps}</a></dd></div>
+          <div class="tile"><dt class="label">Websites</dt><dd>{site.websites.map((w) => <><a href={`https://${w}`} target="_blank" rel="noopener">{w}</a><br /></>)}</dd></div>
+          <div class="tile"><dt class="label">Office</dt><dd>{site.address}</dd></div>
         </dl>
-        <a class="wa reveal" href="https://wa.me/97517129889" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 4z"/></svg>
-          Chat on WhatsApp
-        </a>
-        <a class="wa line reveal" href={lineHref} target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 5.58 2 10c0 3.95 3.56 7.26 8.37 7.88.33.07.77.22.88.5.1.25.07.65.03.9l-.14.85c-.04.25-.2.99.87.54s5.78-3.4 7.89-5.82C21.3 13.2 22 11.7 22 10c0-4.42-4.48-8-10-8zM8.1 12.6H6.2a.4.4 0 0 1-.4-.4V8.5a.4.4 0 0 1 .8 0v3.3h1.5a.4.4 0 0 1 0 .8zm2.2-.4a.4.4 0 0 1-.8 0V8.5a.4.4 0 0 1 .8 0v3.7zm4.6 0a.4.4 0 0 1-.28.38.4.4 0 0 1-.12.02.4.4 0 0 1-.32-.16l-1.9-2.6v2.36a.4.4 0 0 1-.8 0V8.5a.4.4 0 0 1 .28-.38.4.4 0 0 1 .12-.02c.13 0 .24.06.32.16l1.9 2.6V8.5a.4.4 0 0 1 .8 0v3.7zm3-2.3a.4.4 0 0 1 0 .8h-1.5v.9h1.5a.4.4 0 0 1 0 .8h-1.9a.4.4 0 0 1-.4-.4V8.5c0-.22.18-.4.4-.4h1.9a.4.4 0 0 1 0 .8h-1.5v1z"/></svg>
-          Chat on LINE
-        </a>
+
+        <div class="chat reveal">
+          <a class="wa" href="https://wa.me/97517129889" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 4z"/></svg>
+            Chat on WhatsApp
+          </a>
+          <a class="wa line" href={lineHref} target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 5.58 2 10c0 3.95 3.56 7.26 8.37 7.88.33.07.77.22.88.5.1.25.07.65.03.9l-.14.85c-.04.25-.2.99.87.54s5.78-3.4 7.89-5.82C21.3 13.2 22 11.7 22 10c0-4.42-4.48-8-10-8zM8.1 12.6H6.2a.4.4 0 0 1-.4-.4V8.5a.4.4 0 0 1 .8 0v3.3h1.5a.4.4 0 0 1 0 .8zm2.2-.4a.4.4 0 0 1-.8 0V8.5a.4.4 0 0 1 .8 0v3.7zm4.6 0a.4.4 0 0 1-.28.38.4.4 0 0 1-.12.02.4.4 0 0 1-.32-.16l-1.9-2.6v2.36a.4.4 0 0 1-.8 0V8.5a.4.4 0 0 1 .28-.38.4.4 0 0 1 .12-.02c.13 0 .24.06.32.16l1.9 2.6V8.5a.4.4 0 0 1 .8 0v3.7zm3-2.3a.4.4 0 0 1 0 .8h-1.5v.9h1.5a.4.4 0 0 1 0 .8h-1.9a.4.4 0 0 1-.4-.4V8.5c0-.22.18-.4.4-.4h1.9a.4.4 0 0 1 0 .8h-1.5v1z"/></svg>
+            Chat on LINE
+          </a>
+        </div>
+
+        <aside class="trade reveal" id="b2b">
+          <p class="label">For the travel trade</p>
+          <h3 class="trade-t" set:html={accent('Are you a travel *professional*?')}></h3>
+          <p>Agents, tour operators, hotels and travel brands are welcome to work with us. Tell us about your business and what you have in mind.</p>
+          <button type="button" class="trade-btn btn-label" data-set-mode="b2b">Send a B2B enquiry</button>
+        </aside>
       </div>
 
-      <form class="form reveal" id="enquiry" novalidate>
-        <h3 class="h3" style="margin-bottom:.5rem">Plan your trip</h3>
+      <form class="form reveal" id="enquiry" data-mode="traveller" novalidate>
+        <div class="mode" role="group" aria-label="Who is enquiring">
+          <button type="button" data-mode-btn="traveller" aria-pressed="true">Traveller</button>
+          <button type="button" data-mode-btn="b2b" aria-pressed="false">Travel trade (B2B)</button>
+        </div>
+        <h3 class="h3 form-t" id="form-title">Plan your trip</h3>
         <div class="row">
           <label>Full name<input name="name" type="text" autocomplete="name" required /></label>
           <label>Email<input name="email" type="email" autocomplete="email" required /></label>
@@ -42,56 +60,201 @@ const interests = ['Cultural tour', 'Festival tour', 'Trekking & hiking', 'Cycli
           <label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" /></label>
           <label>Country<input name="country" type="text" autocomplete="country-name" /></label>
         </div>
-        <div class="row">
-          <label>Travel dates<input name="dates" type="text" placeholder="e.g. late October 2026" /></label>
-          <label>Number of travellers<input name="pax" type="number" min="1" inputmode="numeric" /></label>
+
+        <div class="grp" data-for="traveller">
+          <div class="row">
+            <label>Travel dates<input name="dates" type="text" placeholder="e.g. late October 2026" /></label>
+            <label>Number of travellers<input name="pax" type="number" min="1" inputmode="numeric" /></label>
+          </div>
+          <label>I’m interested in
+            <select name="interest">
+              <option value="">Choose one</option>
+              {interests.map((i) => <option value={i}>{i}</option>)}
+            </select>
+          </label>
         </div>
-        <label>I’m interested in
-          <select name="interest">
-            <option value="">Choose one</option>
-            {interests.map((i) => <option value={i}>{i}</option>)}
-          </select>
-        </label>
+
+        <div class="grp" data-for="b2b" hidden>
+          <div class="row">
+            <label>Company or agency<input name="company" type="text" autocomplete="organization" disabled /></label>
+            <label>Website<input name="website" type="text" placeholder="www.example.com" autocomplete="url" disabled /></label>
+          </div>
+          <div class="row">
+            <label>Your role<input name="role" type="text" placeholder="e.g. Operations manager" autocomplete="organization-title" disabled /></label>
+            <label>Group size or volume<input name="volume" type="text" placeholder="e.g. 20 guests a year" disabled /></label>
+          </div>
+          <label>How would you like to work with us?
+            <select name="partnership" disabled>
+              <option value="">Choose one</option>
+              {tradeInterests.map((i) => <option value={i}>{i}</option>)}
+            </select>
+          </label>
+        </div>
+
         <label>Message<textarea name="message" rows="5" placeholder="Tell us about your plans"></textarea></label>
         <button type="submit" class="submit label">Send enquiry <span aria-hidden="true">→</span></button>
         <p class="status" id="enquiry-status" role="status" aria-live="polite"></p>
       </form>
     </div>
   </PageSection>
+
+  <section class="ab-cta" aria-labelledby="ab-cta-title">
+    <div class="wrap">
+      <h2 id="ab-cta-title" class="h2 reveal" set:html={accent('Let’s make your *best* ~trip~ with us.')}></h2>
+      <div class="ab-cards">
+        {[
+          { t: 'Talk to us', p: 'Tell us your dates and interests and we will shape a journey around them.', cta: 'Send an enquiry', href: '#enquiry', g: 'a' },
+          { t: 'Find a stay', p: 'From Aman lodges to Six Senses, see the hotels we work with across Bhutan.', cta: 'Explore stays', href: '/stay', g: 'b' },
+          { t: 'Fly in', p: 'Routes, schedules and baggage guidance for getting to Paro.', cta: 'See flights', href: '/flights', g: 'c' },
+        ].map((c, i) => (
+          <article class={`ab-card ${c.g} reveal`} style={`--d:${i * 110}ms`}>
+            <h3 class="ab-t">{c.t}</h3>
+            <p class="ab-p">{c.p}</p>
+            <a class="ab-btn btn-label" href={withBase(c.href)}>{c.cta}</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 </PageLayout>
 <style>
-  .grid { display: grid; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
-  @media (min-width: 960px) { .grid { grid-template-columns: 1fr 1.15fr; } }
-  .info { display: grid; gap: 1.5rem; align-content: start; }
+  .grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  @media (min-width: 960px) { .grid { grid-template-columns: 1fr 1.1fr; } }
+  .info { display: grid; gap: 1.75rem; align-content: start; }
   .info :global(.h3) { max-width: 20ch; }
-  dl { display: grid; gap: 1.5rem; margin-top: .5rem; }
-  dt { opacity: .6; margin-bottom: .35rem; }
-  dd { line-height: 1.6; }
+  .tiles { display: grid; gap: 1rem; margin: 0; }
+  @media (min-width: 560px) { .tiles { grid-template-columns: 1fr 1fr; } }
+  .tile { display: grid; gap: .5rem; align-content: start; padding: 1.1rem 1.25rem 1.2rem; border: 1px solid rgb(255 255 255 / .28); border-top: 3px solid #E01B24; background: rgb(255 255 255 / .04); border-radius: 0; }
+  dt { opacity: .7; }
+  dd { line-height: 1.6; color: #fff; overflow-wrap: anywhere; }
   dd a:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .wa { display: inline-flex; gap: .6rem; align-items: center; width: fit-content; padding: .85rem 1.4rem; border-radius: 9999px; background: #fff; color: var(--color-ink); font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; transition: transform .35s var(--ease); }
+  .chat { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .wa { display: inline-flex; gap: .6rem; align-items: center; width: fit-content; padding: .85rem 1.4rem; border-radius: 0; background: #fff; color: var(--color-ink); font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; transition: transform .35s var(--ease); }
   .wa:hover { transform: translateY(-2px); }
   .line { background: #06c755; color: #fff; }
-  .info > .wa { margin-top: -.25rem; }
-  .form { display: grid; gap: 1.1rem; background: #186093; color: var(--color-paper); border-radius: 18px; padding: clamp(1.5rem, 3.5vw, 2.75rem); }
+  .trade { display: grid; gap: .8rem; justify-items: start; padding: clamp(1.5rem, 3vw, 2rem); color: #fff; border-radius: 0; background: linear-gradient(135deg, #24357A 0%, #132155 55%, #0a1230 100%); }
+  .trade .label { opacity: .85; }
+  .trade-t { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.75rem, 3vw, 2.4rem); line-height: 1; text-transform: uppercase; }
+  .trade p { line-height: 1.55; max-width: 44ch; }
+  .trade-btn { padding: .45rem .85rem; font-size: .72rem; border: 0; background: var(--color-sage); color: var(--color-ink); border-radius: 0; cursor: pointer; transition: transform .35s var(--ease), background .3s; }
+  .trade-btn:hover { transform: translateY(-2px); background: #ffd92e; }
+
+  .form { display: grid; gap: 1.1rem; color: var(--color-paper); border-radius: 0; border-top: 4px solid #E01B24; padding: clamp(1.5rem, 3.5vw, 2.75rem); background: linear-gradient(160deg, #24357A 0%, #132155 55%, #0a1230 100%); }
+  .mode { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .mode button { padding: .8rem .75rem; border: 1px solid rgb(255 255 255 / .4); background: transparent; color: #fff; font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; border-radius: 0; cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+  .mode button:hover { background: rgb(255 255 255 / .12); }
+  .mode button[aria-pressed='true'] { background: var(--color-sage); color: var(--color-ink); border-color: var(--color-sage); }
+  .form-t { margin-top: .25rem; }
+  .grp { display: grid; gap: 1.1rem; }
+  .grp[hidden] { display: none; }
   .row { display: grid; gap: 1.1rem; }
   @media (min-width: 560px) { .row { grid-template-columns: 1fr 1fr; } }
-  label { display: grid; gap: .45rem; font-family: var(--font-label); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgb(244 239 230 / .8); }
-  input, select, textarea { font-family: var(--font-sans); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--color-ink); background: #fff; border: 1px solid rgb(26 24 19 / .25); border-radius: 10px; padding: .8rem .9rem; width: 100%; }
-  input:focus, select:focus, textarea:focus { outline: 2px solid var(--color-brand); outline-offset: 1px; border-color: transparent; }
-  input[aria-invalid='true'] { border-color: var(--color-brand); }
+  label { display: grid; gap: .45rem; font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: rgb(255 255 255 / .85); }
+  input, select, textarea { font-family: var(--font-sans); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--color-ink); background: #fff; border: 1px solid rgb(26 24 19 / .25); border-radius: 0; padding: .8rem .9rem; width: 100%; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--color-sage); outline-offset: 1px; border-color: transparent; }
+  input[aria-invalid='true'] { border-color: var(--color-brand); outline: 2px solid var(--color-brand); }
   textarea { resize: vertical; }
-  .submit { justify-self: start; display: inline-flex; gap: .6rem; padding: 1rem 1.7rem; border-radius: 9999px; background: var(--color-brand); color: #fff; cursor: pointer; transition: transform .35s var(--ease); }
+  .submit { justify-self: start; display: inline-flex; gap: .6rem; padding: 1rem 1.7rem; border: 0; border-radius: 0; background: var(--color-brand); color: #fff; cursor: pointer; transition: transform .35s var(--ease); }
   .submit:hover { transform: translateY(-2px); }
   .status { min-height: 1.4em; font-size: 14px; color: var(--color-paper); }
+
+  /* Custom dropdowns (built from the selects by the script below) */
+  .form :global(.dd) { position: relative; }
+  .form :global(.dd select) { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  .form :global(.dd-btn) { display: flex; align-items: center; justify-content: space-between; gap: .75rem; width: 100%; padding: .8rem .9rem; border: 1px solid rgb(26 24 19 / .25); border-radius: 0; background: #fff; color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; letter-spacing: 0; text-transform: none; text-align: left; cursor: pointer; }
+  .form :global(.dd-btn.empty) { color: #6b7391; }
+  .form :global(.dd-btn:focus-visible), .form :global(.dd.open .dd-btn) { outline: 2px solid var(--color-sage); outline-offset: 1px; border-color: transparent; }
+  .form :global(.dd-btn::after) { content: ''; flex: none; width: .55rem; height: .55rem; border-right: 2px solid #E01B24; border-bottom: 2px solid #E01B24; transform: translateY(-2px) rotate(45deg); transition: transform .25s var(--ease); }
+  .form :global(.dd.open .dd-btn::after) { transform: translateY(2px) rotate(-135deg); }
+  .form :global(.dd-list) { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 4px); max-height: 15rem; overflow-y: auto; margin: 0; padding: .35rem; list-style: none; background: #0a1230; border: 1px solid rgb(255 255 255 / .3); border-top: 3px solid #E01B24; box-shadow: 0 18px 40px rgb(0 0 0 / .45); }
+  .form :global(.dd-list[hidden]) { display: none; }
+  .form :global(.dd-list li) { padding: .65rem .75rem; color: #fff; font-family: var(--font-sans); font-size: 15px; letter-spacing: 0; text-transform: none; cursor: pointer; }
+  .form :global(.dd-list li.active) { background: rgb(255 255 255 / .12); }
+  .form :global(.dd-list li[aria-selected='true']) { background: var(--color-sage); color: var(--color-ink); }
+
+  .ab-cta { position: relative; z-index: 1; padding-block: clamp(4rem, 7vw, 6rem); }
+  .ab-cta :global(.h2) { max-width: 18ch; margin-bottom: 2.5rem; }
+  .ab-cards { display: grid; gap: 1.25rem; }
+  .ab-card { display: grid; gap: 1rem; align-content: space-between; justify-items: start; min-height: 17rem; padding: clamp(1.5rem, 3vw, 2.5rem); color: #fff; border-radius: 0; transition: transform .4s var(--ease); }
+  .ab-card:hover { transform: translateY(-5px); }
+  .ab-card.a { background: linear-gradient(135deg, #24357A 0%, #132155 55%, #0a1230 100%); }
+  .ab-card.b { background: linear-gradient(135deg, #132155 0%, #24357A 100%); }
+  .ab-card.c { background: linear-gradient(135deg, #E01B24 0%, #8a1020 45%, #132155 100%); }
+  .ab-t { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 3.6vw, 2.75rem); line-height: 1; text-transform: uppercase; }
+  .ab-p { color: #fff; line-height: 1.55; max-width: 34ch; }
+  .ab-btn { display: inline-block; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .ab-btn:hover { transform: translateY(-2px); background: #ffd92e; }
+  @media (min-width: 800px) { .ab-cards { grid-template-columns: repeat(3, 1fr); } }
 </style>
 <script>
   // Static site: the enquiry opens the visitor's email app with the details filled in.
   const form = document.querySelector<HTMLFormElement>('#enquiry');
   const status = document.querySelector<HTMLElement>('#enquiry-status');
+  const title = document.querySelector<HTMLElement>('#form-title');
+  const modeBtns = [...document.querySelectorAll<HTMLButtonElement>('[data-mode-btn]')];
+  const groups = [...document.querySelectorAll<HTMLElement>('[data-for]')];
+  const msg = form?.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
+
+  function setMode(mode: 'traveller' | 'b2b') {
+    if (!form) return;
+    form.dataset.mode = mode;
+    modeBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modeBtn === mode)));
+    groups.forEach((g) => {
+      const on = g.dataset.for === mode;
+      g.hidden = !on;
+      g.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select').forEach((el) => (el.disabled = !on));
+    });
+    if (title) title.textContent = mode === 'b2b' ? 'Travel trade enquiry' : 'Plan your trip';
+    if (msg) msg.placeholder = mode === 'b2b' ? 'Tell us about your business and how we can work together' : 'Tell us about your plans';
+    if (status) status.textContent = '';
+  }
+  modeBtns.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.modeBtn as 'traveller' | 'b2b')));
+  document.querySelector<HTMLButtonElement>('[data-set-mode="b2b"]')?.addEventListener('click', () => {
+    setMode('b2b');
+    form?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  if (location.hash === '#b2b') setMode('b2b');
+
+
+  // Replace each select with a styled dropdown (the real select stays in the form for the data)
+  document.querySelectorAll<HTMLSelectElement>('#enquiry select').forEach((sel) => {
+    const wrap = document.createElement('div'); wrap.className = 'dd';
+    sel.parentNode!.insertBefore(wrap, sel); wrap.appendChild(sel);
+    sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'dd-btn';
+    btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    const list = document.createElement('ul'); list.className = 'dd-list'; list.setAttribute('role', 'listbox'); list.hidden = true;
+    const opts = [...sel.options];
+    const items = opts.map((o, i) => {
+      const li = document.createElement('li'); li.setAttribute('role', 'option'); li.textContent = o.textContent;
+      li.addEventListener('click', () => choose(i));
+      list.appendChild(li); return li;
+    });
+    wrap.append(btn, list);
+    let cur = sel.selectedIndex, act = cur;
+    const paint = () => {
+      const o = opts[cur]; const empty = !o.value;
+      btn.textContent = empty ? (o.textContent || 'Choose one') : o.textContent;
+      btn.classList.toggle('empty', empty);
+      items.forEach((li, i) => { li.setAttribute('aria-selected', String(i === cur && !!opts[i].value)); li.classList.toggle('active', i === act); });
+    };
+    const open = (v: boolean) => { list.hidden = !v; wrap.classList.toggle('open', v); btn.setAttribute('aria-expanded', String(v)); if (v) { act = cur; paint(); items[act]?.scrollIntoView({ block: 'nearest' }); } };
+    function choose(i: number) { cur = act = i; sel.selectedIndex = i; sel.dispatchEvent(new Event('change', { bubbles: true })); paint(); open(false); btn.focus(); }
+    btn.addEventListener('click', () => open(list.hidden));
+    btn.addEventListener('keydown', (e) => {
+      if (['ArrowDown', 'ArrowUp'].includes(e.key)) { e.preventDefault(); if (list.hidden) open(true); else { act = Math.max(0, Math.min(items.length - 1, act + (e.key === 'ArrowDown' ? 1 : -1))); paint(); items[act].scrollIntoView({ block: 'nearest' }); } }
+      else if (e.key === 'Enter' && !list.hidden) { e.preventDefault(); choose(act); }
+      else if (e.key === 'Escape') open(false);
+    });
+    document.addEventListener('click', (e) => { if (!wrap.contains(e.target as Node)) open(false); });
+    paint();
+  });
+
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const f = new FormData(form);
     const v = (k: string) => String(f.get(k) ?? '').trim();
+    const b2b = form.dataset.mode === 'b2b';
     const name = form.elements.namedItem('name') as HTMLInputElement;
     const email = form.elements.namedItem('email') as HTMLInputElement;
     let ok = true;
@@ -101,12 +264,11 @@ const interests = ['Cultural tour', 'Festival tour', 'Trekking & hiking', 'Cycli
       if (bad) ok = false;
     });
     if (!ok) { if (status) status.textContent = 'Please add your name and a valid email.'; return; }
-    const lines = [
-      `Name: ${v('name')}`, `Email: ${v('email')}`, `Phone: ${v('phone')}`, `Country: ${v('country')}`,
-      `Travel dates: ${v('dates')}`, `Travellers: ${v('pax')}`, `Interested in: ${v('interest')}`, '', v('message'),
-    ];
+    const lines = b2b
+      ? [`Name: ${v('name')}`, `Email: ${v('email')}`, `Phone: ${v('phone')}`, `Country: ${v('country')}`, `Company: ${v('company')}`, `Website: ${v('website')}`, `Role: ${v('role')}`, `Volume: ${v('volume')}`, `Interested in: ${v('partnership')}`, '', v('message')]
+      : [`Name: ${v('name')}`, `Email: ${v('email')}`, `Phone: ${v('phone')}`, `Country: ${v('country')}`, `Travel dates: ${v('dates')}`, `Travellers: ${v('pax')}`, `Interested in: ${v('interest')}`, '', v('message')];
     const to = 'happyholidaysed@gmail.com';
-    const subject = `Trip enquiry from ${v('name')}`;
+    const subject = b2b ? `B2B enquiry from ${v('company') || v('name')}` : `Trip enquiry from ${v('name')}`;
     location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
     if (status) status.textContent = 'Opening your email app with your enquiry. If nothing opens, write to ' + to + '.';
   });

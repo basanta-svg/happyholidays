@@ -2,18 +2,19 @@
 import { Picture } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import { accent } from '../lib/accent';
 import PageSection from '../components/PageSection.astro';
-import CtaBand from '../components/CtaBand.astro';
+import CtaBanner from '../components/CtaBanner.astro';
 import ArrowLink from '../components/ArrowLink.astro';
-import hero from '../assets/images/bumthang-view2.jpg';
-import culture from '../assets/images/cultural.jpg';
-import food from '../assets/images/bumtap-cuisine.jpg';
-import buddha from '../assets/images/buddha-point.jpg';
-import thimphu from '../assets/images/deck/image42.jpeg';
-import paro from '../assets/images/deck/image44.jpeg';
-import punakha from '../assets/images/deck/image45.jpeg';
-import gangtey from '../assets/images/deck/image46.jpeg';
-import bumthang from '../assets/images/deck/image43.jpeg';
+import hero from '../assets/images/bumthang-view2.webp';
+import culture from '../assets/images/cultural.webp';
+import food from '../assets/images/bumtap-cuisine.webp';
+import buddha from '../assets/images/buddha-point.webp';
+import thimphu from '../assets/images/deck/image42.webp';
+import paro from '../assets/images/deck/image44.webp';
+import punakha from '../assets/images/deck/image45.webp';
+import gangtey from '../assets/images/deck/image46.webp';
+import bumthang from '../assets/images/deck/image43.webp';
 
 const facts = [
   { b: 'Druk Yul', s: 'Land of the Thunder Dragon' },
@@ -47,21 +48,21 @@ const seasons = [
   { s: 'Winter', m: 'December – February', t: 'Cold, bright days, fewer visitors and wide views of the Himalayan peaks.' },
 ];
 ---
-<PageLayout title="About Bhutan" description="Discover Bhutan, the Land of the Thunder Dragon: Gross National Happiness, Buddhist culture, dzongs, festivals, food, nature and the best time to visit.">
+<PageLayout bodyClass="ap" title="About Bhutan" description="Discover Bhutan, the Land of the Thunder Dragon: Gross National Happiness, Buddhist culture, dzongs, festivals, food, nature and the best time to visit.">
   <PageHero eyebrow="About Bhutan" title="The Land of the Thunder Dragon." intro="A small Himalayan kingdom where happiness is measured, forests are protected by law, and monasteries still shape daily life." image={hero} alt="Layered Himalayan ridges in Bumthang" />
 
   <PageSection tone="ink" labelledby="intro-title">
     <div class="pg-split" style="align-items:start">
       <div class="pg-head" style="margin-bottom:0">
         <p class="label" style="opacity:.7">Welcome to Bhutan</p>
-        <h2 id="intro-title" class="h3 reveal">A kingdom between India and Tibet, tucked high in the eastern Himalaya.</h2>
+        <h2 id="intro-title" class="h3 reveal" set:html={accent('A kingdom between *India* and Tibet, tucked high in the ~eastern Himalaya~.')}></h2>
       </div>
       <div>
         <p class="pg-text reveal">Bhutan is known to its people as Druk Yul, the Land of the Thunder Dragon. Its valleys run from subtropical lowlands to snow peaks above 7,000 metres, and almost every ridge carries a dzong, temple or line of prayer flags.</p>
         <p class="pg-text reveal">The country has chosen to grow slowly and carefully. Tourism follows the same idea: a “High Value, Low Volume” approach that protects the culture and environment visitors come to enjoy.</p>
       </div>
     </div>
-    <div class="pg-stats reveal" style="margin-top:3.5rem">
+    <div class="pg-stats reveal" style="margin-top:2.5rem">
       {facts.map((f) => <div class="pg-stat"><b>{f.b}</b><span>{f.s}</span></div>)}
     </div>
   </PageSection>
@@ -69,7 +70,7 @@ const seasons = [
   <PageSection tone="plum" labelledby="gnh-title">
     <div class="pg-head">
       <p class="label" style="opacity:.8">Gross National Happiness</p>
-      <h2 id="gnh-title" class="h3 reveal">A country that measures happiness.</h2>
+      <h2 id="gnh-title" class="h3 reveal" set:html={accent('A country that measures ~happiness~.')}></h2>
       <p class="pg-text reveal">Bhutan is famous for putting Gross National Happiness (GNH) alongside, and often ahead of, economic growth. GNH guides policy through four pillars.</p>
     </div>
     <div class="pg-cols c2">
@@ -84,11 +85,11 @@ const seasons = [
 
   <PageSection tone="paper" labelledby="culture-title">
     <div class="pg-split">
-      <Picture src={culture} alt="Traditional Bhutanese cultural dance" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={culture} alt="Traditional Bhutanese cultural dance" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
       <div>
         <div class="pg-head">
           <p class="label" style="opacity:.7">Culture & traditions</p>
-          <h2 id="culture-title" class="h3 reveal">A living culture, worn, eaten and celebrated every day.</h2>
+          <h2 id="culture-title" class="h3 reveal" set:html={accent('A living *culture*, worn, eaten and ~celebrated~ every day.')}></h2>
         </div>
         <div class="pg-rows" style="border-top:0">
           {culturePoints.map(([t, d]) => (
@@ -98,7 +99,7 @@ const seasons = [
             </div>
           ))}
         </div>
-        <div class="reveal" style="margin-top:2rem"><ArrowLink href="/festivities">Explore festivities</ArrowLink></div>
+        <div class="reveal" style="margin-top:2.5rem"><ArrowLink href="/festivities">Explore festivities</ArrowLink></div>
       </div>
     </div>
   </PageSection>
@@ -106,12 +107,12 @@ const seasons = [
   <PageSection tone="ink" labelledby="places-title">
     <div class="pg-head">
       <p class="label" style="opacity:.7">Where to go</p>
-      <h2 id="places-title" class="h3 reveal">Five valleys, five different worlds.</h2>
+      <h2 id="places-title" class="h3 reveal" set:html={accent('Five *valleys*, five different ~worlds~.')}></h2>
     </div>
     <div class="pg-cards">
       {regions.map((r, i) => (
         <article class="pg-card reveal" style={`--d:${(i % 3) * 90}ms`}>
-          <Picture src={r.img} alt={r.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <Picture fallbackFormat="webp" src={r.img} alt={r.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
           <div class="body"><h3>{r.name}</h3><p>{r.text}</p></div>
         </article>
       ))}
@@ -123,19 +124,19 @@ const seasons = [
       <div>
         <div class="pg-head">
           <p class="label" style="opacity:.75">Nature</p>
-          <h2 id="nature-title" class="h3 reveal">One of the greenest countries on Earth.</h2>
+          <h2 id="nature-title" class="h3 reveal" set:html={accent('One of the ~greenest~ countries on *Earth*.')}></h2>
           <p class="pg-text reveal">Bhutan is carbon negative: its forests absorb more carbon than the country produces. Protected areas cover a large share of the land, and the forests shelter red pandas, Bengal tigers, takin and hundreds of bird species.</p>
           <p class="pg-text reveal">Many Himalayan peaks are considered sacred, and mountaineering above 6,000 metres is not permitted. Gangkhar Puensum, among the world’s highest unclimbed mountains, lies within Bhutan.</p>
         </div>
       </div>
-      <Picture src={buddha} alt="Buddha Dordenma overlooking Thimphu" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={buddha} alt="Buddha Dordenma overlooking Thimphu" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
   <PageSection tone="sand" labelledby="when-title">
     <div class="pg-head">
       <p class="label" style="opacity:.7">When to visit</p>
-      <h2 id="when-title" class="h3 reveal">Spring and autumn are best, but every season has its charm.</h2>
+      <h2 id="when-title" class="h3 reveal" set:html={accent('*Spring* and ~autumn~ are best, but every season has its charm.')}></h2>
     </div>
     <div class="pg-cards">
       {seasons.map((s, i) => (
@@ -151,5 +152,5 @@ const seasons = [
     <div class="reveal" style="margin-top:2.5rem"><ArrowLink href="/information">Visa, fees and practical information</ArrowLink></div>
   </PageSection>
 
-  <CtaBand title="Ready to see Bhutan for yourself?" cta="Plan your trip" href="/contact" />
+  <CtaBanner title="Ready to see *Bhutan* for ~yourself~?" cta="Plan your trip" href="/contact" />
 </PageLayout>

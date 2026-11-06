@@ -1,0 +1,24 @@
+---
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
+import BhutanMap from './BhutanMap.astro';
+---
+<section id="getting-in" class="gi" aria-labelledby="gi-title">
+  <div class="wrap">
+    <header class="head">
+      <p class="label reveal">Flights &amp; roads</p>
+      <h2 id="gi-title" class="h2 reveal" style="--d:80ms" set:html={accent('Getting into *Bhutan*')}></h2>
+      <p class="p reveal" style="--d:140ms">Fly into Paro, Bhutan’s only international airport, then on to Bumthang, Yonphula or Gelephu. Or arrive by road through Phuentsholing, Gelephu or Samdrup Jongkhar. Tap an airport or a border gate to see how to get there.</p>
+      <a class="btn btn-label reveal" style="--d:200ms" href={withBase('/flights')}>See flights &amp; routes</a>
+    </header>
+    <BhutanMap />
+  </div>
+</section>
+<style>
+  .gi { position: relative; z-index: 2; padding-block: var(--section-pad); }
+  .head { display: grid; gap: 1.25rem; justify-items: start; max-width: 46rem; }
+  .p { color: #C9D1EA; max-width: 52ch; }
+  .head { margin-bottom: 2.5rem; }
+  .btn { display: inline-block; margin-top: .5rem; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .btn:hover { transform: translateY(-2px); background: #ffd92e; }
+</style>

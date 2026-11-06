@@ -22,7 +22,7 @@ const langs = [
 </div>
 <style>
   .lang { position: relative; display: inline-block; }
-  .lang-btn { display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .8rem; font-size: 11px; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; line-height: 1; transition: background .25s, color .25s; }
+  .lang-btn { display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .8rem; font-size: 12px; border: 1px solid currentColor; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; line-height: 1; transition: background .25s, color .25s; }
   .lang-btn:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
   .chev { transition: transform .25s; }
   .lang-btn[aria-expanded='true'] .chev { transform: rotate(180deg); }
@@ -30,7 +30,7 @@ const langs = [
   .lang-list[hidden] { display: none; }
   .lang-list li { padding: .6rem .8rem; border-radius: 9px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
   .lang-list li:hover, .lang-list li:focus-visible { background: rgb(255 255 255 / .18); outline: none; }
-  .lang-list li[aria-selected='true'] { font-weight: 600; }
+  .lang-list li[aria-selected='true'] { font-weight: 400; }
   .lang-list li[aria-selected='true']::after { content: '✓'; font-size: 12px; }
 </style>
 <script is:inline>

@@ -36,12 +36,15 @@ const contacts = site.socials.filter((s) => s.icon === 'whatsapp' || s.icon === 
 <style>
   .ask { position: fixed; z-index: 45; bottom: 1.25rem; left: var(--gutter, 1.25rem); display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 1.3rem; color: #fff; border-radius: 9999px; background: rgb(30 28 22 / .45); backdrop-filter: blur(16px) saturate(1.4); border: 1px solid rgb(255 255 255 / .25); cursor: pointer; transition: transform .3s var(--ease); }
   .ask:hover { transform: translateY(-3px); }
-  .drawer { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(100%, 26rem); background: #186093; color: var(--color-paper); padding: 1.5rem; border: 0; }
-  .drawer::backdrop { background: rgb(0 0 0 / .5); }
+  .drawer { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(100%, 26rem); background: #132155; color: var(--color-paper); padding: 1.5rem; border: 0; transform: translateX(100%); transition: transform .4s var(--ease); }
+  .drawer.shown { transform: none; }
+  .drawer::backdrop { background: rgb(0 0 0 / .5); opacity: 0; transition: opacity .4s var(--ease); }
+  .drawer.shown::backdrop { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .drawer, .drawer::backdrop { transition: none; } }
   .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
   .faq { display: grid; gap: .25rem; }
   .faq details { border-top: 1px solid rgb(255 255 255 / .25); }
-  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 1rem 0; font-weight: 500; }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 1rem 0; }
   .faq summary::-webkit-details-marker { display: none; }
   .faq summary::after { content: '+'; font-size: 1.4rem; line-height: 1; transition: transform .25s; }
   .faq details[open] summary::after { transform: rotate(45deg); }
@@ -49,7 +52,7 @@ const contacts = site.socials.filter((s) => s.icon === 'whatsapp' || s.icon === 
   .touch { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / .25); }
   .touch p { opacity: .85; margin: .4rem 0 1rem; }
   .chat { display: grid; gap: .7rem; }
-  .chat-btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; padding: .85rem 1.3rem; border-radius: 9999px; color: #fff; font-weight: 500; transition: transform .25s, filter .25s; }
+  .chat-btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; padding: .85rem 1.3rem; border-radius: 9999px; color: #fff; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; transition: transform .25s, filter .25s; }
   .chat-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
   .chat-btn.whatsapp { background: #25d366; color: #0b2e18; }
   .chat-btn.line { background: #06c755; }

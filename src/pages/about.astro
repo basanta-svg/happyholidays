@@ -1,41 +1,49 @@
 ---
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+import WhyUs from '../components/WhyUs.astro';
 import { site } from '../site.config';
-import hero from '../assets/images/dochula-4.jpg';
-import culture from '../assets/images/cultural.jpg';
-import guide from '../assets/images/team/chinese guide.jpeg';
-import welcome from '../assets/images/deck/image4.jpeg';
+import { accent } from '../lib/accent';
+import { withBase } from '../lib/url';
+import hero from '../assets/images/dochula-4.webp';
+import culture from '../assets/images/cultural.webp';
+import guide from '../assets/images/team/chinese guide.webp';
+import ctaBg from '../assets/images/festivals/ctaa.webp';
+import welcome from '../assets/images/deck/image4.webp';
+const bg = await getImage({ src: ctaBg, width: 2000, format: 'webp', quality: 70 });
 ---
-<PageLayout title="About us" description="Happy Holidays is a dynamic niche PR and travel agency focused on Bhutan, helping luxury travel and hotel brands convey their true essence since 2010.">
+<PageLayout bodyClass="ap" title="About us" description="Happy Holidays is a dynamic niche PR and travel agency focused on Bhutan, helping luxury travel and hotel brands convey their true essence since 2010.">
   <PageHero eyebrow="About us" title="Happiness is a way of life here." intro="Happy Holidays is a dynamic niche PR agency focused on travel and tourism in Bhutan, helping visionary luxury travel and hotel brands convey their true essence since 2010." image={hero} alt="Dochula Pass above Thimphu" />
 
   <PageSection tone="ink" labelledby="who-title">
     <div class="pg-split">
       <div class="pg-head" style="margin-bottom:0">
         <p class="label" style="opacity:.7">Who we are</p>
-        <h2 id="who-title" class="h3 reveal">A Bhutanese team telling Bhutan’s story, and looking after the people who come to see it.</h2>
+        <h2 id="who-title" class="h3 reveal" set:html={accent('A Bhutanese team telling *Bhutan’s story*, and looking after the ~people~ who come to see it.')}></h2>
         <p class="pg-text reveal">We work with travel and hotel brands to convey what makes the Land of the Thunder Dragon special, and we plan the journeys that bring guests there: cultural, adventure, pilgrimage and festival trips, built around lesser-known routes.</p>
         <p class="pg-text reveal">Our guests are welcomed by local people who know the stories behind every temple, trail and village, from the first greeting at Paro airport to the farewell at departure.</p>
       </div>
-      <Picture src={welcome} alt="A warm Bhutanese welcome" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={welcome} alt="A warm Bhutanese welcome" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
   <PageSection tone="plum" labelledby="vm-title">
-    <h2 id="vm-title" class="label reveal" style="opacity:.8;margin-bottom:3rem">Our compass</h2>
-    <div class="pg-cols c2">
-      <div class="reveal">
-        <h3 class="h3">Vision</h3>
-        <p class="pg-text">To provide quality services that exceed the expectations of our esteemed customers.</p>
-      </div>
-      <div class="reveal" style="--d:120ms">
-        <h3 class="h3">Mission</h3>
-        <p class="pg-text">To build long-term relationships with our customers and clients and provide exceptional customer service by pursuing business through innovation and advanced technology.</p>
-      </div>
+    <div class="vm-head">
+      <p class="label reveal" style="opacity:.75">Our compass</p>
+      <h2 id="vm-title" class="h2 reveal" style="--d:80ms" set:html={accent('Where we are *heading*, and how we get ~there~.')}></h2>
+    </div>
+    <div class="vm">
+      <article class="vm-row reveal">
+        <h3 class="vm-t">Vision</h3>
+        <p class="vm-p">To provide quality services that exceed the expectations of our esteemed customers.</p>
+      </article>
+      <article class="vm-row reveal" style="--d:120ms">
+        <h3 class="vm-t">Mission</h3>
+        <p class="vm-p">To build long-term relationships with our customers and clients and provide exceptional customer service by pursuing business through innovation and advanced technology.</p>
+      </article>
     </div>
   </PageSection>
 
@@ -44,35 +52,25 @@ import welcome from '../assets/images/deck/image4.jpeg';
       <div>
         <div class="pg-head">
           <p class="label" style="opacity:.7">What we do</p>
-          <h2 id="do-title" class="h3 reveal">{site.servicesTitle}</h2>
+          <h2 id="do-title" class="h3 reveal" set:html={accent('Tailor-made *journeys* across ~Bhutan~')}></h2>
           <p class="pg-text reveal">{site.servicesText}</p>
         </div>
         <ul class="pg-chips reveal">
           {site.services.map((s) => <li>{s}</li>)}
         </ul>
       </div>
-      <Picture src={culture} alt="Bhutanese culture" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={culture} alt="Bhutanese culture" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
-  <PageSection tone="dusty" labelledby="why-title">
-    <h2 id="why-title" class="label reveal" style="opacity:.75;margin-bottom:3rem">{site.whyTitle}</h2>
-    <div class="pg-cols c3">
-      {site.why.map((c, i) => (
-        <div class="reveal" style={`--d:${i * 120}ms`}>
-          <h3 class="h3">{c.title}</h3>
-          <p class="pg-text">{c.text}</p>
-        </div>
-      ))}
-    </div>
-  </PageSection>
+  <WhyUs />
 
   <PageSection tone="sand" labelledby="team-title">
     <div class="pg-split">
-      <Picture src={guide} alt="Mr. Sonam Tobgay, Chinese tour guide, in a traditional gho" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" style="aspect-ratio:4/5;object-position:50% 30%;max-width:30rem" />
+      <Picture fallbackFormat="webp" src={guide} alt="Mr. Sonam Tobgay, Chinese tour guide, in a traditional gho" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" style="aspect-ratio:4/5;object-position:50% 30%;max-width:30rem" />
       <div class="pg-head" style="margin-bottom:0">
         <p class="label" style="opacity:.7">Our team</p>
-        <h2 id="team-title" class="h3 reveal">Mr. Sonam Tobgay</h2>
+        <h2 id="team-title" class="h3 reveal" set:html={accent('Mr. *Sonam* ~Tobgay~')}></h2>
         <p class="label reveal" style="opacity:.7;margin-top:.5rem">Chinese tour guide</p>
         <p class="pg-text reveal" style="margin-top:1.5rem">Guiding visitors across Bhutan since 2013, Sonam brings 13 years of experience to every journey. He has handled large groups of Chinese guests, keeping each trip relaxed, well organised and full of the stories behind the places you visit.</p>
         <ul class="pg-chips reveal" style="margin-top:1.5rem">
@@ -84,5 +82,33 @@ import welcome from '../assets/images/deck/image4.jpeg';
     </div>
   </PageSection>
 
-  <CtaBand title="Let’s make your best trip with us." cta="Plan your trip" href="/contact" />
+  <section class="ab-cta" aria-labelledby="ab-cta-title">
+    <div class="wrap">
+      <div class="ab-band reveal" style={`--bg:url(${bg.src})`}>
+        <h2 id="ab-cta-title" class="h2" set:html={accent('Let’s make your *best* ~trip~ with us.')}></h2>
+        <a class="ab-btn btn-label" href={withBase('/contact')}>Plan your trip</a>
+      </div>
+    </div>
+  </section>
 </PageLayout>
+<style>
+  .vm { border-top: 1px solid rgb(255 255 255 / .35); }
+  .vm-row { display: grid; gap: 1rem 3rem; align-items: start; padding-block: clamp(2rem, 4vw, 3.25rem); border-bottom: 1px solid rgb(255 255 255 / .35); }
+  .vm-t { font-family: var(--font-display); font-weight: 400; font-size: clamp(3rem, 7vw, 6rem); line-height: .9; text-transform: uppercase; color: #fff; }
+  .vm-t::after { content: ''; display: block; width: 56px; height: 4px; margin-top: 1rem; background: #E01B24; }
+  .vm-p { color: #fff; font-size: clamp(1.1rem, 1.8vw, 1.6rem); line-height: 1.5; max-width: 44ch; }
+  @media (max-width: 640px) { .vm-p { font-size: 1rem; } }
+  @media (min-width: 800px) { .vm-row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+  .vm-head { display: grid; gap: 1rem; margin-bottom: 2.5rem; }
+  .vm-head :global(.h2) { max-width: 20ch; }
+  /* Why choose us (homepage design) sits on the starry ground here */
+  :global(#why-bhutan) { background: transparent; color: #fff; padding-block: clamp(4rem, 7vw, 6rem); }
+  :global(#why-bhutan .ttl) { margin-bottom: 2.5rem; }
+  :global(#why-bhutan .col) { color: var(--color-ink); }
+  @media (min-width: 900px) { :global(#why-bhutan .col:nth-child(2)) { color: #fff; } }
+  .ab-cta { position: relative; z-index: 1; padding-block: clamp(4rem, 7vw, 6rem); }
+  .ab-band { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem 3rem; padding: clamp(2rem, 5vw, 4rem); color: #fff; border-radius: 0; background: linear-gradient(110deg, rgb(10 18 51 / .8) 0%, rgb(10 18 51 / .45) 50%, rgb(10 18 51 / .1) 100%), var(--bg) center 22% / cover no-repeat; min-height: clamp(13rem, 24vw, 21rem); }
+  .ab-band :global(.h2) { max-width: 22ch; }
+  .ab-btn { display: inline-block; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .ab-btn:hover { transform: translateY(-2px); background: #ffd92e; }
+</style>

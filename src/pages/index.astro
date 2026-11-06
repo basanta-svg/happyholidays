@@ -3,35 +3,68 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import HeroBackdrop from '../components/HeroBackdrop.astro';
 import Hero from '../components/Hero.astro';
-import Statement from '../components/Statement.astro';
-import Welcome from '../components/Welcome.astro';
-import Pillars from '../components/Pillars.astro';
-import Quote from '../components/Quote.astro';
+import AboutSection from '../components/AboutSection.astro';
+import FestivalShowcase from '../components/FestivalShowcase.astro';
+import ActivitiesShowcase from '../components/ActivitiesShowcase.astro';
 import Destinations from '../components/Destinations.astro';
 import WhyUs from '../components/WhyUs.astro';
-import Services from '../components/Services.astro';
 import TwoUp from '../components/TwoUp.astro';
 import Footer from '../components/Footer.astro';
 import AskPill from '../components/AskPill.astro';
-import VideoModal from '../components/VideoModal.astro';
+import Starfield from '../components/Starfield.astro';
+import GettingIn from '../components/GettingIn.astro';
 ---
-<BaseLayout>
+<BaseLayout bodyClass="home">
+  <Starfield />
   <Header />
   <main id="main">
     <div class="relative">
       <HeroBackdrop />
       <Hero />
-      <Statement />
-      <Welcome />
     </div>
-    <Pillars />
-    <Quote />
-    <Destinations />
+    <AboutSection />
+    <FestivalShowcase />
     <WhyUs />
-    <Services />
+    <GettingIn />
+    <ActivitiesShowcase />
+    <Destinations />
     <TwoUp />
   </main>
   <Footer />
   <AskPill />
-  <VideoModal />
 </BaseLayout>
+<style is:global>
+  /* Homepage only: deep navy ground so the starfield shows through every section */
+  body.home { background: #0a1230; }
+  body.home main, body.home footer { position: relative; z-index: 1; }
+  /* The pinned hero photo/video must not slide down behind the transparent sections */
+  body.home main > .relative { overflow: clip; }
+
+  /* Sections made transparent (stars show through); soft glows replace flat fills */
+  body.home #about { background: transparent; color: #fff; }
+  body.home #pillars { background: transparent; color: #fff; }
+  body.home #festival-showcase { background: transparent; color: #fff; }
+  body.home #activities { background: transparent; color: #fff; }
+  body.home #hotels { background: transparent; color: #fff; }
+  body.home #why-bhutan { background: transparent; color: #fff; }
+  body.home #contact { background: transparent; }
+
+  /* One spacing rhythm: every homepage section gets the same top and bottom padding */
+  body.home #about, body.home #festival-showcase, body.home #why-bhutan, body.home #getting-in,
+  body.home #activities, body.home #hotels, body.home #contact { padding-block: clamp(4rem, 7vw, 6rem); min-height: 0; }
+
+  /* Text colours on the dark ground */
+  body.home .ac-r { color: #E01B24; }
+  body.home .ac-b { color: #fff; }
+  body.home #about .txt .label { color: #C9D1EA; }
+  body.home #about .p,
+  body.home #hotels .p { color: #C9D1EA; }
+  body.home #about .silhouette { fill: #fff; opacity: .05; }
+  body.home #hotels .ar:not(:disabled) { background: #24357A; }
+  body.home #hotels .ar:hover:not(:disabled) { background: var(--color-brand); }
+  /* White cards keep dark text */
+  body.home #why-bhutan .col { color: var(--color-ink); }
+  @media (min-width: 900px) { body.home #why-bhutan .col:nth-child(2) { color: #fff; } }
+  body.home #contact .panel .ac-r { color: var(--color-brand); }
+  body.home #contact .panel .ac-b { color: var(--color-ink); }
+</style>

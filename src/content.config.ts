@@ -17,7 +17,7 @@ const pillars = defineCollection({
       question: z.string(),
       description: z.string(),
       color: z.string(),
-      textColor: z.string().default('#1A1813'),
+      textColor: z.string().default('#132155'),
       photo: image(),
       photoAlt: z.string(),
       href: z.string(),

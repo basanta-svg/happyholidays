@@ -3,27 +3,64 @@ import { Picture } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
-import CtaBand from '../components/CtaBand.astro';
-import hero from '../assets/images/bumthang-festival.jpg';
-import cranes from '../assets/images/blacknecked-crane-fest.jpg';
-import cultural from '../assets/images/cultural.jpg';
-
-const festivals = [
-  { name: 'Punakha Drubchen & Tshechu', when: 'February – March', where: 'Punakha Dzong', text: 'The Drubchen re-enacts a 17th-century battle with a procession of costumed “pazaps”, followed by the Tshechu’s masked dances in one of Bhutan’s most beautiful dzongs.' },
-  { name: 'Paro Tshechu', when: 'March – April', where: 'Rinpung Dzong, Paro', text: 'One of the country’s most celebrated festivals. Days of masked dances end before dawn with the unfurling of a giant sacred thongdrel.' },
-  { name: 'Haa Summer Festival', when: 'July', where: 'Haa Valley', text: 'A lighter, more local celebration of nomadic life, with traditional food, drink, music, sports and a taste of Bhutan’s highland culture.' },
-  { name: 'Thimphu Tshechu', when: 'September – October', where: 'Tashichho Dzong, Thimphu', text: 'The capital’s great autumn festival: three days of sacred cham dances, bright brocade costumes and crowds in their finest dress.' },
-  { name: 'Jambay Lhakhang Drup', when: 'October – November', where: 'Bumthang', text: 'A night-time festival at one of Bhutan’s oldest temples, famous for its fire blessing and sacred dances performed in the heart of the spiritual valleys.' },
-  { name: 'Black-necked Crane Festival', when: '11 November', where: 'Gangtey, Phobjikha Valley', text: 'Held each year to welcome the endangered black-necked cranes that arrive from the Tibetan plateau, with school dances and songs in the courtyard of Gangtey Monastery.' },
+import CtaBanner from '../components/CtaBanner.astro';
+import hero from '../assets/images/festivals/thimphu-tshechu-cham-dancers.webp';
+import { accent } from '../lib/accent';
+import cranes from '../assets/images/blacknecked-crane-fest.webp';
+import cultural from '../assets/images/cultural.webp';
+import { festivals } from '../data/festivals';
+import fHighland from '../assets/images/festivals/royal-highland-festival.webp';
+import fBlackHat from '../assets/images/festivals/thimphu-tshechu-black-hat-dancer.webp';
+import fCham from '../assets/images/festivals/thimphu-tshechu-cham-dancers.webp';
+import fAtsara from '../assets/images/festivals/thimphu-tshechu-atsara.webp';
+import fCymbals from '../assets/images/festivals/thimphu-tshechu-monk-cymbals.webp';
+import fLeap from '../assets/images/festivals/thimphu-tshechu-leaping-dancers.webp';
+import fCourtyard from '../assets/images/festivals/thimphu-tshechu-courtyard-dance.webp';
+const moments = [
+  { img: fCham, alt: 'Cham dancers in brocade costume at the Thimphu Tshechu', cap: 'Cham dancers in brocade, Thimphu Tshechu' },
+  { img: fBlackHat, alt: 'A dancer in a black hat spinning in the Thimphu Tshechu courtyard', cap: 'A dancer spinning in the courtyard' },
+  { img: fAtsara, alt: 'An atsara festival jester in a red mask and costume', cap: 'An atsara, the festival jester' },
+  { img: fCymbals, alt: 'A lama in a ceremonial hat playing cymbals', cap: 'A lama playing the cymbals' },
+  { img: fLeap, alt: 'Dancers in yellow leaping across the courtyard', cap: 'Dancers leaping across the courtyard' },
+  { img: fCourtyard, alt: 'Cham dancers performing in front of the crowd', cap: 'The courtyard fills with dance' },
+  { img: fHighland, alt: 'Two costumed figures on the grass at the Royal Highland Festival', cap: 'Royal Highland Festival' },
 ];
+
+
 ---
 <PageLayout title="Festivities" description="Experience Bhutan’s tshechus and seasonal festivals: Paro, Thimphu, Punakha, Bumthang and the Black-necked Crane Festival in Gangtey.">
-  <PageHero eyebrow="Festivities" title="Come for the dances. Stay for the people." intro="Bhutan’s festivals are living worship and community celebration. Time your journey to one and see the country at its most colourful." image={hero} alt="Masked dancers at a festival in Bumthang" />
+  <PageHero eyebrow="Festivities" title="Come for the dances. Stay for the people." intro="Bhutan’s festivals are living worship and community celebration. Time your journey to one and see the country at its most colourful." image={hero} alt="Cham dancers in brocade costume at the Thimphu Tshechu" />
+
+  <PageSection tone="ink" labelledby="about-fest-title">
+    <div class="pg-split">
+      <div class="pg-head" style="margin-bottom:0">
+        <p class="label" style="opacity:.75">About festivals in Bhutan</p>
+        <h2 id="about-fest-title" class="h3 reveal" set:html={accent('Festivals are the *heartbeat* of ~Bhutanese~ life.')}></h2>
+        <p class="pg-text reveal">Through the year, every valley in Bhutan gathers in the courtyard of its dzong or temple to celebrate. These festivals mark the seasons, honour saints and bless the community, and they are the best moment to see Bhutanese faith, music, costume and craft all in one place.</p>
+        <p class="pg-text reveal">They are not shows staged for visitors. They are worship and a family reunion in one, and guests are warmly welcome to watch, receive the blessings and share the day with local people.</p>
+      </div>
+      <Picture fallbackFormat="webp" src={fBlackHat} alt="A dancer in a black hat spinning in the Thimphu Tshechu courtyard" widths={[480, 900]} sizes="(min-width:900px) 40vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" style="aspect-ratio:4/5;object-position:50% 25%;max-width:30rem;justify-self:end" />
+    </div>
+    <div class="fi-cols">
+      <article class="fi-col reveal">
+        <h3 class="fi-t">What is a festival?</h3>
+        <p>In Bhutan a festival is called a <em>tshechu</em>, which simply means “tenth day”. It is a religious gathering held on the tenth day of a month in the Bhutanese lunar calendar, which is why the dates move from year to year.</p>
+      </article>
+      <article class="fi-col reveal" style="--d:100ms">
+        <h3 class="fi-t">Why is it held?</h3>
+        <p>Tshechus honour Guru Rinpoche, the saint who brought Buddhism to Bhutan. His life and deeds are remembered through sacred dance, and watching is considered a blessing that helps cleanse the viewer of misdeeds.</p>
+      </article>
+      <article class="fi-col reveal" style="--d:200ms">
+        <h3 class="fi-t">What will you see?</h3>
+        <p>Monks and laymen in carved masks and brocade perform the <em>cham</em> dances, masked jesters called <em>atsara</em> move through the crowd, and at some festivals a giant thangka is unfurled before sunrise.</p>
+      </article>
+    </div>
+  </PageSection>
 
   <PageSection tone="ink" labelledby="fest-title">
     <div class="pg-head">
       <p class="label" style="opacity:.7">The festival calendar</p>
-      <h2 id="fest-title" class="h3 reveal">Six festivals worth planning a trip around.</h2>
+      <h2 id="fest-title" class="h3 reveal" set:html={accent('Six *festivals* worth planning a ~trip~ around.')}></h2>
       <p class="pg-text reveal">Most Bhutanese festivals are tshechus, held on a set day of the lunar month in honour of Guru Rinpoche. Dates therefore move every year, so tell us the season you have in mind and we’ll match your trip to the right celebration.</p>
     </div>
     <div class="pg-rows">
@@ -42,12 +79,34 @@ const festivals = [
 
   <PageSection tone="plum" labelledby="cranes-title">
     <div class="pg-split">
-      <Picture src={cranes} alt="Black-necked cranes in Phobjikha valley" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={cranes} alt="Black-necked cranes in Phobjikha valley" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
       <div class="pg-head" style="margin-bottom:0">
         <p class="label" style="opacity:.75">Gangtey · Phobjikha Valley</p>
-        <h2 id="cranes-title" class="h3 reveal">The hidden valley and its winter visitors.</h2>
+        <h2 id="cranes-title" class="h3 reveal" set:html={accent('The *hidden valley* and its ~winter visitors~.')}></h2>
         <p class="pg-text reveal">Every November the endangered black-necked cranes glide into the Phobjikha Valley, a wide glacial bowl in Wangdue district. Visitors come to watch the cranes circle the Gangtey Monastery before settling into the wetlands for winter.</p>
       </div>
+    </div>
+  </PageSection>
+
+  <PageSection tone="ink" labelledby="moments-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.7">Festival moments</p>
+      <h2 id="moments-title" class="h3 reveal" set:html={accent('Colour, *mask* and ~music~.')}></h2>
+      <p class="pg-text reveal">A look at what fills the courtyard on a festival day.</p>
+    </div>
+    <div class="fm">
+      {[0, 1].map((row) => (
+        <div class={`fm-row ${row === 0 ? 'left' : 'right'}`}>
+          <div class="fm-track">
+            {[0, 1].map((copy) => (row === 0 ? moments : [...moments].reverse()).map((m) => (
+              <figure class="fm-card" aria-hidden={copy === 1 ? 'true' : undefined}>
+                <Picture fallbackFormat="webp" src={m.img} alt={copy === 1 ? '' : m.alt} widths={[500, 800, 1200]} sizes="(min-width:900px) 26rem, 80vw" formats={['avif', 'webp']} loading="lazy" />
+                <figcaption class="label">{m.cap}</figcaption>
+              </figure>
+            )))}
+          </div>
+        </div>
+      ))}
     </div>
   </PageSection>
 
@@ -56,7 +115,7 @@ const festivals = [
       <div>
         <div class="pg-head">
           <p class="label" style="opacity:.7">Festival etiquette</p>
-          <h2 id="tips-title" class="h3 reveal">Dress well, arrive early, be respectful.</h2>
+          <h2 id="tips-title" class="h3 reveal" set:html={accent('Dress *well*, arrive ~early~, be respectful.')}></h2>
         </div>
         <ul class="pg-list reveal">
           <li>Dress modestly and neatly. Shoulders and knees covered; no hats inside temple grounds.</li>
@@ -65,9 +124,30 @@ const festivals = [
           <li>Festival-day crowds mean hotels and flights book out. We recommend booking several months ahead.</li>
         </ul>
       </div>
-      <Picture src={cultural} alt="Bhutanese culture on festival day" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={cultural} alt="Bhutanese culture on festival day" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
-  <CtaBand title="Tell us your dates. We’ll find your festival." cta="Plan a festival trip" href="/contact" />
+  <CtaBanner title="Tell us your *dates*. We’ll find your ~festival~." cta="Plan a festival trip" href="/contact" />
 </PageLayout>
+<style>
+  /* Two rows of photos sliding in opposite directions, forever */
+  .fm { display: grid; gap: 1.25rem; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .fm-row { overflow: hidden; }
+  .fm-track { display: flex; width: max-content; will-change: transform; }
+  .fm-row.left .fm-track { animation: fm-left 60s linear infinite; }
+  .fm-row.right .fm-track { animation: fm-right 60s linear infinite; }
+  .fm-card { position: relative; flex: none; width: clamp(15rem, 28vw, 24rem); aspect-ratio: 4 / 3; margin: 0 1.25rem 0 0; overflow: hidden; border-radius: 0; }
+  .fm-card :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+  .fm-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 18 51 / 0) 55%, rgb(10 18 51 / .8) 100%); pointer-events: none; }
+  .fm-card figcaption { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: .9rem; color: #fff; }
+  @keyframes fm-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes fm-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  @media (prefers-reduced-motion: reduce) { .fm-track { animation: none !important; } .fm-row { overflow-x: auto; } .fm { -webkit-mask-image: none; mask-image: none; } }
+  .fi-cols { display: grid; gap: 1.5rem; margin-top: 2.5rem; }
+  .fi-col { display: grid; gap: .9rem; align-content: start; padding-top: 1.25rem; border-top: 4px solid #E01B24; }
+  .fi-t { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.75rem, 3vw, 2.4rem); line-height: 1; text-transform: uppercase; color: #fff; }
+  .fi-col p { color: #fff; line-height: 1.6; max-width: 40ch; }
+  @media (min-width: 800px) { .fi-cols { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+</style>

@@ -1,41 +1,54 @@
 ---
 import { getCollection } from 'astro:content';
 import { Picture } from 'astro:assets';
-import CloudMask from './CloudMask.astro';
-import ArrowLink from './ArrowLink.astro';
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
 const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
-const last = pillars[pillars.length - 1].data;
 ---
-<div id="pillars" class="pillars" data-pillars style={`background:${pillars[0].data.color}`}>
-  <CloudMask id="cloud-mask" />
-  {pillars.map((p, i) => (
-    <section class="panel" data-color={p.data.color} data-text={p.data.textColor} aria-labelledby={`pillar-${i}`} style={`color:${p.data.textColor}`}>
-      <div class:list={['wrap grid', i % 2 === 1 && 'flip']}>
-        <div class="copy">
-          <h2 id={`pillar-${i}`} class="h2 reveal"><span>{p.data.line1}</span><br /><span>{p.data.line2}</span></h2>
-          <p class="q label reveal" style="--d:100ms">{p.data.question}</p>
-          <p class="desc reveal" style="--d:180ms">{p.data.description}</p>
-          <div class="cta reveal" style="--d:240ms"><ArrowLink href={p.data.href}>{p.data.cta}</ArrowLink></div>
-        </div>
-        <div class="pic">
-          <div class="mask" data-cloud>
-            <Picture src={p.data.photo} alt={p.data.photoAlt} widths={[500, 900, 1200]} sizes="(min-width:1024px) 45vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
-          </div>
-        </div>
-      </div>
-    </section>
-  ))}
-</div>
+<section id="pillars" class="pl" aria-labelledby="pl-title">
+  <div class="wrap">
+    <header class="head">
+      <p class="label eyebrow reveal">What we do</p>
+      <h2 id="pl-title" class="h2 reveal" style="--d:80ms" set:html={accent('Three ways to *experience* _Bhutan_')}></h2>
+    </header>
+    <ul class="cards">
+      {pillars.map((p, i) => (
+        <li class="card reveal" style={`--d:${i * 120}ms`}>
+          <a href={withBase(p.data.href)} aria-label={`${p.data.line1} ${p.data.line2}: ${p.data.cta}`}>
+            <Picture fallbackFormat="webp" src={p.data.photo} alt={p.data.photoAlt} widths={[500, 800, 1100]} sizes="(min-width:900px) 33vw, 92vw" formats={['avif', 'webp']} loading="lazy" class="img" />
+            <span class="num label">0{i + 1}</span>
+            <div class="body">
+              <p class="label q">{p.data.question}</p>
+              <h3 class="t">{p.data.line1} {p.data.line2}</h3>
+              <p class="d">{p.data.description}</p>
+              <span class="go label">{p.data.cta} <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
 <style>
-  .pillars { position: relative; z-index: 2; transition: background-color .9s var(--ease); }
-  .pillars :global(.panel) { transition: color .9s var(--ease); }
-  .panel { min-height: 100svh; display: flex; align-items: center; padding-block: var(--section-pad); }
-  .grid { display: grid; gap: 3rem; align-items: center; }
-  @media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr; gap: 5rem; } .flip .copy { order: 2; } }
-  .q { margin-block: 2rem 1.25rem; opacity: .7; font-size: 13px; }
-  .desc { max-width: 38ch; }
-  .cta { margin-top: 2rem; }
-  .pic { display: grid; place-items: center; }
-  .mask { width: min(100%, 640px); aspect-ratio: 1; clip-path: url(#cloud-mask); transform: scale(var(--s, .92)) rotate(var(--r, 0deg)); will-change: transform; }
-  .mask :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pl { position: relative; z-index: 2; background: #F4F5FA; color: var(--color-ink); padding-block: var(--section-pad); }
+  .head { display: grid; gap: 1rem; margin-bottom: 3.5rem; max-width: 24ch; }
+  .eyebrow { color: var(--color-brand); }
+  .cards { display: grid; gap: 1.25rem; }
+  .card a { position: relative; display: block; height: 100%; min-height: 34rem; border-radius: 0; overflow: hidden; color: #fff; isolation: isolate; }
+  .card :global(.img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.1s var(--ease); }
+  .card a::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgb(10 18 51 / .1) 20%, rgb(10 18 51 / .92) 100%); }
+  .card a:hover :global(.img) { transform: scale(1.06); }
+  .num { position: absolute; top: 1.25rem; left: 1.25rem; padding: .45rem .8rem; border-radius: 9999px; background: var(--color-sage); color: var(--color-ink); }
+  .body { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.75rem; display: grid; gap: .75rem; }
+  .q { opacity: .8; }
+  .t { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 400; line-height: 1.15; letter-spacing: normal; }
+  .d { font-size: 15px; max-width: 36ch; opacity: .92; }
+  .go { color: var(--color-sage); margin-top: .4rem; }
+  .go span { display: inline-block; transition: transform .3s var(--ease); }
+  .card a:hover .go span { transform: translateX(5px); }
+  @media (min-width: 900px) {
+    .cards { grid-template-columns: repeat(3, 1fr); }
+    .card:nth-child(2) { margin-top: 3rem; }
+    .card:nth-child(3) { margin-top: 6rem; }
+  }
 </style>

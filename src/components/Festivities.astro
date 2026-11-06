@@ -1,0 +1,63 @@
+---
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
+import { festivals } from '../data/festivals';
+---
+<section id="festivities" class="fs" aria-labelledby="fs-title">
+  <div class="wrap grid">
+    <div class="intro">
+      <p class="label reveal">The festival calendar</p>
+      <h2 id="fs-title" class="h2 reveal" style="--d:80ms" set:html={accent('Come for the *dances*.<br>Stay for the _people_.')}></h2>
+      <p class="lead reveal" style="--d:160ms">Bhutan’s tshechus are living worship and a community celebration. Time your journey to one and see the country at its most colourful.</p>
+      <a class="btn btn-label reveal" style="--d:220ms" href={withBase('/festivities')}>All festivities</a>
+    </div>
+    <ol class="rows">
+      {festivals.map((f: any, i: number) => (
+        <li class="row reveal" tabindex="0" style={`--d:${i * 60}ms`}>
+          <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span class="when">{f.when}</span>
+          <div class="nm">
+            <h3>{f.name}</h3>
+            <p class="label where">{f.where}</p>
+          </div>
+          <span class="arr" aria-hidden="true">→</span>
+          <div class="more"><p>{f.text}</p></div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .fs { position: relative; z-index: 2; background: var(--color-paper-2); color: var(--color-ink); border-top: 1px solid rgb(19 33 85 / .12); padding-block: var(--section-pad); }
+  .grid { display: grid; gap: 3rem; align-items: start; }
+  .intro { display: grid; gap: 1.25rem; justify-items: start; }
+  .intro .label { color: var(--color-ink); }
+  .intro :global(.h2) { max-width: 16ch; }
+  .lead { max-width: 40ch; color: var(--color-muted); }
+  .btn { display: inline-block; margin-top: .5rem; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .btn:hover { transform: translateY(-2px); background: #ffd92e; }
+  .rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgb(19 33 85 / .25); }
+  .row { position: relative; display: grid; grid-template-columns: 2.25rem 1fr; gap: .25rem 1rem; align-items: center; padding: 1.25rem .75rem; border-bottom: 1px solid rgb(19 33 85 / .25); outline: none; transition: background .35s var(--ease), color .35s var(--ease), padding .35s var(--ease); }
+  .n { grid-row: 1; font-family: var(--font-display); font-size: 18px; color: var(--color-ink); opacity: .55; transition: color .3s, opacity .3s; }
+  .when { grid-column: 2; font-family: var(--font-display); font-size: 22px; line-height: 1; text-transform: uppercase; color: var(--color-brand); transition: color .3s; }
+  .nm { grid-column: 2; }
+  .nm h3 { font-size: clamp(22px, 2.5vw, 28px); line-height: 1; }
+  .where { margin-top: .35rem; opacity: .75; }
+  .arr { display: none; font-size: 22px; transition: transform .35s var(--ease); }
+  .more { grid-column: 2; display: grid; grid-template-rows: 1fr; }
+  .more p { overflow: hidden; margin: .5rem 0 0; font-size: 14px; line-height: 1.55; color: var(--color-muted); max-width: 56ch; transition: color .3s; }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: .85fr 1.15fr; gap: 5rem; }
+    .intro { position: sticky; top: 7rem; }
+    .row { grid-template-columns: 2.5rem 9.5rem 1fr auto; padding-block: 1.4rem; }
+    .when, .nm { grid-column: auto; }
+    .more { grid-column: 3; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--ease); }
+    .arr { display: block; }
+    .row:hover, .row:focus-visible { background: var(--color-dusk); color: #fff; padding-inline: 1.25rem; }
+    .row:hover .when, .row:focus-visible .when { color: #fff; }
+    .row:hover .n, .row:focus-visible .n { color: #fff; opacity: .7; }
+    .row:hover .more, .row:focus-visible .more { grid-template-rows: 1fr; }
+    .row:hover .more p, .row:focus-visible .more p { color: rgb(255 255 255 / .85); }
+    .row:hover .arr, .row:focus-visible .arr { transform: translateX(6px); }
+  }
+</style>

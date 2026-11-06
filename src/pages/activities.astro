@@ -3,15 +3,23 @@ import { Picture } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
-import CtaBand from '../components/CtaBand.astro';
-import hero from '../assets/images/bumthang-trek.jpg';
-import cultural from '../assets/images/cultural.jpg';
-import biking from '../assets/images/bikeing1.jpg';
-import birds from '../assets/images/birdwatching2.jpg';
-import food from '../assets/images/bumtap-cuisine.jpg';
-import thangka from '../assets/images/deck/thangka-wall.jpg';
-import homestay from '../assets/images/deck/image48.jpeg';
-import buddha from '../assets/images/buddha-point.jpg';
+import CtaBanner from '../components/CtaBanner.astro';
+import { accent } from '../lib/accent';
+import hero from '../assets/images/bumthang-trek.webp';
+import cultural from '../assets/images/cultural.webp';
+import biking from '../assets/images/bikeing1.webp';
+import birds from '../assets/images/birdwatching2.webp';
+import food from '../assets/images/bumtap-cuisine.webp';
+import tgArtist from '../assets/images/thangka/artist-phuntsho.webp';
+import tgWall from '../assets/images/thangka/thangka-wall.webp';
+import tgMandala from '../assets/images/thangka/mandala-study.webp';
+import tgTable from '../assets/images/thangka/painting-table.webp';
+import tgBooth from '../assets/images/thangka/exhibition-booth.webp';
+import tgHall from '../assets/images/thangka/exhibition-hall.webp';
+import tgGallery from '../assets/images/thangka/gallery-hall.webp';
+import tgViewing from '../assets/images/thangka/viewing-thangka.webp';
+import tgWith from '../assets/images/thangka/with-artist.webp';
+import buddha from '../assets/images/buddha-point.webp';
 
 const activities = [
   { title: 'Culture & heritage', tag: 'Dzongs · temples · museums', img: cultural, text: 'Walk the great dzongs, visit the National Museum and Rinpung Dzong, stroll local markets and meet the craftspeople who keep Bhutan’s traditions alive.' },
@@ -21,20 +29,29 @@ const activities = [
   { title: 'Culinary experiences', tag: 'Farm-to-table', img: food, text: 'Taste ema datshi and local specialties, learn to cook with a host family and share meals made with ingredients from the village.' },
   { title: 'Pilgrimage', tag: 'Sacred sites', img: buddha, text: 'Journeys for Buddhist pilgrims to monasteries, stupas and holy sites, with guides who understand both the ritual and the history.' },
 ];
-const more = ['Golf', 'Spa & wellness', 'Hot stone bath', 'Photography', 'Documentary film crews', 'Farm stays'];
+const thangkaGallery = [
+  { img: tgWall, alt: 'A wall of thangka paintings in a red gallery', cap: 'A wall of thangka paintings' },
+  { img: tgMandala, alt: 'Guests studying a mandala thangka with the artist', cap: 'Studying a mandala thangka with the artist' },
+  { img: tgTable, alt: 'The artist painting with a guest at a long table', cap: 'Painting together at the table' },
+  { img: tgWith, alt: 'A guest holding a painted mask beside the artist', cap: 'A guest with the artist and a painted mask' },
+  { img: tgBooth, alt: 'The Quality Thangka Painting exhibition booth', cap: 'Quality Thangka Painting, exhibition booth' },
+  { img: tgHall, alt: 'Visitors in an exhibition hall with red walls', cap: 'Exhibition held in China' },
+  { img: tgGallery, alt: 'A gallery hall hung with thangka paintings', cap: 'The gallery hall' },
+  { img: tgViewing, alt: 'Visitors looking at a large green Tara thangka', cap: 'Visitors admiring a large thangka' },
+];
 ---
-<PageLayout title="Activities" description="Hiking, cycling, bird watching, culture, thangka painting workshops, homestays and more. Tailor-made activities across Bhutan.">
+<PageLayout bodyClass="ap" title="Activities" description="Hiking, cycling, bird watching, culture, thangka painting workshops and more. Tailor-made activities across Bhutan.">
   <PageHero eyebrow="Activities" title="Walk it. Ride it. Taste it." intro="Beyond the classic tour, Bhutan rewards the curious. Choose the experiences that fit you and we’ll build the journey around them." image={hero} alt="Trekking in Bumthang" />
 
   <PageSection tone="ink" labelledby="act-title">
     <div class="pg-head">
       <p class="label" style="opacity:.7">Things to do</p>
-      <h2 id="act-title" class="h3 reveal">Special-interest journeys, planned end to end by our team in Thimphu.</h2>
+      <h2 id="act-title" class="h3 reveal" set:html={accent('*Special-interest* journeys, planned end to end by our team in ~Thimphu~.')}></h2>
     </div>
     <div class="pg-cards">
       {activities.map((a, i) => (
         <article class="pg-card reveal" style={`--d:${(i % 3) * 100}ms`}>
-          <Picture src={a.img} alt={a.title} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <Picture fallbackFormat="webp" src={a.img} alt={a.title} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
           <div class="body">
             <p class="pg-tag">{a.tag}</p>
             <h3>{a.title}</h3>
@@ -47,12 +64,12 @@ const more = ['Golf', 'Spa & wellness', 'Hot stone bath', 'Photography', 'Docume
 
   <PageSection tone="paper" id="thangka" labelledby="thangka-title">
     <div class="pg-split">
-      <Picture src={thangka} alt="Thangka paintings on display" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={tgArtist} alt="Artist Phuntsho Wangdi painting a mask" widths={[480, 900]} sizes="(min-width:900px) 40vw, 100vw" formats={['avif', 'webp']} class="tg-portrait reveal" />
       <div>
         <div class="pg-head">
           <p class="label" style="opacity:.7">Traditional arts & crafts · Paro</p>
-          <h2 id="thangka-title" class="h3 reveal">Thangka painting workshop</h2>
-          <p class="pg-text reveal">Learn about Bhutanese sacred art from a Paro-based artist who runs a thangka painting studio and teaches visitors who want to know more about Bhutan’s arts. Sessions take limited seats so every participant gets proper attention, and they can be fitted around your day.</p>
+          <h2 id="thangka-title" class="h3 reveal" set:html={accent('*Thangka* painting ~workshop~')}></h2>
+          <p class="pg-text reveal">Learn about Bhutanese sacred art from Phuntsho Wangdi, an artist based in Paro who owns a Quality Thangka Painting store of Traditional Arts &amp; Crafts. He also takes workshop classes for visitors who are keen to know more about Bhutanese arts, with limited seats so every participant gets proper attention.</p>
         </div>
         <table class="pg-table reveal">
           <thead><tr><th>Programme</th><th>One day</th></tr></thead>
@@ -62,47 +79,27 @@ const more = ['Golf', 'Spa & wellness', 'Hot stone bath', 'Photography', 'Docume
             <tr><td>Group of 10</td><td>USD 20</td></tr>
           </tbody>
         </table>
-        <p class="pg-note">Programmes can be taken intensively or spread over several days, for individuals, couples, small groups or larger groups.</p>
+        <p class="pg-note">Programmes can be taken intensively or spread over several days, for individuals, couples, small groups or larger groups. The workshop is mostly customised to fit your schedule so there is leisure time to learn the art. More group programmes with longer duration are planned for the future.</p>
       </div>
     </div>
-  </PageSection>
 
-  <PageSection tone="plum" id="stays" labelledby="stay-title">
-    <div class="pg-split rev">
-      <div>
-        <div class="pg-head">
-          <p class="label" style="opacity:.75">Homestays, heritage houses & farm stays</p>
-          <h2 id="stay-title" class="h3 reveal">Experience the warmth of Bhutanese hospitality.</h2>
-          <p class="pg-text reveal">Stay in traditional homes, interact with local families, and discover the authentic culture and lifestyle of Bhutan.</p>
-        </div>
-        <div class="pg-cols c2 reveal">
-          <div>
-            <h3 class="label">Homestay</h3>
-            <p class="pg-text">Traditional Bhutanese homes where guests stay with local families: Bhutanese lifestyle, local food, customs and gardening.</p>
-          </div>
-          <div>
-            <h3 class="label">Heritage house</h3>
-            <p class="pg-text">Old traditional buildings preserved for cultural experiences, showcasing architecture, interiors and history.</p>
-          </div>
-          <div>
-            <h3 class="label">Farm stay</h3>
-            <p class="pg-text">Rural homes in villages and farming areas: farm-to-table meals, nature walks and the village experience.</p>
-          </div>
-        </div>
-      </div>
-      <Picture src={homestay} alt="A traditional Bhutanese homestay room" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+    <h3 class="h3 reveal" style="margin: clamp(3rem, 6vw, 5rem) 0 1.5rem" set:html={accent('From the ~studio~ and the *exhibitions*')}></h3>
+    <div class="tg-grid">
+      {thangkaGallery.map((g, i) => (
+        <figure class="reveal" style={`--d:${(i % 3) * 80}ms`}>
+          <Picture fallbackFormat="webp" src={g.img} alt={g.alt} widths={[400, 700, 1000]} sizes="(min-width:900px) 30vw, 92vw" formats={['avif', 'webp']} loading="lazy" />
+          <figcaption class="label">{g.cap}</figcaption>
+        </figure>
+      ))}
     </div>
   </PageSection>
 
-  <PageSection tone="dusty" labelledby="more-title">
-    <div class="pg-head">
-      <p class="label" style="opacity:.75">And more</p>
-      <h2 id="more-title" class="h3 reveal">Something specific in mind? We’ll make it happen.</h2>
-    </div>
-    <ul class="pg-chips reveal">
-      {more.map((m) => <li>{m}</li>)}
-    </ul>
-  </PageSection>
-
-  <CtaBand title="Pick your experiences. We’ll plan the rest." cta="Start planning" href="/contact" />
+  <CtaBanner title="Pick your *experiences*. We’ll plan the ~rest~." cta="Start planning" href="/contact" />
 </PageLayout>
+<style>
+  .tg-portrait { width: 100%; height: auto; display: block; border-radius: 0; }
+  .tg-grid { columns: 3 260px; column-gap: 1rem; }
+  .tg-grid figure { break-inside: avoid; margin: 0 0 1rem; }
+  .tg-grid :global(img) { display: block; width: 100%; height: auto; border-radius: 0; }
+  .tg-grid figcaption { margin-top: .5rem; opacity: .75; }
+</style>

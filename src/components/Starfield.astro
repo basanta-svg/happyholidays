@@ -1,0 +1,131 @@
+---
+// Animated starfield for the homepage only. Tweak these two values:
+//   DENSITY_DIVISOR: lower = more stars (count = min(180, width * height / divisor))
+//   ACCENT: colour of the glowing accent stars
+---
+<canvas class="starfield" aria-hidden="true" data-density-divisor="9000" data-accent="#FECB00"></canvas>
+<style>
+  .starfield { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+</style>
+<script>
+  type Star = { x: number; y: number; z: number; r: number; phase: number; accent: boolean };
+
+  let raf = 0;
+  let teardown: (() => void) | null = null;
+
+  const stop = () => {
+    cancelAnimationFrame(raf);
+    raf = 0;
+    teardown?.();
+    teardown = null;
+  };
+
+  const start = () => {
+    stop();
+    const canvas = document.querySelector<HTMLCanvasElement>('canvas.starfield');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const divisor = Number(canvas.dataset.densityDivisor) || 9000;
+    const accent = canvas.dataset.accent || '#FECB00';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const touch = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+
+    let W = 0, H = 0, dpr = 1, stars: Star[] = [];
+    let t = 0, mx = 0.5, my = 0.5, lastWidth = -1;
+
+    const build = () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.round(Math.min(180, (W * H) / divisor));
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        z: 0.1 + Math.random() * 0.9,
+        r: 0.3 + Math.random() * 1.1,
+        phase: Math.random() * Math.PI * 2,
+        accent: Math.random() < 0.18,
+      }));
+      lastWidth = W;
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      const sy = window.scrollY;
+      for (const s of stars) {
+        const op = 0.4 + 0.6 * Math.abs(Math.sin(s.phase + t * s.z * 2));
+        const px = touch ? 0 : (mx - 0.5) * s.z * 26;
+        const py = touch ? 0 : (my - 0.5) * s.z * 26;
+        const x = s.x + px;
+        let y = (s.y - sy * s.z * 0.15 + py) % H;
+        if (y < 0) y += H;
+        ctx.globalAlpha = op * (s.accent ? 0.9 : 0.6);
+        if (s.accent) {
+          ctx.fillStyle = accent;
+          ctx.shadowColor = accent;
+          ctx.shadowBlur = 8;
+        } else {
+          ctx.fillStyle = 'rgb(246, 241, 231)';
+          ctx.shadowBlur = 0;
+        }
+        ctx.beginPath();
+        ctx.arc(x, y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+    };
+
+    const loop = () => {
+      t += 0.01;
+      draw();
+      raf = requestAnimationFrame(loop);
+    };
+
+    let resizeTimer = 0;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (window.innerWidth !== lastWidth) {
+          build();
+          if (reduce) draw();
+        }
+      }, 150);
+    };
+    const onMove = (e: MouseEvent) => { mx = e.clientX / window.innerWidth; my = e.clientY / window.innerHeight; };
+    const onScroll = () => { if (reduce) draw(); };
+    const onVisibility = () => {
+      if (reduce) return;
+      if (document.hidden) { cancelAnimationFrame(raf); raf = 0; }
+      else if (!raf) raf = requestAnimationFrame(loop);
+    };
+
+    build();
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (!touch) window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
+
+    if (reduce) draw(); // one static frame
+    else raf = requestAnimationFrame(loop);
+
+    teardown = () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  };
+
+  // Works with and without Astro view transitions.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
+</script>

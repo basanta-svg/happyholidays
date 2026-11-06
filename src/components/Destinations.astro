@@ -1,19 +1,139 @@
 ---
 import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
 import { site } from '../site.config';
-import ArrowLink from './ArrowLink.astro';
-import Marquee from './Marquee.astro';
-const items = (await getCollection('hotels')).sort((a, b) => a.data.order - b.data.order).map((s) => s.data);
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
+const hotels = (await getCollection('hotels')).sort((a, b) => a.data.order - b.data.order).map((s) => s.data);
 ---
-<section id="hotels" class="sp" aria-labelledby="ht-title">
-  <div class="wrap head">
-    <h2 id="ht-title" class="h3 reveal">{site.hotelsIntro}</h2>
-    <div class="reveal" style="--d:120ms"><ArrowLink href={site.hotelsUrl}>All hotels</ArrowLink></div>
+<section id="hotels" class="ht" aria-labelledby="ht-title">
+  <div class="wrap grid">
+    <div class="left">
+      <div class="copy">
+        <h2 id="ht-title" class="h2 reveal" set:html={accent('Where you’ll *stay*')}></h2>
+        <p class="p reveal" style="--d:80ms">{site.hotelsIntro.replace('Our hotel partners: h', 'H')}</p>
+        <p class="p reveal" style="--d:140ms">From the quiet Aman lodges of Paro, Punakha and Bumthang to Six Senses and COMO Uma, every hotel is chosen for its setting, its service and its sense of place.</p>
+        <a class="btn btn-label reveal" style="--d:200ms" href={withBase(site.hotelsUrl)}>All hotels</a>
+      </div>
+      <div class="ctrl" role="group" aria-label="Scroll hotels">
+        <button type="button" class="ar prev" aria-label="Previous hotels" data-dir="-1">&lsaquo;</button>
+        <button type="button" class="ar next" aria-label="Next hotels" data-dir="1">&rsaquo;</button>
+      </div>
+    </div>
+    <div class="slider" data-hotel-slider>
+      <ul class="track" tabindex="0" aria-label="Hotel partners">
+        {hotels.map((h) => (
+          <li class="card">
+            <a href={withBase(site.hotelsUrl)} draggable="false" aria-label={`${h.name}, ${h.dzongkhag}`}>
+              <Picture fallbackFormat="webp" src={h.photo} alt="" widths={[900, 1300, 1800]} sizes="900px" formats={['avif', 'webp']} loading="lazy" draggable="false" class="img" />
+              <span class="cap">
+                <span class="nm">{h.name}</span>
+                <span class="loc label"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>{h.dzongkhag}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
-  <Marquee items={items} label="Hotel partners" />
 </section>
 <style>
-  .sp { background: #186093; padding-block: var(--section-pad); min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 4rem; }
-  .head { display: grid; gap: 1.5rem; justify-items: start; }
-  .head :global(.h3) { max-width: 28ch; }
+  .ht { position: relative; z-index: 2; overflow: hidden; background: #fff; color: var(--color-ink); padding-block: var(--section-pad); }
+  .grid { display: grid; gap: 2.5rem; }
+  .left { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; }
+  .copy { display: grid; gap: 1.25rem; justify-items: start; align-content: center; flex: 1; }
+  .copy :global(.h2) { max-width: 14ch; }
+  .p { color: var(--color-muted); max-width: 40ch; }
+  .btn { display: inline-block; margin-top: .5rem; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .btn:hover { transform: translateY(-2px); background: #ffd92e; }
+  .ctrl { display: flex; gap: .5rem; }
+  .ar { display: grid; place-items: center; width: 52px; height: 52px; border: 0; border-radius: 0; background: var(--color-ink); color: #fff; font-size: 30px; line-height: 1; cursor: pointer; transition: background .25s, opacity .25s, transform .25s var(--ease); }
+  .ar:hover:not(:disabled) { background: var(--color-brand); transform: translateY(-2px); }
+  .ar:disabled { background: #B8BDC9; cursor: default; opacity: .7; }
+  .slider { min-width: 0; }
+  .track { display: flex; gap: 1rem; margin: 0; padding: 0 1.5rem 0 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; -webkit-overflow-scrolling: touch; }
+  .track::-webkit-scrollbar { display: none; }
+  .track.drag { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; user-select: none; }
+  .track:focus-visible { outline-offset: 6px; }
+  .card { flex: none; width: min(78vw, 280px); height: clamp(380px, 52vw, 540px); scroll-snap-align: start; position: relative; overflow: hidden; border-radius: 0; background: var(--color-ink); }
+  .card a { position: absolute; inset: 0; display: block; color: #fff; }
+  .card :global(.img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform .8s var(--ease); }
+  .card:hover :global(.img) { transform: scale(1.06); }
+  .card a::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 18 51 / .35) 0%, rgb(10 18 51 / 0) 25%, rgb(10 18 51 / 0) 55%, rgb(10 18 51 / .85) 100%); }
+  .cap { position: absolute; z-index: 1; left: 1.25rem; right: 1.25rem; bottom: 1.4rem; display: grid; gap: .45rem; }
+  .nm { font-family: var(--font-display); font-size: clamp(22px, 2.5vw, 28px); line-height: 1; text-transform: uppercase; }
+  .loc { display: flex; align-items: center; gap: .35rem; opacity: .85; }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: minmax(260px, 24rem) minmax(0, 1fr); gap: 4rem; align-items: stretch; }
+    .slider { margin-right: calc(-1 * max(var(--gutter), (100vw - var(--container-page)) / 2)); }
+    .track { padding-right: max(var(--gutter), calc((100vw - var(--container-page)) / 2)); }
+    .ctrl { justify-content: flex-end; }
+  }
 </style>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-hotel-slider]');
+  if (root) {
+    const track = root.querySelector<HTMLElement>('.track')!;
+    const sec = root.closest('section')!;
+    const prev = sec.querySelector<HTMLButtonElement>('.prev')!;
+    const next = sec.querySelector<HTMLButtonElement>('.next')!;
+    const step = () => (track.querySelector<HTMLElement>('.card')?.offsetWidth ?? 280) + 16;
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
+    });
+    // drag to scroll with a mouse
+    let down = false, startX = 0, startLeft = 0, moved = false;
+    track.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 5) { moved = true; track.classList.add('drag'); }
+      if (moved) track.scrollLeft = startLeft - dx;
+    });
+    window.addEventListener('pointerup', () => {
+      if (!down) return;
+      down = false; track.classList.remove('drag');
+      if (moved) { const snap = Math.round(track.scrollLeft / step()) * step(); track.scrollTo({ left: snap, behavior: 'smooth' }); }
+    });
+    track.addEventListener('click', (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
+    update();
+
+    // auto-slide: continuous smooth drift, paused while the pointer is over the cards
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let visible = true, hover = false, resting = 0, pos = track.scrollLeft, last = 0;
+    new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(sec);
+    prev.addEventListener('click', () => { resting = 2; });
+    next.addEventListener('click', () => { resting = 2; });
+    track.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hover = true; });
+    track.addEventListener('pointerleave', () => { hover = false; });
+    if (!reduce) {
+      track.style.scrollSnapType = 'none';
+      const SPEED = 45; // px per second
+      const tick = (t: number) => {
+        const dt = Math.min(64, t - last) / 1000; last = t;
+        const paused = !visible || hover || down || document.hidden || track.matches(':focus-within');
+        if (paused) { pos = track.scrollLeft; }
+        else if (resting > 0) { resting -= dt; pos = track.scrollLeft; }
+        else {
+          const max = track.scrollWidth - track.clientWidth;
+          if (pos >= max - 1) { resting = 1.2; track.style.scrollBehavior = 'smooth'; track.scrollLeft = 0; setTimeout(() => { track.style.scrollBehavior = ''; pos = 0; }, 900); }
+          else { pos = Math.min(max, pos + SPEED * dt); track.scrollLeft = pos; }
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }
+</script>

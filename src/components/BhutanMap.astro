@@ -1,0 +1,198 @@
+---
+import map from '../data/bhutan-map.json';
+
+// District outlines: the dzongkhag map from the Marvels Luxe Bhutan project (src/data/bhutan-map.json).
+// Flight times and drive times are approximate; schedules and road conditions change.
+const { width: W, height: H, districts, points } = map as any;
+const paro = points.PBH;
+const VX = -170; // extra room on the west side for the international line
+const VW = W - 2 * VX, VH = H + 72;
+const PCT = (x: number, y: number) => ({ l: (((x - VX) / VW) * 100).toFixed(2), t: ((y / VH) * 100).toFixed(2) });
+type Air = { code: string; name: string; district: string; bend: number; time: string; note: string; lbl: [number, number, string] };
+const air: Air[] = [
+  { code: 'BUT', name: 'Bathpalathang (Bumthang)', district: 'Bumthang', bend: 0.14, time: 'about 30–40 min from Paro', note: 'Gateway to the central valleys: Jakar, Ura, Tang and Chumey.', lbl: [0, -12, 'middle'] },
+  { code: 'YON', name: 'Yonphula (Trashigang)', district: 'Trashigang', bend: 0.1, time: 'about 1 h from Paro', note: 'Gateway to the east: Trashigang, Mongar, Trashiyangtse and Samdrup Jongkhar.', lbl: [0, -12, 'middle'] },
+  { code: 'GLU', name: 'Gelephu (Sarpang)', district: 'Sarpang', bend: -0.1, time: 'about 30–40 min from Paro', note: 'Gateway to the south and the Zhemgang and Trongsa roads.', lbl: [-11, 3, 'end'] },
+];
+type Gate = { id: string; name: string; district: string; ox?: number; oy?: number; border: string; drive: string; note: string; lbl: [number, number, string] };
+const gates: Gate[] = [
+  { id: 'PHU', name: 'Phuentsholing', district: 'Chhukha', oy: 50, border: 'Jaigaon, West Bengal, India', drive: 'about 5–6 h by road to Thimphu', note: 'The main western entry and exit. Nearest Indian airports are Bagdogra and Hasimara.', lbl: [0, 17, 'middle'] },
+  { id: 'GEL', name: 'Gelephu', district: 'Sarpang', oy: 50, border: 'Assam, India', drive: 'about 7–8 h by road to Thimphu', note: 'The central southern entry and exit. Guwahati is the usual Indian gateway.', lbl: [0, 17, 'middle'] },
+  { id: 'SJO', name: 'Samdrup Jongkhar', district: 'Samdrup Jongkhar', oy: 50, border: 'Darranga, Assam, India', drive: 'about 5–6 h by road to Trashigang', note: 'The eastern entry and exit, ideal for east-to-west journeys. Guwahati is the usual Indian gateway.', lbl: [0, 17, 'middle'] },
+];
+const at = (g: Gate) => ({ x: points[g.id].x + (g.ox ?? 0), y: points[g.id].y + (g.oy ?? 0) });
+const curve = (a: Air) => {
+  const t = points[a.code];
+  const dx = t.x - paro.x, dy = t.y - paro.y;
+  const mx = (t.x + paro.x) / 2 - dy * a.bend, my = (t.y + paro.y) / 2 + dx * a.bend;
+  return `M${paro.x} ${paro.y}Q${mx.toFixed(0)} ${my.toFixed(0)} ${t.x} ${t.y}`;
+};
+const pos = Object.fromEntries([['PBH', paro], ...air.map((a) => [a.code, points[a.code]]), ...gates.map((g) => [g.id, at(g)])].map(([k, v]: any) => [k, PCT(v.x, v.y)]));
+const data = JSON.stringify({
+  __pos: pos,
+  ...Object.fromEntries(air.map((a) => [a.code, { kind: 'air', title: `${a.name} (${a.code})`, line: `Paro → ${a.district} · ${a.time}`, note: a.note }])),
+  ...Object.fromEntries(gates.map((g) => [g.id, { kind: 'road', title: `${g.name} · entry and exit by road`, line: `Border with ${g.border} · ${g.drive}`, note: g.note }])),
+});
+const intl = { x1: paro.x, y1: paro.y, x2: -105, y2: 178 };
+const PLANE = 'M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z';
+const CAR = 'M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z';
+---
+<div class="bm reveal" data-bmap>
+  <div class="bm-stage">
+    <div class="bm-scroll">
+    <svg class="bm-svg" viewBox={`${VX} 0 ${VW} ${VH}`} data-vbd={`${VX} 0 ${VW} ${VH}`} data-vbm={`-118 0 ${W + 128} ${VH}`} data-filter="all" role="group" aria-label="Map of Bhutan with domestic flights from Paro and border road gates">
+      <g class="bm-land">
+        {districts.map((d: any) => <path d={d.d}><title>{d.name}</title></path>)}
+      </g>
+      <g class="bm-names" aria-hidden="true">
+        {districts.filter((d: any) => !['Bumthang', 'Trashigang', 'Sarpang', 'Paro'].includes(d.name)).map((d: any) => <text x={d.cx} y={d.cy}>{d.name}</text>)}
+      </g>
+      <g class="bm-intl" aria-label="International flights from Paro">
+        <defs><marker id="bm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#fff" /></marker></defs>
+        <path class="bm-intl-line" d={`M${intl.x1} ${intl.y1}Q${(intl.x1 + intl.x2) / 2} ${intl.y1 - 90} ${intl.x2} ${intl.y2}`} marker-end="url(#bm-arrow)" />
+        <text class="bm-intl-t" x={intl.x2 - 55} y={intl.y2 - 50} text-anchor="start">International flights</text>
+        <text class="bm-intl-s" x={intl.x2 - 55} y={intl.y2 - 38} text-anchor="start">Delhi · Kathmandu · Bangkok · Dhaka</text>
+      </g>
+      <g class="bm-routes">
+        {air.map((a) => <path class="bm-route" d={curve(a)} data-id={a.code} />)}
+      </g>
+      <g class="bm-stems">
+        {gates.map((g) => <g><line x1={points[g.id].x} y1={points[g.id].y} x2={at(g).x} y2={at(g).y} /><circle class="bm-bdot" cx={points[g.id].x} cy={points[g.id].y} r="2.4" /></g>)}
+      </g>
+      <g class="bm-pts">
+        {air.map((a) => (
+          <g class="bm-pt air" tabindex="0" role="button" data-id={a.code} transform={`translate(${points[a.code].x} ${points[a.code].y})`} aria-label={`${a.name}, domestic flight from Paro`}>
+            <circle class="bm-hit" r="14" /><circle class="bm-ring" r="9" /><circle class="bm-dot" r="6.5" />
+            <path class="bm-ico" d={PLANE} transform="translate(-4 -4) scale(0.33)" />
+            <text class="bm-lbl" x={a.lbl[0]} y={a.lbl[1]} text-anchor={a.lbl[2]}>{a.district}</text>
+          </g>
+        ))}
+        <g class="bm-pt air" tabindex="0" role="button" data-id="PBH" transform={`translate(${paro.x} ${paro.y})`} aria-label="Paro International Airport">
+          <circle class="bm-hit" r="14" /><circle class="bm-pulse" r="8" /><circle class="bm-ring" r="9" /><circle class="bm-dot" r="6.5" />
+          <path class="bm-ico" d={PLANE} transform="translate(-4 -4) scale(0.33)" />
+          <text class="bm-lbl" x="0" y="-12" text-anchor="middle">Paro</text>
+        </g>
+        {gates.map((g) => (
+          <g class="bm-pt road" tabindex="0" role="button" data-id={g.id} transform={`translate(${at(g).x} ${at(g).y})`} aria-label={`${g.name}, road entry and exit`}>
+            <circle class="bm-hit" r="14" /><circle class="bm-ring" r="9" /><circle class="bm-dot" r="6.5" />
+            <path class="bm-ico" d={CAR} transform="translate(-4 -4) scale(0.33)" />
+            <text class="bm-lbl" x={g.lbl[0]} y={g.lbl[1]} text-anchor={g.lbl[2]}>{g.name}</text>
+          </g>
+        ))}
+      </g>
+    </svg>
+    </div>
+    <div class="bm-card" data-card role="dialog" aria-live="polite" hidden></div>
+  </div>
+  <p class="bm-note">Tap an airport or a road icon for details. The dashed line leaving Paro marks international flights from Delhi, Kathmandu, Bangkok and Dhaka.</p>
+
+  <script type="application/json" data-info set:html={data} />
+</div>
+
+<style>
+  .bm { margin-top: clamp(2rem, 4vw, 3rem); }
+  .bm-stage { position: relative; width: 100%; max-width: 1240px; margin-inline: auto; }
+  .bm-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+  .bm-land path { fill: #24357A; stroke: rgb(255 255 255 / .55); stroke-width: .5; stroke-linejoin: round; transition: fill .25s; }
+  .bm-land path:hover { fill: #2f4596; }
+  .bm-names text { fill: rgb(255 255 255 / .6); font: 400 6.5px var(--font-label); letter-spacing: .06em; text-anchor: middle; text-transform: uppercase; pointer-events: none; }
+  .bm-stems line { stroke: #CC0000; stroke-width: 1.3; stroke-dasharray: 1.5 3; stroke-linecap: round; }
+  .bm-bdot { fill: #CC0000; stroke: #fff; stroke-width: .8; }
+  .bm-dot { fill: #fff; stroke: #132155; stroke-width: 1.6; }
+  .bm-intl-line { fill: none; stroke: #fff; stroke-width: 1.2; stroke-dasharray: 4 4; stroke-linecap: round; opacity: .85; }
+  .bm-intl-t { fill: #fff; font: 400 11px var(--font-display); letter-spacing: .06em; text-transform: uppercase; }
+  .bm-intl-s { fill: rgb(255 255 255 / .7); font: 300 6.5px var(--font-label); letter-spacing: .04em; }
+  .bm-pt.road .bm-dot { fill: #CC0000; stroke: #fff; }
+  .bm-ico { fill: #132155; pointer-events: none; }
+  .bm-pt.road .bm-ico { fill: #fff; }
+  .bm-lbl { fill: #fff; font: 400 7px var(--font-label); letter-spacing: .04em; paint-order: stroke; stroke: #0A1233; stroke-width: 2; stroke-linejoin: round; pointer-events: none; }
+  .bm-pulse { fill: none; stroke: #FECB00; stroke-width: 1.3; transform-box: fill-box; transform-origin: center; animation: bm-pulse 2.2s ease-out infinite; }
+  @keyframes bm-pulse { from { transform: scale(.8); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
+  .bm-route { fill: none; stroke: #FECB00; stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: 4 4; opacity: .85; transition: opacity .3s; animation: bm-flow 1.4s linear infinite; }
+  @keyframes bm-flow { to { stroke-dashoffset: -8; } }
+    .bm-svg[data-active] .bm-route { opacity: .2; }
+  .bm-svg[data-active] .bm-route.on { opacity: 1; }
+  .bm-pt { cursor: pointer; outline: none; }
+  .bm-hit { fill: transparent; }
+  .bm-ring { fill: none; stroke: #FECB00; stroke-width: 1.8; opacity: 0; transform-box: fill-box; transform-origin: center; transition: opacity .2s, transform .2s; }
+  .bm-pt.road .bm-ring { stroke: #fff; }
+  .bm-pt:hover .bm-ring, .bm-pt:focus-visible .bm-ring, .bm-pt.on .bm-ring { opacity: 1; transform: scale(1.25); }
+  .bm-card { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: min(240px, 80%); padding: .8rem .9rem .75rem; background: var(--color-paper-2); color: var(--color-ink); border-radius: var(--radius-card); box-shadow: 0 18px 40px rgb(0 0 0 / .35); font-size: 12px; line-height: 1.45; }
+  .bm-card[hidden] { display: none; }
+  .bm-note { display: none; margin: .75rem 0 0; font-size: 12px; opacity: .7; text-align: center; }
+  .bm-card[data-x='left'] { transform: translateX(calc(-100% - 22px)); }
+  .bm-card[data-x='right'] { transform: translateX(22px); }
+  .bm-card[data-x='left'][data-y='up'] { transform: translate(calc(-100% - 22px), -85%); }
+  .bm-card[data-x='right'][data-y='up'] { transform: translate(22px, -85%); }
+  .bm-card[data-y='mid'][data-x='left'] { transform: translate(calc(-100% - 22px), -30%); }
+  .bm-card[data-y='mid'][data-x='right'] { transform: translate(22px, -30%); }
+  @media (max-width: 640px) {
+    .bm-names, .bm-lbl, .bm-intl-t, .bm-intl-s { display: none; }
+    .bm-intl-line { stroke-width: 3; stroke-dasharray: 9 8; }
+    .bm-route { stroke-width: 3.5; stroke-dasharray: 9 8; }
+    .bm-stems line { stroke-width: 3; stroke-dasharray: 4 6; }
+    .bm-bdot { r: 6px; stroke-width: 2px; }
+    .bm-land path { stroke-width: 1.2; }
+    .bm-hit { r: 34px; }
+    .bm-ring { r: 27px; stroke-width: 4px; }
+    .bm-dot { r: 22px; stroke-width: 4px; }
+    .bm-pulse { r: 24px; stroke-width: 3px; }
+    .bm-ico { transform: translate(-13px, -13px) scale(1.1); }
+    .bm-note { display: block; }
+    .bm-card[data-x][data-y] { position: relative; left: auto; top: auto; width: auto; transform: none !important; margin-top: .75rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bm-route, .bm-pulse { animation: none; } }
+</style>
+
+<style is:global>
+  .bm-card h3 { margin: 0 0 .2rem; font-size: 17px; line-height: 1; color: var(--color-ink); }
+  .bm-card p { margin: .3rem 0 0; }
+  .bm-card .bm-sm { font-size: 10px; opacity: .65; margin-top: .6rem; }
+  .bm-card .bm-x { position: absolute; top: .5rem; right: .6rem; width: 22px; height: 22px; border: 0; background: transparent; color: var(--color-ink); font-size: 17px; line-height: 1; cursor: pointer; }
+  .bm-tag { display: inline-block; margin-bottom: .5rem; padding: .25rem .65rem; border-radius: 999px; font: 400 10px var(--font-label); letter-spacing: .1em; text-transform: uppercase; background: #FECB00; color: #132155; }
+  .bm-tag.road { background: #CC0000; color: #fff; }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-bmap]');
+  if (root) {
+    const svg = root.querySelector<SVGSVGElement>('.bm-svg')!;
+    const card = root.querySelector<HTMLElement>('[data-card]')!;
+    const info = JSON.parse(root.querySelector('[data-info]')!.textContent!);
+    const pos = info.__pos; delete info.__pos;
+    info.PBH = { kind: 'air', title: 'Paro International Airport (PBH)', line: 'The hub for every domestic flight and Bhutan’s only international airport', note: 'Domestic flights leave from Paro to Bumthang, Yonphula and Gelephu.' };
+    const pts = [...root.querySelectorAll<SVGGElement>('.bm-pt')];
+    const routes = [...root.querySelectorAll<SVGPathElement>('.bm-route')];
+    const mq = window.matchMedia('(max-width: 640px)');
+    const fit = () => svg.setAttribute('viewBox', (mq.matches ? svg.dataset.vbm : svg.dataset.vbd)!);
+    fit(); mq.addEventListener('change', fit);
+    let current: string | null = null;
+    const lit = (id: string | null) => {
+      routes.forEach((r) => r.classList.toggle('on', !!id && (r.dataset.id === id || id === 'PBH')));
+      if (id) svg.setAttribute('data-active', ''); else svg.removeAttribute('data-active');
+    };
+    const show = (id: string | null) => {
+      current = id;
+      pts.forEach((p) => p.classList.toggle('on', p.dataset.id === id));
+      lit(id);
+      if (!id) { card.hidden = true; return; }
+      const d = info[id], at = pos[id];
+      card.innerHTML = `<button type="button" class="bm-x" aria-label="Close">×</button><span class="bm-tag ${d.kind}">${d.kind === 'air' ? 'Domestic flight' : 'Road entry / exit'}</span><h3>${d.title}</h3><p>${d.line}</p><p>${d.note}</p><p class="bm-sm">Schedules and road conditions change. We confirm all timings when we plan your trip.</p>`;
+      card.style.setProperty('--x', at.l + '%'); card.style.setProperty('--y', at.t + '%');
+      card.dataset.x = +at.l > 72 ? 'left' : 'right';
+      card.dataset.y = +at.t > 62 ? 'up' : 'mid';
+      card.hidden = false;
+      card.querySelector('.bm-x')!.addEventListener('click', () => show(null));
+    };
+    pts.forEach((p) => {
+      const id = p.dataset.id!, toggle = () => show(current === id ? null : id);
+      p.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+      p.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+      p.addEventListener('mouseenter', () => { if (!current) lit(id); });
+      p.addEventListener('mouseleave', () => { if (!current) lit(null); });
+    });
+    svg.addEventListener('click', () => show(null));
+    card.addEventListener('click', (e) => e.stopPropagation());
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') show(null); });
+  }
+</script>

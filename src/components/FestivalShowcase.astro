@@ -1,0 +1,81 @@
+---
+import { Picture } from 'astro:assets';
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
+import dance from '../assets/images/festivals/thimphu-tshechu-black-hat-dancer.webp';
+import festival from '../assets/images/festivals/thimphu-tshechu-atsara.webp';
+import stripCham from '../assets/images/festivals/thimphu-tshechu-cham-dancers.webp';
+import stripCymbals from '../assets/images/festivals/thimphu-tshechu-monk-cymbals.webp';
+import stripLeap from '../assets/images/festivals/thimphu-tshechu-leaping-dancers.webp';
+import stripHighland from '../assets/images/festivals/royal-highland-festival.webp';
+
+import stripCourtyard from '../assets/images/festivals/thimphu-tshechu-courtyard-dance.webp';
+const moving = [
+  { img: dance, alt: 'A dancer in a black hat spinning at the Thimphu Tshechu' },
+  { img: festival, alt: 'An atsara festival jester in a red mask' },
+  { img: stripCham, alt: 'Cham dancers in brocade costume' },
+  { img: stripCymbals, alt: 'A lama playing cymbals' },
+  { img: stripLeap, alt: 'Dancers leaping across a courtyard' },
+  { img: stripCourtyard, alt: 'Cham dancers performing in front of the crowd' },
+  { img: stripHighland, alt: 'Costumed figures at the Royal Highland Festival' },
+];
+
+---
+<section id="festival-showcase" class="fv" aria-labelledby="fv-title">
+  <div class="wrap grid">
+    <div class="fm-rows"><div class="fm-tilt">
+      {[0, 1].map((col) => (
+        <div class={`fm-col ${col === 0 ? 'down' : 'up'}`}>
+          <div class="fm-track">
+            {[0, 1].map((copy) => moving.filter((_, i) => i % 2 === col).map((m) => (
+              <figure aria-hidden={copy === 1 ? 'true' : undefined}>
+                <Picture fallbackFormat="webp" src={m.img} alt={copy === 1 ? '' : m.alt} widths={[400, 700, 1000]} sizes="(min-width:900px) 22vw, 44vw" formats={['avif', 'webp']} loading="lazy" />
+              </figure>
+            )))}
+          </div>
+        </div>
+      ))}
+    </div></div>
+    <div class="txt">
+      <p class="label reveal">About festivals in Bhutan</p>
+      <h2 id="fv-title" class="h2 reveal" style="--d:80ms" set:html={accent('Where Bhutan *prays* and *celebrates* as one.')}></h2>
+      <p class="p reveal" style="--d:140ms">A tshechu is a festival held on the tenth day of a lunar month in honour of Guru Rinpoche, the saint who brought Buddhism to Bhutan. For days, a dzong courtyard fills with sacred masked dances, music and colour, and with families who have travelled in from the surrounding valleys.</p>
+      <p class="p reveal" style="--d:200ms">These are not shows staged for visitors. They are worship and a community gathering in one, and guests are welcome to watch, receive the blessings and share the day with local people.</p>
+      <a class="btn btn-label reveal" style="--d:260ms" href={withBase('/festivities')}>Explore festivities</a>
+    </div>
+  </div>
+</section>
+<style>
+  .fv { overflow-x: clip; position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding-block: clamp(5.5rem, 12vh, 7rem) clamp(2rem, 6vh, 4rem); }
+  .fv > .grid { width: 100%; }
+  .grid { display: grid; gap: 3.5rem; align-items: center; }
+  .pics { position: relative; padding-bottom: 3rem; }
+  .a { position: relative; width: 78%; aspect-ratio: 3 / 4; margin: 0; overflow: hidden; }
+  .a :global(img), .b :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .a::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 18 51 / 0) 55%, rgb(10 18 51 / .75) 100%); }
+  .a figcaption { position: absolute; z-index: 1; left: 1.25rem; bottom: 1.25rem; color: #fff; }
+  .b { position: absolute; right: 0; bottom: 0; width: 50%; aspect-ratio: 1; margin: 0; overflow: hidden; border: 6px solid #0a1230; box-shadow: 0 30px 60px rgb(0 0 0 / .4); }
+  /* Narrower frame; only the top and bottom are clipped so every photo shows its full edges at the sides */
+  .fm-rows { position: relative; width: min(100%, 36rem); margin-inline: auto; height: min(72vh, 72svh, 640px); clip-path: inset(0 -30vw); }
+  /* Columns lean to the right; the photos slide along that angle */
+  .fm-tilt { position: absolute; inset: -25% 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 100%; gap: 1rem; transform: rotate(12deg); }
+  .fm-col { overflow: hidden; min-height: 0; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 25%, #000 75%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 25%, #000 75%, transparent 100%); }
+  .fm-track { display: flex; flex-direction: column; will-change: transform; }
+  .fm-col.up .fm-track { animation: fm-up 40s linear infinite; }
+  .fm-col.down .fm-track { animation: fm-down 40s linear infinite; }
+  .fm-track figure { margin: 0 0 1rem; aspect-ratio: 4 / 5; overflow: hidden; flex: none; }
+  .fm-track :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @keyframes fm-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  @keyframes fm-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .fm-track { animation: none !important; } }
+  @media (max-width: 899px) { .fm-rows { clip-path: inset(0); height: min(60svh, 460px); } .fm-tilt { inset: -15% -4%; } }
+  .txt { display: grid; gap: 1.25rem; justify-items: start; }
+  .txt > .label { color: #C9D1EA; }
+  .txt :global(.h2) { max-width: 16ch; }
+  .p { color: #C9D1EA; max-width: 52ch; }
+  .btn { display: inline-block; margin-top: .75rem; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .btn:hover { transform: translateY(-2px); background: #ffd92e; }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: 6rem; }
+  }
+</style>

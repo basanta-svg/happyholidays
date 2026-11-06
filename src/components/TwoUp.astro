@@ -1,23 +1,41 @@
 ---
 import { site } from '../site.config';
 import ArrowLink from './ArrowLink.astro';
-const { left, right } = site.twoUp;
+import PillButton from './PillButton.astro';
+import { accent } from '../lib/accent';
+const { left } = site.twoUp;
 ---
-<section id="contact" class="tu" aria-label="Visit and contact">
-  {[left, right].map((c) => (
-    <div class="cell">
-      <h2 class="h2 reveal">{c.title}</h2>
-      <div class="reveal" style="--d:120ms"><ArrowLink href={c.href}>{c.cta}</ArrowLink></div>
+<section id="contact" class="tu" aria-labelledby="tu-title">
+  <div class="wrap">
+    <div class="panel reveal">
+      <div>
+        <p class="label eyebrow">Get in touch</p>
+        <h2 id="tu-title" class="h2" set:html={accent("Let’s make your *best trip* with _us_.")}></h2>
+      </div>
+      <div class="side">
+        <ul class="info">
+          <li><span class="label">Call</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
+          <li><span class="label">Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><span class="label">Visit</span>{site.address}</li>
+        </ul>
+        <div class="acts">
+          <PillButton href="/contact" variant="dark">Contact us</PillButton>
+          <ArrowLink href={left.href}>{left.title}</ArrowLink>
+        </div>
+      </div>
     </div>
-  ))}
+  </div>
 </section>
 <style>
-  .tu { background: #186093; color: var(--color-paper); min-height: 100svh; display: grid; }
-  .cell { display: grid; place-content: center; justify-items: start; gap: 2.5rem; padding: var(--section-pad) var(--gutter); }
-  .cell + .cell { border-top: 1px solid rgb(26 24 19 / .35); }
-  @media (min-width: 900px) {
-    .tu { grid-template-columns: 1fr 1fr; }
-    .cell { justify-items: center; text-align: center; }
-    .cell + .cell { border-top: 0; border-left: 1px solid rgb(26 24 19 / .35); }
-  }
+  .tu { position: relative; z-index: 2; background: var(--color-ink); padding-block: var(--section-pad); }
+  .panel { background: #F4F5FA; color: var(--color-ink); border-radius: 28px; padding: clamp(2rem, 5vw, 4.5rem); display: grid; gap: 3rem; }
+  .eyebrow { margin-bottom: 1.25rem; }
+  .panel :global(.h2) { max-width: 18ch; }
+  .side { display: grid; gap: 2rem; align-content: end; }
+  .info { display: grid; gap: 1rem; }
+  .info li { display: grid; gap: .2rem; padding-bottom: 1rem; border-bottom: 1px solid rgb(19 33 85 / .25); }
+  .info .label { opacity: .65; }
+  .info a { font-weight: 400; }
+  .acts { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+  @media (min-width: 900px) { .panel { grid-template-columns: 1.1fr .9fr; gap: 5rem; } }
 </style>

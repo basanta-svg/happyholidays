@@ -1,15 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
 import { site } from '../site.config';
 import ArrowLink from './ArrowLink.astro';
-const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
-const c = pillars[pillars.length - 1].data;
 ---
-<section id="quote" class="qt" style={`background:${c.color};color:${c.textColor}`} aria-label="Book your trip">
-  <p class="h2 reveal">{site.quote}</p>
-  <div class="reveal" style="--d:150ms"><ArrowLink href={site.bookUrl}>Book your trip</ArrowLink></div>
+<section id="quote" class="qt" aria-label="Book your trip">
+  <div class="wrap in">
+    <p class="label reveal">Happy Holidays · Thimphu</p>
+    <p class="big reveal" style="--d:100ms">{site.quote}</p>
+    <div class="reveal" style="--d:200ms"><ArrowLink href={site.bookUrl}>Book your trip</ArrowLink></div>
+  </div>
 </section>
 <style>
-  .qt { min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 3rem; text-align: center; padding: var(--section-pad) var(--gutter); }
-  .qt p { max-width: 20ch; }
+  .qt { position: relative; z-index: 2; background: #24357A; color: #fff; padding-block: clamp(5rem, 9vw, 8rem); }
+  .in { display: grid; gap: 2rem; justify-items: start; }
+  .big { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.15; letter-spacing: normal; max-width: 18ch; }
+  @media (min-width: 900px) { .in { grid-template-columns: 1fr auto; align-items: end; } .in > .label { grid-column: 1 / -1; } }
 </style>

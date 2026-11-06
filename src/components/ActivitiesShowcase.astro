@@ -1,0 +1,78 @@
+---
+import { Picture } from 'astro:assets';
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
+import thangka from '../assets/images/thangka/thangka-wall.webp';
+import culture from '../assets/images/cultural.webp';
+import trek from '../assets/images/bumthang-trek.webp';
+import biking from '../assets/images/bikeing1.webp';
+import birds from '../assets/images/birdwatching2.webp';
+import food from '../assets/images/bumtap-cuisine.webp';
+import pilgrim from '../assets/images/buddha-point.webp';
+
+// Every activity we run, in the order they appear on the Activities page
+const items = [
+  { name: 'Thangka painting', img: thangka, alt: 'A wall of thangka paintings in a red gallery' },
+  { name: 'Culture & heritage', img: culture, alt: 'A smiling woman beside traditional Bhutanese crafts' },
+  { name: 'Hiking & trekking', img: trek, alt: 'A forest trail in Bumthang' },
+  { name: 'Cycling', img: biking, alt: 'A cyclist on a mountain road' },
+  { name: 'Bird watching', img: birds, alt: 'Birdwatching in the Himalayan forests' },
+  { name: 'Culinary experiences', img: food, alt: 'A traditional Bhutanese kitchen' },
+  { name: 'Pilgrimage', img: pilgrim, alt: 'The Buddha Dordenma above Thimphu' },
+];
+---
+<section id="activities" class="ac" aria-labelledby="ac-title">
+  <div class="wrap grid">
+    <div class="txt">
+      <p class="label reveal">Things to do</p>
+      <h2 id="ac-title" class="h2 reveal" style="--d:80ms" set:html={accent('Everything we *do*, from trails to ~thangka~.')}></h2>
+      <p class="p reveal" style="--d:140ms">Special-interest journeys planned end to end by our team in Thimphu. Pick an experience and we will build the trip around it.</p>
+      <ul class="list reveal" style="--d:200ms">
+        {items.map((a) => <li class="label">{a.name}</li>)}
+      </ul>
+      <a class="btn btn-label reveal" style="--d:260ms" href={withBase('/activities')}>All activities</a>
+    </div>
+    <div class="fm-rows" aria-label="Photos of our activities">
+      <div class="fm-tilt">
+        {[0, 1].map((col) => (
+          <div class={`fm-col ${col === 0 ? 'up' : 'down'}`}>
+            <div class="fm-track">
+              {[0, 1].map((copy) => items.filter((_, i) => i % 2 === col).map((m) => (
+                <figure aria-hidden={copy === 1 ? 'true' : undefined}>
+                  <Picture fallbackFormat="webp" src={m.img} alt={copy === 1 ? '' : m.alt} widths={[400, 700, 1000]} sizes="(min-width:900px) 22vw, 44vw" formats={['avif', 'webp']} loading="lazy" />
+                </figure>
+              )))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .ac { overflow-x: clip; position: relative; z-index: 2; padding-block: var(--section-pad); }
+  .grid { display: grid; gap: 3.5rem; align-items: center; }
+  .txt { display: grid; gap: 1.25rem; justify-items: start; }
+  .txt > .label { color: #C9D1EA; }
+  .txt :global(.h2) { max-width: 16ch; }
+  .p { color: #C9D1EA; max-width: 52ch; }
+  .list { list-style: none; margin: .25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .list li { padding: .45rem .8rem; border: 1px solid rgb(255 255 255 / .35); color: #fff; border-radius: 0; }
+  .btn { display: inline-block; margin-top: .75rem; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .btn:hover { transform: translateY(-2px); background: #ffd92e; }
+
+  /* Mirror of the festival section: photos on the right, leaning left, sliding forever */
+  .fm-rows { position: relative; width: min(100%, 36rem); margin-inline: auto; height: min(72vh, 72svh, 640px); clip-path: inset(0 -30vw); }
+  .fm-tilt { position: absolute; inset: -25% 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 100%; gap: 1rem; transform: rotate(-12deg); }
+  .fm-col { overflow: hidden; min-height: 0; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 25%, #000 75%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 25%, #000 75%, transparent 100%); }
+  .fm-track { display: flex; flex-direction: column; will-change: transform; }
+  .fm-col.up .fm-track { animation: fm-up 40s linear infinite; }
+  .fm-col.down .fm-track { animation: fm-down 40s linear infinite; }
+  .fm-track figure { margin: 0 0 1rem; aspect-ratio: 4 / 5; overflow: hidden; flex: none; }
+  .fm-track :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @keyframes fm-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  @keyframes fm-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .fm-track { animation: none !important; } }
+  @media (max-width: 899px) { .fm-rows { clip-path: inset(0); height: min(60svh, 460px); } .fm-tilt { inset: -15% -4%; } }
+  @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; gap: 6rem; } }
+</style>

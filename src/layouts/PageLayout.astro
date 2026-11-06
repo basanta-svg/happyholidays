@@ -3,11 +3,14 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AskPill from '../components/AskPill.astro';
+import Starfield from '../components/Starfield.astro';
 import '../styles/pages.css';
-interface Props { title: string; description?: string }
-const { title, description } = Astro.props;
+interface Props { title: string; description?: string; bodyClass?: string }
+const { title, description, bodyClass } = Astro.props;
+const cls = ['starry', bodyClass].filter(Boolean).join(' ');
 ---
-<BaseLayout title={`${title} | Happy Holidays`} description={description}>
+<BaseLayout title={`${title} | Happy Holidays`} description={description} bodyClass={cls}>
+  <Starfield />
   <Header />
   <main id="main"><slot /></main>
   <Footer />

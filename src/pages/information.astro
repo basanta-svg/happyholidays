@@ -3,17 +3,18 @@ import { Picture } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
-import CtaBand from '../components/CtaBand.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { accent } from '../lib/accent';
 import ArrowLink from '../components/ArrowLink.astro';
-import transportImg from '../assets/images/transport/coaster-side.jpeg';
-import hero from '../assets/images/dochula-2.jpg';
-import passportBad from '../assets/images/deck/image6.png';
-import photoBad from '../assets/images/deck/image7.png';
-import thimphu from '../assets/images/deck/image42.jpeg';
-import paro from '../assets/images/deck/image44.jpeg';
-import punakha from '../assets/images/deck/image45.jpeg';
-import gangtey from '../assets/images/deck/image46.jpeg';
-import bumthang from '../assets/images/deck/image43.jpeg';
+import transportImg from '../assets/images/transport/coaster-side.webp';
+import hero from '../assets/images/dochula-2.webp';
+import passportBad from '../assets/images/deck/image6.webp';
+import photoBad from '../assets/images/deck/image7.webp';
+import thimphu from '../assets/images/deck/image42.webp';
+import paro from '../assets/images/deck/image44.webp';
+import punakha from '../assets/images/deck/image45.webp';
+import gangtey from '../assets/images/deck/image46.webp';
+import bumthang from '../assets/images/deck/image43.webp';
 
 const visaDocs = [
   'A recent digital copy of your passport, in JPEG or PNG format.',
@@ -46,20 +47,16 @@ const days = [
 const stays = [['Thimphu', '1 night', 'Le Méridien'], ['Punakha', '1 night', 'Pemako'], ['Paro', '2 nights', 'COMO Uma']];
 const included = ['Daily Sustainable Development Fee: USD 100 per person per night', 'Bhutan visa fee: USD 40 per person', 'Entrance and monument fees', 'All transfers and sightseeing as per the itinerary', 'English-speaking accompanying guide', 'Accommodation in the 5-star hotels listed', 'Breakfast, lunch and dinner at the hotel', 'Mineral water in the vehicle'];
 const excluded = ['Fast-track visa: USD 50 per person', 'Personal expenses (tipping, laundry, phone calls, camera or video fees)', 'Insurance of any kind and medical expenses', 'Air tickets and taxes', 'Horse riding fee for the Tiger’s Nest hike', 'Traditional hot stone bath'];
-const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], ['places', 'Key places'], ['itinerary', 'Sample itinerary']];
 ---
-<PageLayout title="Information" description="Everything you need to plan a Bhutan trip: how to apply for your visa, the Sustainable Development Fee, transport, key destinations and a sample 5-day itinerary.">
+<PageLayout bodyClass="ap" title="Information" description="Everything you need to plan a Bhutan trip: how to apply for your visa, the Sustainable Development Fee, transport, key destinations and a sample 5-day itinerary.">
   <PageHero eyebrow="Information" title="Everything you need to know before you go." intro="Visas, fees, transport and a sample route: the practical details for visiting the last Himalayan kingdom." image={hero} alt="Dochula Pass" />
 
   <PageSection tone="ink" id="visa" labelledby="visa-title">
-    <ul class="pg-chips pg-subnav" aria-label="On this page">
-      {nav.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}
-    </ul>
     <div class="pg-split" style="align-items:start">
       <div>
         <div class="pg-head">
-          <p class="label" style="opacity:.7">01 · Visa</p>
-          <h2 id="visa-title" class="h3 reveal">How to apply for your Bhutan visa.</h2>
+          <p class="label" style="opacity:.7">Visa</p>
+          <h2 id="visa-title" class="h3 reveal" set:html={accent('How to *apply* for your Bhutan ~visa~.')}></h2>
           <p class="pg-text reveal">Tourists can apply for a visa on the Bhutan immigration portal, <a href="https://www.immi.gov.bt" rel="noopener" target="_blank" style="text-decoration:underline;text-underline-offset:4px">www.immi.gov.bt</a>, or they can ask Happy Holidays to process it for them.</p>
         </div>
         <h3 class="label reveal" style="opacity:.7;margin-bottom:1rem">Application documents</h3>
@@ -72,8 +69,8 @@ const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], 
           <div class="pg-stat"><b>USD 50</b><span>Fast-track option</span></div>
         </div>
         <div class="ex reveal">
-          <figure><Picture src={passportBad} alt="Passport scan examples: cropped is rejected, full page accepted" widths={[360, 720]} sizes="(min-width:900px) 24vw, 45vw" formats={['webp']} loading="lazy" /><figcaption class="label">Passport scan</figcaption></figure>
-          <figure><Picture src={photoBad} alt="Photo examples: shadows are rejected, plain face-on accepted" widths={[360, 720]} sizes="(min-width:900px) 24vw, 45vw" formats={['webp']} loading="lazy" /><figcaption class="label">Photograph</figcaption></figure>
+          <figure><Picture fallbackFormat="webp" src={passportBad} alt="Passport scan examples: cropped is rejected, full page accepted" widths={[360, 720]} sizes="(min-width:900px) 24vw, 45vw" formats={['webp']} loading="lazy" /><figcaption class="label">Passport scan</figcaption></figure>
+          <figure><Picture fallbackFormat="webp" src={photoBad} alt="Photo examples: shadows are rejected, plain face-on accepted" widths={[360, 720]} sizes="(min-width:900px) 24vw, 45vw" formats={['webp']} loading="lazy" /><figcaption class="label">Photograph</figcaption></figure>
         </div>
         <p class="pg-note">Left is rejected, right is accepted. Happy Holidays can check your documents before submission.</p>
       </div>
@@ -82,8 +79,8 @@ const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], 
 
   <PageSection tone="plum" id="sdf" labelledby="sdf-title">
     <div class="pg-head">
-      <p class="label" style="opacity:.8">02 · Sustainable Development Fee</p>
-      <h2 id="sdf-title" class="h3 reveal">Tourism that gives back.</h2>
+      <p class="label" style="opacity:.8">Sustainable Development Fee</p>
+      <h2 id="sdf-title" class="h3 reveal" set:html={accent('Tourism that *gives* ~back~.')}></h2>
       <p class="pg-text reveal">The SDF is a daily levy charged by the Royal Government of Bhutan to international visitors. It is a key part of Bhutan’s “High Value, Low Volume” tourism policy, ensuring tourism contributes to the country’s long-term environmental, cultural and socio-economic development.</p>
     </div>
     <div class="pg-scroll reveal">
@@ -107,24 +104,24 @@ const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], 
   <PageSection tone="paper" id="transport" labelledby="tr-title">
     <div class="pg-split">
       <div class="pg-head" style="margin-bottom:0">
-        <p class="label" style="opacity:.7">03 · Transportation</p>
-        <h2 id="tr-title" class="h3 reveal">Comfortable and safe travel across the Himalayan kingdom.</h2>
+        <p class="label" style="opacity:.7">Transportation</p>
+        <h2 id="tr-title" class="h3 reveal" set:html={accent('*Comfortable* and ~safe~ travel across the Himalayan kingdom.')}></h2>
         <p class="pg-text reveal">Coaster buses for groups, H1 vans for families and SUVs for remote destinations, with drive times for the main routes.</p>
         <div class="reveal"><ArrowLink href="/transportation">Transportation details</ArrowLink></div>
       </div>
-      <Picture src={transportImg} alt="Our Coaster bus" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={transportImg} alt="Our Coaster bus" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
   <PageSection tone="dusty" id="places" labelledby="pl-title">
     <div class="pg-head">
-      <p class="label" style="opacity:.75">04 · The most visited places</p>
-      <h2 id="pl-title" class="h3 reveal">Five places most travellers see.</h2>
+      <p class="label" style="opacity:.75">The most visited places</p>
+      <h2 id="pl-title" class="h3 reveal" set:html={accent('Five ~places~ most *travellers* see.')}></h2>
     </div>
     <div class="pg-cards">
       {places.map((p, i) => (
         <article class="pg-card reveal" style={`--d:${(i % 3) * 90}ms`}>
-          <Picture src={p.img} alt={p.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
+          <Picture fallbackFormat="webp" src={p.img} alt={p.name} widths={[400, 800]} sizes="(min-width:900px) 30vw, 90vw" formats={['avif', 'webp']} loading="lazy" />
           <div class="body"><h3>{p.name}</h3><p>{p.text}</p></div>
         </article>
       ))}
@@ -133,21 +130,21 @@ const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], 
 
   <PageSection tone="ink" id="itinerary" labelledby="it-title">
     <div class="pg-head">
-      <p class="label" style="opacity:.7">05 · Sample itinerary · 4 nights & 5 days</p>
-      <h2 id="it-title" class="h3 reveal">Explore the beauty of Bhutanese culture.</h2>
+      <p class="label" style="opacity:.7">Sample itinerary · 4 nights &amp; 5 days</p>
+      <h2 id="it-title" class="h3 reveal" set:html={accent('Explore the *beauty* of Bhutanese ~culture~.')}></h2>
       <p class="pg-text reveal">A classic first journey through Thimphu, Punakha and Paro, with the Tiger’s Nest hike as its highlight. Every itinerary can be reshaped to suit you.</p>
     </div>
-    <ol class="days">
+    <div class="dd-days reveal">
       {days.map((d, i) => (
-        <li class="day reveal" style={`--d:${(i % 2) * 90}ms`}>
-          <p class="label dn">{d.day}</p>
-          <div>
-            <h3>{d.title}</h3>
-            <ul class="pg-list">{d.items.map((x) => <li>{x}</li>)}</ul>
-          </div>
-        </li>
+        <details class="dd-day" open={i === 0}>
+          <summary>
+            <span class="dd-n label">{d.day}</span>
+            <span class="dd-t">{d.title}</span>
+          </summary>
+          <ul class="pg-list dd-body">{d.items.map((x) => <li>{x}</li>)}</ul>
+        </details>
       ))}
-    </ol>
+    </div>
 
     <div class="price reveal">
       <p class="label" style="opacity:.75">Bhutan tour package 2026 · 5-star hotels</p>
@@ -168,18 +165,24 @@ const nav = [['visa', 'Visa'], ['sdf', 'SDF'], ['transport', 'Transportation'], 
     </div>
   </PageSection>
 
-  <CtaBand title="Questions? We’re a message away." cta="Contact us" href="/contact" />
+  <CtaBanner title="Questions? We’re a *message* away." cta="Contact us" href="/contact" />
 </PageLayout>
 <style>
   .ex { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .ex figure { background: #fff; color: var(--color-ink); border-radius: var(--radius-card); padding: .75rem .75rem 1rem; display: grid; gap: .5rem; text-align: center; }
+  .ex figure { background: #fff; color: var(--color-ink); border-radius: 0; padding: .75rem .75rem 1rem; display: grid; gap: .5rem; text-align: center; }
   .ex :global(img) { width: 100%; height: auto; display: block; }
-  .days { display: grid; border-top: 1px solid rgb(244 239 230 / .3); }
-  .day { display: grid; gap: 1rem 3rem; padding-block: 2rem; border-bottom: 1px solid rgb(244 239 230 / .3); }
-  @media (min-width: 900px) { .day { grid-template-columns: 10rem 1fr; } }
-  .dn { opacity: .7; padding-top: .5rem; }
-  .day h3 { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 500; letter-spacing: -.02em; margin-bottom: 1rem; line-height: 1.1; }
-  .price { margin-top: 3.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: var(--radius-card); background: #186093; color: #fff; }
-  .amt { font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 500; letter-spacing: -.03em; line-height: 1.05; margin-top: .75rem; }
+  .dd-days { border-top: 1px solid rgb(255 255 255 / .35); }
+  .dd-day { border-bottom: 1px solid rgb(255 255 255 / .35); }
+  .dd-day > summary { display: grid; grid-template-columns: 5.5rem 1fr auto; align-items: center; gap: 1rem; padding-block: 1.25rem; cursor: pointer; list-style: none; }
+  .dd-day > summary::-webkit-details-marker { display: none; }
+  .dd-day > summary::after { content: ''; justify-self: end; width: .7rem; height: .7rem; margin-right: .35rem; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-3px) rotate(45deg); transition: transform .3s var(--ease); }
+  .dd-day[open] > summary::after { transform: translateY(3px) rotate(-135deg); }
+  .dd-day > summary:focus-visible { outline: 2px solid var(--color-sage); outline-offset: 4px; }
+  .dd-n { color: var(--color-sage); opacity: 1; }
+  .dd-t { font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.05; text-transform: uppercase; color: #fff; }
+  .dd-body { padding: 0 0 1.75rem 6.5rem; }
+  @media (max-width: 640px) { .dd-day > summary { grid-template-columns: 1fr auto; } .dd-n { grid-column: 1 / -1; } .dd-body { padding-left: 0; } }
+  .price { margin-top: 3.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: var(--radius-card); background: #132155; color: #fff; }
+  .amt { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 400; letter-spacing: normal; line-height: 1; margin-top: .75rem; }
   .amt span { display: block; font-size: 1rem; font-weight: 400; letter-spacing: 0; opacity: .85; margin-top: .5rem; }
 </style>

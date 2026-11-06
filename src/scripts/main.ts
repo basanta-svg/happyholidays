@@ -44,8 +44,21 @@ const wireClose = (d: HTMLDialogElement, onClose?: () => void) => {
 };
 const ask = $<HTMLDialogElement>('#ask-dialog');
 if (ask) {
-  wireClose(ask);
-  $('#ask-btn')?.addEventListener('click', () => { ask.showModal(); document.body.style.overflow = 'hidden'; });
+  // Slide in on open, slide out before the dialog actually closes
+  const animClose = () => {
+    if (!ask.open || ask.classList.contains('leaving')) return;
+    ask.classList.remove('shown');
+    ask.classList.add('leaving');
+    setTimeout(() => { ask.classList.remove('leaving'); ask.close(); }, reduced ? 0 : 380);
+  };
+  ask.addEventListener('click', (e) => { if (e.target === ask || (e.target as HTMLElement).closest('[data-close]')) animClose(); });
+  ask.addEventListener('cancel', (e) => { e.preventDefault(); animClose(); });
+  ask.addEventListener('close', () => { document.body.style.overflow = ''; });
+  $('#ask-btn')?.addEventListener('click', () => {
+    ask.showModal();
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => ask.classList.add('shown')));
+  });
 }
 const vid = $<HTMLDialogElement>('#video-dialog');
 if (vid) {

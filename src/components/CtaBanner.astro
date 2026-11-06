@@ -1,0 +1,24 @@
+---
+import { getImage } from 'astro:assets';
+import { withBase } from '../lib/url';
+import { accent } from '../lib/accent';
+import defaultBg from '../assets/images/festivals/ctaa.webp';
+interface Props { title: string; cta: string; href: string; image?: ImageMetadata }
+const { title, cta, href, image = defaultBg } = Astro.props;
+const bg = await getImage({ src: image, width: 2000, format: 'webp', quality: 70 });
+---
+<section class="ab-cta" aria-label="Plan your trip">
+  <div class="wrap">
+    <div class="ab-band reveal" style={`--bg:url(${bg.src})`}>
+      <h2 class="h2" set:html={accent(title)}></h2>
+      <a class="ab-btn btn-label" href={withBase(href)}>{cta}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .ab-cta { position: relative; z-index: 1; padding-block: clamp(4rem, 7vw, 6rem); }
+  .ab-band { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem 3rem; padding: clamp(2rem, 5vw, 4rem); color: #fff; border-radius: 0; background: linear-gradient(110deg, rgb(10 18 51 / .8) 0%, rgb(10 18 51 / .45) 50%, rgb(10 18 51 / .1) 100%), var(--bg) center 22% / cover no-repeat; min-height: clamp(13rem, 24vw, 21rem); }
+  .ab-band :global(.h2) { max-width: 22ch; }
+  .ab-btn { display: inline-block; padding: .45rem .85rem; font-size: .72rem; background: var(--color-sage); color: var(--color-ink); border-radius: 0; transition: transform .35s var(--ease), background .3s; }
+  .ab-btn:hover { transform: translateY(-2px); background: #ffd92e; }
+</style>
