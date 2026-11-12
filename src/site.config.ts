@@ -24,6 +24,7 @@ export const site = {
   hotelsUrl: '/stay',
   whyBhutanUrl: '#why-bhutan',
   contactUrl: '/contact',
+  heroYoutubeId: '3sDAsVvfiU4', // hero background plays from YouTube (muted, looping); falls back to the local mp4 below
   heroVideo: '/video/hero.mp4', // looping mp4 playing behind the hero (public/video/hero.mp4)
   videoId: 'M7lc1UVf-VE', // replace with your film's ID
   videoProvider: 'youtube' as 'youtube' | 'vimeo',

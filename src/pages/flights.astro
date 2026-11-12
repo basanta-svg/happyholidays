@@ -3,12 +3,11 @@ import { Picture } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageSection from '../components/PageSection.astro';
-import CtaBand from '../components/CtaBand.astro';
 import { accent } from '../lib/accent';
 import FlightMap from '../components/FlightMap.astro';
 import BhutanMap from '../components/BhutanMap.astro';
 import hero from '../assets/images/airport.webp';
-import plane from '../assets/images/deck/image12.webp';
+import { withBase } from '../lib/url';
 import bkk from '../assets/images/deck/image8.webp';
 import ktm from '../assets/images/deck/image9.webp';
 import dac from '../assets/images/deck/image10.webp';
@@ -24,6 +23,14 @@ const schedule = [
   { route: 'Bangkok ⇄ Paro', code: 'BKK–PBH · PBH–BKK', day: 'Mon / Thu / Fri / Sat', flights: 'B3703', time: '04:10 – 06:10' },
   { route: 'Delhi ⇄ Paro', code: 'DEL–PBH · PBH–DEL', day: 'Daily', flights: 'B3774', time: '13:00 – 15:50' },
   { route: 'Kathmandu ⇄ Paro', code: 'KTM–PBH · PBH–KTM', day: 'Daily', flights: 'B3771 · B3772', time: '06:50 – 07:45 · 08:25 – 09:40' },
+];
+const drukairInfo = [
+  { k: 'Timetable', v: 'Published month by month, currently November 2026 to June 2027.' },
+  { k: 'Check-in counters', v: 'Open 3 hours before departure and close strictly 1 hour before. Arrive at least 2 hours early.' },
+  { k: 'Online check-in', v: 'Opens 72 hours before departure and closes 4 hours before.' },
+  { k: 'Reconfirmation', v: 'Reconfirm your booking 72 hours before departure.' },
+  { k: 'Checked baggage', v: 'Maximum 32 kg per piece, whatever the travel class.' },
+  { k: 'Schedule updates', v: '1300 within Bhutan, or +975 8 276430 internationally (7 AM to 9 PM, GMT +6).' },
 ];
 ---
 <PageLayout bodyClass="flights" title="Flights" description="Fly to Paro with Drukair or Bhutan Airlines from Bangkok, Kathmandu, Dhaka and Delhi. Routes, schedules and baggage guidance.">
@@ -67,7 +74,7 @@ const schedule = [
           <p class="pg-text reveal">Bhutan Airlines is one of the most reliable carriers into Bhutan and the country’s only private airline. It is our partner in giving guests warm hospitality and a smooth journey.</p>
         </div>
       </div>
-      <Picture fallbackFormat="webp" src={plane} alt="Crew in front of a Bhutan Airlines aircraft at Paro" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <img src={withBase('/images/Bhutan%20Airlines.png')} alt="Bhutan Airlines aircraft" width="900" height="675" loading="lazy" decoding="async" class="pg-img reveal" />
     </div>
 
     <h3 class="h3 reveal" style="">Bhutan Airlines schedule</h3>
@@ -87,6 +94,38 @@ const schedule = [
       </table>
     </div>
     <p class="pg-note">Times are local departure and arrival as published for 2026. Please confirm with us before booking, as schedules can change.</p>
+    <div class="da-cta reveal">
+      <a class="da-btn label" href="https://fo-asia.ttinteractive.com/Zenith/FrontOffice/BhutanAirlines/en-GB/BookingEngine/" target="_blank" rel="noopener noreferrer">Book with Bhutan Airlines <span aria-hidden="true">→</span></a>
+    </div>
+  </PageSection>
+
+  <PageSection tone="paper" id="drukair" labelledby="da-title">
+    <div class="pg-split">
+      <div>
+        <div class="pg-head">
+          <p class="label" style="opacity:.7">Our partnered aviation</p>
+          <h2 id="da-title" class="h3 reveal" set:html={accent('*Drukair* ~Royal Bhutan Airlines~')}></h2>
+          <p class="pg-text reveal">Drukair, the national carrier of Bhutan, flies a mixed fleet of Airbus A319, A320, ATR and PC-24 aircraft, with helicopter services for charters and scenic flights. It serves Paro from Bangkok, Delhi, Kolkata, Kathmandu, Bagdogra, Guwahati, Bodh Gaya and Dubai, and domestically to Bumthang and Yonphula.</p>
+        </div>
+      </div>
+      <img src={withBase('/images/bg-drukair.webp')} alt="Drukair aircraft" width="900" height="675" loading="lazy" decoding="async" class="pg-img reveal" />
+    </div>
+
+    <h3 class="h3 reveal" style="">Drukair flight schedule</h3>
+    <div class="pg-scroll reveal">
+      <table class="pg-table">
+        <thead><tr><th>Topic</th><th>Details</th></tr></thead>
+        <tbody>
+          {drukairInfo.map((d) => (
+            <tr><td><strong>{d.k}</strong></td><td>{d.v}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="pg-note">Source: drukair.com.bt. Times are local to each city and can change, so please confirm with us before booking.</p>
+    <div class="da-cta reveal">
+      <a class="da-btn label" href="https://drukair.com.bt/plan/plan-your-trip/flight-schedule/" target="_blank" rel="noopener noreferrer">Check the Drukair schedule <span aria-hidden="true">→</span></a>
+    </div>
   </PageSection>
 
   <PageSection tone="plum" labelledby="bag-title">
@@ -120,7 +159,6 @@ const schedule = [
     <BhutanMap />
   </PageSection>
 
-  <CtaBand title="Need help with flights and visas?" cta="Talk to our team" href="/contact" />
 </PageLayout>
 <style is:global>
   /* Flights: one rhythm for spacing, plus red and yellow accents */
@@ -132,6 +170,9 @@ const schedule = [
   body.flights .pg-note { margin-top: 1.5rem; }
   body.flights .ps h3.h3[style] { margin: 3rem 0 1.5rem; }
   body.flights .pg-cards { gap: 1.5rem; }
+  body.flights .da-cta { margin-top: 2rem; }
+  body.flights .da-btn { display: inline-flex; gap: .6rem; align-items: center; justify-self: start; padding: .45rem .85rem; background: #FECB00; color: #0b1b2b; font-size: .72rem; line-height: 24px; letter-spacing: .12em; text-transform: uppercase; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+  body.flights .da-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgb(0 0 0 / .3); }
 
   body.flights .ps::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #fff 30%, #fff 70%, transparent); opacity: .5; }
   body.flights .pg-head h2::after { content: ''; display: block; width: 72px; height: 4px; margin-top: 1rem; background: #fff; }
