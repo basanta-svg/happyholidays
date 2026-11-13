@@ -16,7 +16,7 @@ const contacts = site.socials.filter((s) => s.icon === 'whatsapp' || s.icon === 
     {site.askFaq.map((f) => (
       <details>
         <summary>{f.q}</summary>
-        <p>{f.a}</p>
+        <div class="body"><p>{f.a}</p></div>
       </details>
     ))}
   </div>
@@ -37,19 +37,21 @@ const contacts = site.socials.filter((s) => s.icon === 'whatsapp' || s.icon === 
   .ask { position: fixed; z-index: 45; bottom: 1.25rem; left: var(--gutter, 1.25rem); display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 1.3rem; color: #fff; border-radius: 9999px; background: rgb(30 28 22 / .45); backdrop-filter: blur(16px) saturate(1.4); border: 1px solid rgb(255 255 255 / .25); cursor: pointer; transition: transform .3s var(--ease); }
   .ask:hover { transform: translateY(-3px); }
   .drawer { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(100%, 26rem); background: #132155; color: var(--color-paper); padding: 1.5rem; border: 0; transform: translateX(100%); transition: transform .4s var(--ease); }
+  .drawer[open] { display: flex; flex-direction: column; }
   .drawer.shown { transform: none; }
   .drawer::backdrop { background: rgb(0 0 0 / .5); opacity: 0; transition: opacity .4s var(--ease); }
   .drawer.shown::backdrop { opacity: 1; }
   @media (prefers-reduced-motion: reduce) { .drawer, .drawer::backdrop { transition: none; } }
-  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-  .faq { display: grid; gap: .25rem; }
+  .head { display: flex; justify-content: space-between; align-items: center; flex: none; }
+  .faq { display: grid; gap: .25rem; margin-top: auto; }
   .faq details { border-top: 1px solid rgb(255 255 255 / .25); }
   .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 1rem 0; }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: '+'; font-size: 1.4rem; line-height: 1; transition: transform .25s; }
+  .faq summary::after { content: '+'; font-size: 1.4rem; line-height: 1; transition: transform .7s var(--ease); }
   .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq .body { overflow: hidden; }
   .faq p { color: rgb(255 255 255 / .85); font-size: 16px; padding-bottom: 1rem; }
-  .touch { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / .25); }
+  .touch { margin-top: 2rem; margin-bottom: auto; padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / .25); }
   .touch p { opacity: .85; margin: .4rem 0 1rem; }
   .chat { display: grid; gap: .7rem; }
   .chat-btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; padding: .85rem 1.3rem; border-radius: 9999px; color: #fff; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; transition: transform .25s, filter .25s; }
@@ -57,3 +59,25 @@ const contacts = site.socials.filter((s) => s.icon === 'whatsapp' || s.icon === 
   .chat-btn.whatsapp { background: #25d366; color: #0b2e18; }
   .chat-btn.line { background: #06c755; }
 </style>
+<script>
+  // Slow, smooth open and close for the FAQ answers
+  const ms = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 750;
+  document.querySelectorAll<HTMLDetailsElement>('#ask-dialog .faq details').forEach((d) => {
+    const body = d.querySelector<HTMLElement>('.body')!;
+    let anim: Animation | null = null;
+    d.querySelector('summary')!.addEventListener('click', (e) => {
+      e.preventDefault();
+      anim?.cancel();
+      const opening = !d.open;
+      if (opening) d.open = true;
+      const full = body.scrollHeight;
+      const from = opening ? 0 : full;
+      const to = opening ? full : 0;
+      anim = body.animate(
+        [{ height: from + 'px', opacity: opening ? 0 : 1 }, { height: to + 'px', opacity: opening ? 1 : 0 }],
+        { duration: ms, easing: 'cubic-bezier(.22,1,.36,1)' }
+      );
+      anim.onfinish = () => { if (!opening) d.open = false; anim = null; };
+    });
+  });
+</script>
