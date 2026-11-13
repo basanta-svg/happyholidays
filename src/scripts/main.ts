@@ -184,51 +184,21 @@ addEventListener('scroll', onScroll, { passive: true });
 addEventListener('resize', onScroll);
 update();
 
-/* Hero background video: YouTube (muted, looping, no controls); local mp4 is the fallback */
-(() => {
-  const box = document.querySelector<HTMLElement>('.backdrop .yt');
-  const v = document.querySelector<HTMLVideoElement>('.backdrop video');
-  if (reduced || !box || !v) return;
-  const id = box.dataset.yt;
-  let fell = false;
-  const fallback = () => {
-    if (fell) return;
-    fell = true;
-    const src = v.dataset.src;
-    if (!src) return;
-    v.src = src; v.muted = true; v.preload = 'auto';
-    v.addEventListener('playing', () => v.classList.add('on'));
-    const play = () => { v.muted = true; v.play().catch(() => {}); };
-    play();
-    ['touchstart', 'pointerdown', 'scroll', 'keydown'].forEach((ev) => addEventListener(ev, play, { once: true, passive: true }));
-  };
-  if (!id) { fallback(); return; }
-  const timer = setTimeout(fallback, 8000); // YouTube blocked or too slow
-  const w = window as any;
-  const start = () => {
-    const player = new w.YT.Player('hero-yt', {
-      videoId: id,
-      playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: id, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, fs: 0, iv_load_policy: 3, cc_load_policy: 0, origin: location.origin },
-      events: {
-        onReady: (e: any) => { e.target.mute(); e.target.playVideo(); },
-        onStateChange: (e: any) => {
-          if (e.data === 1) { clearTimeout(timer); box.classList.add('on'); }
-          if (e.data === 0) { e.target.seekTo(0); e.target.playVideo(); }
-          if (e.data === 2 && !document.hidden) e.target.playVideo();
-        },
-        onError: () => { clearTimeout(timer); fallback(); },
-      },
-    });
-    document.querySelector('#hero-yt')?.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) try { player.playVideo(); } catch {} });
-    ['touchstart', 'pointerdown', 'scroll', 'keydown'].forEach((ev) => addEventListener(ev, () => { try { player.playVideo(); } catch {} }, { once: true, passive: true }));
-  };
-  if (w.YT && w.YT.Player) start();
-  else {
-    w.onYouTubeIframeAPIReady = start;
-    const t = document.createElement('script');
-    t.src = 'https://www.youtube.com/iframe_api';
-    t.onerror = () => { clearTimeout(timer); fallback(); };
-    document.head.appendChild(t);
-  }
-})();
+/* Hero background video (local mp4, muted loop): fade in once it is actually playing */
+$$<HTMLVideoElement>('.backdrop video').forEach((v) => {
+  if (reduced) { v.removeAttribute('autoplay'); return; }
+  const play = () => { v.muted = true; v.play().catch(() => {}); };
+  v.addEventListener('playing', () => v.classList.add('on'));
+  play();
+  // Retry on first interaction / when the tab returns (autoplay policies on phones)
+  ['touchstart', 'pointerdown', 'scroll', 'keydown'].forEach((ev) => addEventListener(ev, play, { once: true, passive: true }));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) play(); });
+  // Un-stick playback if the video stalls or stops mid-way
+  let last = -1;
+  setInterval(() => {
+    if (document.hidden || v.readyState === 0) return;
+    if (v.paused || (v.currentTime === last && v.readyState < 3)) play();
+    last = v.currentTime;
+  }, 3000);
+  ['stalled', 'pause', 'suspend', 'ended'].forEach((ev) => v.addEventListener(ev, () => { if (!document.hidden) setTimeout(play, 300); }));
+});
