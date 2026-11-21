@@ -9,7 +9,6 @@ import { site } from '../site.config';
 import { accent } from '../lib/accent';
 import { withBase } from '../lib/url';
 import hero from '../assets/images/dochula-4.webp';
-import culture from '../assets/images/cultural.webp';
 import guide from '../assets/images/team/chinese guide.webp';
 import ctaBg from '../assets/images/festivals/ctaa.webp';
 import { guests } from '../data/guests';
@@ -60,7 +59,7 @@ const bg = await getImage({ src: ctaBg, width: 2000, format: 'webp', quality: 70
           {site.services.map((s) => <li>{s}</li>)}
         </ul>
       </div>
-      <Picture fallbackFormat="webp" src={culture} alt="Bhutanese culture" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={guests.groupPhoto.img} alt={guests.groupPhoto.alt} widths={[600, 1000, 1400]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
