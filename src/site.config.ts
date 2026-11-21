@@ -13,7 +13,7 @@ export const site = {
   phone: '+975 17129889',
   email: 'happyholidaysed@gmail.com',
   emailOps: 'happyholidaysops@gmail.com',
-  phone2: '+975 17421447',
+  phone2: '+975 17 42 11 47',
   lineUrl: 'https://line.me/ti/p/I-wrdfuOBN',
   websites: ['www.bhutanhappy.com', 'www.zenbhutan.com'],
   geo: { lat: 27.4728, lon: 89.639 },

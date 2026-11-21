@@ -1,6 +1,24 @@
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => [...r.querySelectorAll<T>(s)];
+
+/* Smooth, eased page scrolling (skipped when the visitor prefers reduced motion) */
+if (!reduced) {
+  const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1, anchors: { offset: -80 } });
+  const raf = (t: number) => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+  // Pause while the mobile menu, chat drawer or photo viewer locks the page
+  const sync = () => {
+    const locked = document.documentElement.style.overflow === 'hidden' || document.body.style.overflow === 'hidden';
+    if (locked) lenis.stop(); else lenis.start();
+  };
+  const mo = new MutationObserver(sync);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+  mo.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+}
 
 /* Reveal on scroll */
 const io = new IntersectionObserver(

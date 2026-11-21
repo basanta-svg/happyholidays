@@ -7,7 +7,13 @@ import LangSwitch from './LangSwitch.astro';
 const nav = (await getEntry('nav', 'main'))!.data.items;
 const clean = (p: string) => p.replace(/\/+$/, '') || '/';
 const here = clean(Astro.url.pathname);
-const isActive = (href: string) => here === clean(withBase(href));
+const pathOf = (href: string) => clean(withBase(href.split('#')[0]));
+const isActive = (href: string) => here === pathOf(href);
+// Sub-pages with a #section are marked by the script below; whole-page sub-links are marked here
+const childActive = (c: { href: string }) => !c.href.includes('#') && isActive(c.href);
+// A parent item is active on its own page and on any of its sub-pages
+const groupActive = (n: { href: string; children?: { href: string }[] }) => isActive(n.href) || !!n.children?.some((c) => isActive(c.href));
+const hashOf = (href: string) => (href.includes('#') ? href.split('#')[1] : undefined);
 ---
 <header id="site-header" class="hdr" data-solid="false">
   <div class="wrap bar">
@@ -18,9 +24,9 @@ const isActive = (href: string) => here === clean(withBase(href));
       {nav.map((n) => (
         n.children?.length ? (
           <div class="dd">
-            <a href={withBase(n.href)} class="nl" aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}<svg class="dd-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+            <a href={withBase(n.href)} class="nl" aria-current={groupActive(n) ? 'page' : undefined}>{n.label}<svg class="dd-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
             <ul class="dd-list">
-              {n.children.map((c) => <li><a href={withBase(c.href)} aria-current={isActive(c.href) ? 'page' : undefined}>{c.label}</a></li>)}
+              {n.children.map((c) => <li><a href={withBase(c.href)} data-hash={hashOf(c.href)} data-page={pathOf(c.href)} aria-current={childActive(c) ? 'page' : undefined}>{c.label}</a></li>)}
             </ul>
           </div>
         ) : (
@@ -37,10 +43,10 @@ const isActive = (href: string) => here === clean(withBase(href));
     <ul>
       {nav.map((n) => (
         <li class:list={{ 'has-sub': !!n.children?.length }}>
-          <a href={withBase(n.href)} class="ml" aria-current={isActive(n.href) ? 'page' : undefined} aria-expanded={n.children?.length ? 'false' : undefined}>{n.label}{n.children?.length ? <span class="chev" aria-hidden="true"></span> : null}</a>
+          <a href={withBase(n.href)} class="ml" aria-current={groupActive(n) ? 'page' : undefined} aria-expanded={n.children?.length ? 'false' : undefined}>{n.label}{n.children?.length ? <span class="chev" aria-hidden="true"></span> : null}</a>
           {n.children?.length ? (
             <ul class="mc">
-              {n.children.map((c) => <li><a href={withBase(c.href)} aria-current={isActive(c.href) ? 'page' : undefined}>{c.label}</a></li>)}
+              {n.children.map((c) => <li><a href={withBase(c.href)} data-hash={hashOf(c.href)} data-page={pathOf(c.href)} aria-current={childActive(c) ? 'page' : undefined}>{c.label}</a></li>)}
             </ul>
           ) : null}
         </li>
@@ -83,9 +89,11 @@ const isActive = (href: string) => here === clean(withBase(href));
     .chev { flex: none; width: .6rem; height: .6rem; margin-right: .3rem; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-3px) rotate(45deg); transition: transform .35s var(--ease); }
     .has-sub.open > .ml .chev { transform: translateY(3px) rotate(-135deg); }
     .mc a { display: block; padding: .5rem 0; font-size: 15px; opacity: .85; }
-    .mob a[aria-current='page'] { color: var(--color-sage, #FECB00); }
+    .mob a[aria-current] { color: var(--color-sage, #FECB00); }
   }
-  .nl[aria-current='page'] { color: var(--color-sage, #FECB00); }
+  .nl[aria-current] { color: var(--color-sage, #FECB00); }
+  .nl[aria-current]::after { transform: scaleX(1); transform-origin: left; }
+  .dd-list a[aria-current] { color: var(--color-sage, #FECB00); background: rgb(255 255 255 / .12); }
   .hdr[data-solid='true'] .bar { align-items: center; }
   .brand { display: block; position: relative; }
   .nl { position: relative; padding-block: .3rem; }
@@ -129,4 +137,20 @@ const isActive = (href: string) => here === clean(withBase(href));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
     window.matchMedia('(min-width: 1024px)').addEventListener('change', (m) => { if (m.matches) set(false); });
   }
+
+  // Sub-links that point at a #section of the current page follow the section in view
+  (() => {
+    const here = location.pathname.replace(/\/+$/, '') || '/';
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('#site-header [data-hash]')].filter((a) => a.dataset.page === here);
+    if (!links.length) return;
+    const set = (id: string | null) => links.forEach((a) => {
+      if (id && a.dataset.hash === id) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+    const targets = links.map((a) => document.getElementById(a.dataset.hash!)).filter(Boolean) as HTMLElement[];
+    const fromHash = () => { const h = location.hash.slice(1); if (h && targets.some((t) => t.id === h)) set(h); };
+    fromHash();
+    addEventListener('hashchange', fromHash);
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) set(e.target.id); }), { rootMargin: '-35% 0px -55% 0px' });
+    targets.forEach((t) => io.observe(t));
+  })();
 </script>

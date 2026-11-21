@@ -1,0 +1,21 @@
+---
+import { Picture } from 'astro:assets';
+import { guests, type GuestKey } from '../data/guests';
+interface Props { keys: GuestKey[] }
+const { keys } = Astro.props;
+---
+<div class="gg">
+  {keys.map((k, i) => (
+    <figure class="reveal" style={`--d:${(i % 4) * 80}ms`}>
+      <Picture fallbackFormat="webp" src={guests[k].img} alt={guests[k].alt} widths={[400, 700, 1000]} sizes="(min-width:1000px) 24vw, (min-width:600px) 32vw, 92vw" formats={['avif', 'webp']} loading="lazy" />
+    </figure>
+  ))}
+</div>
+<style>
+  .gg { columns: 2 150px; column-gap: 1rem; }
+  .gg figure { break-inside: avoid; margin: 0 0 1rem; overflow: hidden; }
+  .gg :global(img) { display: block; width: 100%; height: auto; border-radius: 0; transition: transform .8s var(--ease); }
+  .gg figure:hover :global(img) { transform: scale(1.04); }
+  @media (min-width: 640px) { .gg { columns: 3; } }
+  @media (min-width: 1000px) { .gg { columns: 4; } }
+</style>

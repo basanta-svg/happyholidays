@@ -6,6 +6,7 @@ import Hero from '../components/Hero.astro';
 import AboutSection from '../components/AboutSection.astro';
 import FestivalShowcase from '../components/FestivalShowcase.astro';
 import ActivitiesShowcase from '../components/ActivitiesShowcase.astro';
+import GuestsSection from '../components/GuestsSection.astro';
 import Destinations from '../components/Destinations.astro';
 import WhyUs from '../components/WhyUs.astro';
 import TwoUp from '../components/TwoUp.astro';
@@ -28,6 +29,7 @@ import GettingIn from '../components/GettingIn.astro';
     <GettingIn />
     <ActivitiesShowcase />
     <Destinations />
+    <GuestsSection />
     <TwoUp />
   </main>
   <Footer />
@@ -45,13 +47,14 @@ import GettingIn from '../components/GettingIn.astro';
   body.home #pillars { background: transparent; color: #fff; }
   body.home #festival-showcase { background: transparent; color: #fff; }
   body.home #activities { background: transparent; color: #fff; }
+  body.home #guests { background: transparent; color: #fff; }
   body.home #hotels { background: transparent; color: #fff; }
   body.home #why-bhutan { background: transparent; color: #fff; }
   body.home #contact { background: transparent; }
 
   /* One spacing rhythm: every homepage section gets the same top and bottom padding */
   body.home #about, body.home #festival-showcase, body.home #why-bhutan, body.home #getting-in,
-  body.home #activities, body.home #hotels, body.home #contact { padding-block: clamp(4rem, 7vw, 6rem); min-height: 0; }
+  body.home #activities, body.home #hotels, body.home #guests, body.home #contact { padding-block: clamp(4rem, 7vw, 6rem); min-height: 0; }
 
   /* Text colours on the dark ground */
   body.home .ac-r { color: #E01B24; }

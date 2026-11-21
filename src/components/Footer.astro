@@ -4,8 +4,8 @@ import { site } from '../site.config';
 import { icons } from '../lib/icons';
 import Logo from './Logo.astro';
 import { getImage } from 'astro:assets';
-import bg from '../assets/images/footer.webp';
-const bgImg = await getImage({ src: bg, width: 2400, format: 'webp', quality: 70 });
+import bg from '../assets/images/guests/monks-puddle-reflection.webp';
+const bgImg = await getImage({ src: bg, width: 1600, format: 'webp', quality: 75 });
 const year = new Date().getFullYear();
 ---
 <footer class="ft" style={`--ft-bg:url(${bgImg.src})`}>

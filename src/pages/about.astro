@@ -12,7 +12,8 @@ import hero from '../assets/images/dochula-4.webp';
 import culture from '../assets/images/cultural.webp';
 import guide from '../assets/images/team/chinese guide.webp';
 import ctaBg from '../assets/images/festivals/ctaa.webp';
-import welcome from '../assets/images/deck/image4.webp';
+import { guests } from '../data/guests';
+import GuestsSlider from '../components/GuestsSlider.astro';
 const bg = await getImage({ src: ctaBg, width: 2000, format: 'webp', quality: 70 });
 ---
 <PageLayout bodyClass="ap" title="About us" description="Happy Holidays is a dynamic niche PR and travel agency focused on Bhutan, helping luxury travel and hotel brands convey their true essence since 2010.">
@@ -26,7 +27,7 @@ const bg = await getImage({ src: ctaBg, width: 2000, format: 'webp', quality: 70
         <p class="pg-text reveal">We work with travel and hotel brands to convey what makes the Land of the Thunder Dragon special, and we plan the journeys that bring guests there: cultural, adventure, pilgrimage and festival trips, built around lesser-known routes.</p>
         <p class="pg-text reveal">Our guests are welcomed by local people who know the stories behind every temple, trail and village, from the first greeting at Paro airport to the farewell at departure.</p>
       </div>
-      <Picture fallbackFormat="webp" src={welcome} alt="A warm Bhutanese welcome" widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
+      <Picture fallbackFormat="webp" src={guests.banner.img} alt={guests.banner.alt} widths={[480, 900]} sizes="(min-width:900px) 50vw, 100vw" formats={['avif', 'webp']} class="pg-img reveal" />
     </div>
   </PageSection>
 
@@ -64,6 +65,15 @@ const bg = await getImage({ src: ctaBg, width: 2000, format: 'webp', quality: 70
   </PageSection>
 
   <WhyUs />
+
+  <PageSection tone="ink" labelledby="guests-title">
+    <div class="pg-head">
+      <p class="label" style="opacity:.75">Our guests</p>
+      <h2 id="guests-title" class="h3 reveal" set:html={accent('Travellers we have *welcomed* to ~Bhutan~.')}></h2>
+      <p class="pg-text reveal">Every journey is shared with the people who take it. Here are some of our guests on tour, from festival courtyards to lunch tables and mountain bridges.</p>
+    </div>
+    <GuestsSlider keys={['inCourtyard', 'lunch1', 'youngMonks', 'dress2', 'puddle', 'groupPhoto', 'cloudy']} />
+  </PageSection>
 
   <PageSection tone="sand" labelledby="team-title">
     <div class="pg-split">

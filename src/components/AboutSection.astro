@@ -1,17 +1,18 @@
 ---
 import { Picture } from 'astro:assets';
 import { withBase } from '../lib/url';
-import photo from '../assets/images/deck/image4.webp';
-import photo2 from '../assets/images/cultural.webp';
+import { guests } from '../data/guests';
+const photo = guests.courtyardGroup.img;   // background (large) image
+const photo2 = guests.dress2.img;          // front (small) image
 ---
 <section id="about" class="ab" aria-labelledby="ab-title">
   <div class="wrap grid">
     <div class="pics">
       <div class="a reveal">
-        <Picture fallbackFormat="webp" src={photo} alt="A warm Bhutanese welcome" widths={[480, 800, 1000]} sizes="(min-width:900px) 34vw, 90vw" formats={['avif', 'webp']} class="img" />
+        <Picture fallbackFormat="webp" src={photo} alt={guests.courtyardGroup.alt} widths={[600, 1000, 1400]} sizes="(min-width:900px) 34vw, 90vw" formats={['avif', 'webp']} class="img" />
         <p class="cap h3">Tailor-made<br />journeys</p>
       </div>
-      <Picture fallbackFormat="webp" src={photo2} alt="Bhutanese cultural dance" widths={[400, 700]} sizes="(min-width:900px) 24vw, 60vw" formats={['avif', 'webp']} class="img b reveal" style="--d:150ms" />
+      <Picture fallbackFormat="webp" src={photo2} alt={guests.dress2.alt} widths={[400, 700]} sizes="(min-width:900px) 24vw, 60vw" formats={['avif', 'webp']} class="img b reveal" style="--d:150ms" />
     </div>
     <div class="txt">
       <p class="label reveal">About us</p>

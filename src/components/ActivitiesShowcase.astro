@@ -7,7 +7,7 @@ import culture from '../assets/images/cultural.webp';
 import trek from '../assets/images/bumthang-trek.webp';
 import biking from '../assets/images/bikeing1.webp';
 import birds from '../assets/images/birdwatching2.webp';
-import food from '../assets/images/bumtap-cuisine.webp';
+import { guests } from '../data/guests';
 import pilgrim from '../assets/images/buddha-point.webp';
 
 // Every activity we run, in the order they appear on the Activities page
@@ -17,7 +17,7 @@ const items = [
   { name: 'Hiking & trekking', img: trek, alt: 'A forest trail in Bumthang' },
   { name: 'Cycling', img: biking, alt: 'A cyclist on a mountain road' },
   { name: 'Bird watching', img: birds, alt: 'Birdwatching in the Himalayan forests' },
-  { name: 'Culinary experiences', img: food, alt: 'A traditional Bhutanese kitchen' },
+  { name: 'Culinary experiences', img: guests.lunch2.img, alt: guests.lunch2.alt },
   { name: 'Pilgrimage', img: pilgrim, alt: 'The Buddha Dordenma above Thimphu' },
 ];
 ---

@@ -5,14 +5,15 @@ import PageSection from '../components/PageSection.astro';
 import { site } from '../site.config';
 import { accent } from '../lib/accent';
 import { withBase } from '../lib/url';
-import hero from '../assets/images/dochula-3.webp';
+import { guests } from '../data/guests';
+const hero = guests.groupPhoto.img;
 const lineHref = site.lineUrl;
 const tel = (p: string) => `tel:${p.replace(/ /g, '')}`;
 const interests = ['Cultural tour', 'Festival tour', 'Trekking & hiking', 'Cycling', 'Bird watching', 'Pilgrimage', 'Golf', 'Spa & wellness', 'Thangka workshop', 'Homestay / farm stay', 'Film crew support', 'Visa only', 'Other'];
 const tradeInterests = ['Partnership as an agent or tour operator', 'Ground arrangements in Bhutan', 'PR and promotion for a hotel or travel brand', 'Group bookings', 'Film or media production', 'Other'];
 ---
 <PageLayout bodyClass="ap" title="Contact" description="Contact Happy Holidays in Thimphu, Bhutan to plan your trip, or get in touch as a travel agent, tour operator or travel brand (B2B).">
-  <PageHero eyebrow="Contact" title="Let’s make your best trip with us." intro="Tell us when you’d like to travel and what you’d like to see. We’ll reply with ideas and a first itinerary." image={hero} alt="Prayer flags at Dochula Pass" />
+  <PageHero eyebrow="Contact" title="Let’s make your best trip with us." intro="Tell us when you’d like to travel and what you’d like to see. We’ll reply with ideas and a first itinerary." image={hero} alt={guests.groupPhoto.alt} />
 
   <PageSection tone="ink" labelledby="ct-title">
     <div class="grid">
